@@ -417,8 +417,6 @@
                 (send-event a0-2 'trans (-> self root trans))
                 )
             )
-          (go pelican-explode #f)
-          #f
           )
          (else
            (let* ((gp-0 proc)
