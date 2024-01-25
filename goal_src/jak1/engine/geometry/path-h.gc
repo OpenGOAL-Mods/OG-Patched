@@ -158,3 +158,17 @@
     this
     )
   )
+
+(defmethod curve-control-init-by-other curve-control ((allocation symbol) (type-to-make type) (proc process))
+  (let ((this (object-new allocation type-to-make (the-as int (-> type-to-make size)))))
+    (set! (-> this process) (the-as process-drawable proc))
+    (set! (-> this name) name)
+    
+    ;; (get-curve-data! ent (-> this curve) name s2-0 time)
+    
+    ;; downgrade us to a path-control, we got cverts but no knots.
+    (set! (-> this type) path-control)
+
+    this
+    )
+  )

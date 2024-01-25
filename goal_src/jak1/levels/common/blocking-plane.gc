@@ -21,10 +21,18 @@
               )
 
 (defstate blocking-plane-idle (blocking-plane)
+  :trans (behavior ()
+    (if (and *debug-segment* *display-path-marks*)
+      (logclear! (-> self draw status) (draw-status skip-bones))  ;; for debugging show blocking planes
+      (logior! (-> self draw status) (draw-status skip-bones))
+      )
+    )
   :code (behavior ()
     (transform-post)
     (loop
-      (logior! (-> self mask) (process-mask sleep))
+      (when (not *debug-segment*)
+        (logior! (-> self mask) (process-mask sleep))
+        )
       (suspend)
       )
     )
