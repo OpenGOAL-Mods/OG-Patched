@@ -34,15 +34,27 @@ an orb |#
       )
     ;; top side
     (when (not (process-by-name "sunken-blocking-plane-1" *active-pool*))
-      (set-vector-meters! (-> verts 0) 884.26 -136.4 -1822.92)
-      (set-vector-meters! (-> verts 1) 901.70 -136.4 -1771.47)
+      (set-vector-meters! (-> verts 0) 890.26 -134.2 -1811.5)
+      (set-vector-meters! (-> verts 1) 906.10 -134.2 -1759.5  )
       (blocking-plane-spawn-simple verts (meters 30.0) "sunken-blocking-plane-1")
       )
-    ;; right side
+    ;; top-left side
     (when (not (process-by-name "sunken-blocking-plane-2" *active-pool*))
+      (set-vector-meters! (-> verts 0) 883.91 -134.2 -1806.5)
+      (set-vector-meters! (-> verts 1) 898.21 -134.2 -1786.0)
+      (blocking-plane-spawn-simple verts (meters 30.0) "sunken-blocking-plane-2")
+      )
+    ;; top-right side
+    (when (not (process-by-name "sunken-blocking-plane-3" *active-pool*))
+      (set-vector-meters! (-> verts 0) 893.33 -134.2 -1786.2)
+      (set-vector-meters! (-> verts 1) 898.32 -134.2 -1761.2)
+      (blocking-plane-spawn-simple verts (meters 30.0) "sunken-blocking-plane-3")
+      )
+    ;; right side
+    (when (not (process-by-name "sunken-blocking-plane-4" *active-pool*))
       (set-vector-meters! (-> verts 0) 901.30 -170.4 -1774.86)
       (set-vector-meters! (-> verts 1) 920.83 -170.4 -1776.60)
-      (blocking-plane-spawn-simple verts (meters 50.0) "sunken-blocking-plane-2")
+      (blocking-plane-spawn-simple verts (meters 50.0) "sunken-blocking-plane-4")
       )
     )
   (none)
