@@ -10,7 +10,7 @@
   "battlecontroller.o"
   "mistycannon.o"
   "babak-with-cannon.o"
-  "blocking-plane.o"
+  ;; "blocking-plane.o"
   "misty-obs.o"
   "misty-warehouse.o"
   "misty-conveyor.o"
