@@ -56,6 +56,42 @@ an orb |#
       (set-vector-meters! (-> verts 1) 920.83 -170.4 -1776.60)
       (blocking-plane-spawn-simple verts (meters 50.0) "sunken-blocking-plane-4")
       )
+
+    ;; BACKWARDS BOGGY
+    (let ((should-spawn? (not (string= (-> *game-info* current-continue name) "swamp-cave3"))))
+      (cond
+        ((process-by-name "swamp-blocking-plane-0" *active-pool*)
+          ;; plane is spawned, but if player has later boggy checkpoints -> despawn the wall
+          (when (not should-spawn?)
+            (deactivate (process-by-name "swamp-blocking-plane-0" *active-pool*))
+            )
+          )
+        (else
+          ;; plane is not spawned, and player has any checkpoint besides end of boggy -> spawn the wall
+          (when should-spawn?
+            (set-vector-meters! (-> verts 0) 448.42 -0.58 -1875.3)
+            (set-vector-meters! (-> verts 1) 449.94 -0.58 -1855.2)
+            (blocking-plane-spawn-simple verts (meters 35.0) "swamp-blocking-plane-0")
+            )
+          )
+        )
+      (cond
+        ((process-by-name "swamp-blocking-plane-1" *active-pool*)
+          ;; plane is spawned, but if player has later boggy checkpoints -> despawn the wall
+          (when (not should-spawn?)
+            (deactivate (process-by-name "swamp-blocking-plane-1" *active-pool*))
+            )
+          )
+        (else
+          ;; plane is not spawned, and player has any checkpoint besides end of boggy -> spawn the wall
+          (when should-spawn?
+            (set-vector-meters! (-> verts 0) 449.94 -0.58 -1855.2)
+            (set-vector-meters! (-> verts 1) 461.71 -0.58 -1838.8)
+            (blocking-plane-spawn-simple verts (meters 35.0) "swamp-blocking-plane-1")
+            )
+          )
+        )
+      )
     )
   (none)
   )
