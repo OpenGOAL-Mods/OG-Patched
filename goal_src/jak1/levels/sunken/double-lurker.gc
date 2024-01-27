@@ -931,7 +931,7 @@
         (set-vector! (-> s3-0 local-sphere) 0.0 15564.8 0.0 3686.4)
         (append-prim s4-0 s3-0)
         )
-      (let ((s3-1 (new 'process 'collide-shape-prim-sphere s5-0 (the-as uint 2))))
+      (let ((s3-1 (new 'process 'collide-shape-prim-sphere s5-0 (the-as uint 1))))  ;; PATCHED - magic 1 here leaves these to 'attack instead of 'touch
         (set! (-> s3-1 prim-core collide-as) (collide-kind enemy))
         (set! (-> s3-1 collide-with) (collide-kind target))
         (set! (-> s3-1 prim-core action) (collide-action solid))
@@ -1019,7 +1019,7 @@
       )
     (countdown (a0-4 (-> (the-as collide-shape-prim-group v1-1) num-prims))
       (let ((a1-3 (-> (the-as collide-shape-prim-group v1-1) prims a0-4)))
-        (if (and (= (-> a1-3 prim-core offense) (collide-offense indestructible)) (logtest? (-> a1-3 prim-id) 2))
+        (if (and (= (-> a1-3 prim-core offense) (collide-offense indestructible)) (logtest? (-> a1-3 prim-id) 2)) ;; PATCHED - nothing changed here, just reference for the magic 1 and 2
             (set! (-> a1-3 prim-core offense) (collide-offense touch))
             )
         )
