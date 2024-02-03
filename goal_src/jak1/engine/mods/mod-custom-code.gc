@@ -151,6 +151,24 @@ an orb |#
         (deactivate (process-by-name "snowy-blocking-plane-1" *active-pool*))
         )
       )
+
+    ;; SNOWY OPEN GATE CELL
+    (cond
+      ((not (process-by-name "snowy-blocking-plane-2" *active-pool*))
+        (when (and (not (on-flut?))
+                   (not (task-complete? *game-info* (game-task snow-ball)))
+                   )
+          ;; plane doesnt exist and we're not on flut and haven't gotten cell -> spawn it
+          (set-vector-meters! (-> verts 0) 858.87 161.25 -3320.5)
+          (set-vector-meters! (-> verts 1) 814.82 161.25 -3320.5)
+          (blocking-plane-spawn-simple verts (meters 40.0) "snowy-blocking-plane-2")
+          )
+        )
+      ((or (on-flut?) (task-complete? *game-info* (game-task snow-ball)))
+        ;; plane exists but we're on flut or got cell -> deactivate it
+        (deactivate (process-by-name "snowy-blocking-plane-2" *active-pool*))
+        )
+      )
     )
   (none)
   )
