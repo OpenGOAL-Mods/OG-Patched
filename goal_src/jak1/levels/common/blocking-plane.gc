@@ -84,7 +84,24 @@
   (go blocking-plane-idle)
   (none)
   )
-
+  
+;; Use the below function to spawn a blocking-plane between 2 vectors with a given height.
+;; 
+;; Example (spawn):
+;;
+;; (when (not (process-by-name "test-blocking-plane-1" *active-pool*))
+;;   (let ((verts (new 'stack-no-clear 'inline-array 'vector 2)))
+;;     (set-vector-meters! (-> verts 0) 194.39  10.62 -1587.11) ;; near geologist
+;;     (set-vector-meters! (-> verts 1) 214.60  10.31 -1590.41)
+;;     (blocking-plane-spawn-simple verts (meters 30.0) "test-blocking-plane-1")
+;;     )
+;;   )
+;; 
+;; Example (despawn):
+;;
+;; (let ((plane (process-by-name "test-blocking-plane-1" *active-pool*)))
+;;   (when plane (deactivate plane))
+;;   )
 (defun blocking-plane-spawn-simple ((arg1 (inline-array vector)) (arg2 float) (name string))
   (process-spawn blocking-plane arg1 arg2 :to *active-pool* :name name)
   )
