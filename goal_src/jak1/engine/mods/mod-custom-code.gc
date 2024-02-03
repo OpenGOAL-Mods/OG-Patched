@@ -56,7 +56,177 @@ an orb |#
       (set-vector-meters! (-> verts 1) 920.83 -170.4 -1776.60)
       (blocking-plane-spawn-simple verts (meters 50.0) "sunken-blocking-plane-4")
       )
+
+    ;; BUTTON SKIP
+    (when (not (process-by-name "sunken-blocking-plane-5" *active-pool*))
+      (set-vector-meters! (-> verts 0) 579.72 -132.82 -1720.4)
+      (set-vector-meters! (-> verts 1) 615.12 -132.82 -1679.2)
+      (blocking-plane-spawn-simple verts (meters 30.0) "sunken-blocking-plane-5")
+      )
+
+    ;; BACKWARDS BOGGY
+    (let ((should-spawn? (not (string= (-> *game-info* current-continue name) "swamp-cave3"))))
+      (cond
+        ((process-by-name "swamp-blocking-plane-0" *active-pool*)
+          ;; plane is spawned, but if player has later boggy checkpoints -> despawn the wall
+          (when (not should-spawn?)
+            (deactivate (process-by-name "swamp-blocking-plane-0" *active-pool*))
+            )
+          )
+        (else
+          ;; plane is not spawned, and player has any checkpoint besides end of boggy -> spawn the wall
+          (when should-spawn?
+            (set-vector-meters! (-> verts 0) 448.42 -0.58 -1875.3)
+            (set-vector-meters! (-> verts 1) 449.94 -0.58 -1855.2)
+            (blocking-plane-spawn-simple verts (meters 35.0) "swamp-blocking-plane-0")
+            )
+          )
+        )
+      (cond
+        ((process-by-name "swamp-blocking-plane-1" *active-pool*)
+          ;; plane is spawned, but if player has later boggy checkpoints -> despawn the wall
+          (when (not should-spawn?)
+            (deactivate (process-by-name "swamp-blocking-plane-1" *active-pool*))
+            )
+          )
+        (else
+          ;; plane is not spawned, and player has any checkpoint besides end of boggy -> spawn the wall
+          (when should-spawn?
+            (set-vector-meters! (-> verts 0) 449.94 -0.58 -1855.2)
+            (set-vector-meters! (-> verts 1) 461.71 -0.58 -1838.8)
+            (blocking-plane-spawn-simple verts (meters 35.0) "swamp-blocking-plane-1")
+            )
+          )
+        )
+      )
+
+    ;; BOGGY FLUTFLUT OOBS
+    ;; main noLTS oob
+    (when (not (process-by-name "swamp-blocking-plane-2" *active-pool*))
+      (set-vector-meters! (-> verts 0) 504.75 17.81 -2125.7)
+      (set-vector-meters! (-> verts 1) 532.42 17.81 -2160.7)
+      (blocking-plane-spawn-simple verts (meters 35.0) "swamp-blocking-plane-2")
+      )
+    ;; infin jump ceiling right
+    (when (not (process-by-name "swamp-blocking-plane-3" *active-pool*))
+      (set-vector-meters! (-> verts 0) 529.2 13.0 -2087.0)
+      (set-vector-meters! (-> verts 1) 517.42 13.0 -2095.8)
+      (blocking-plane-spawn-simple verts (meters 30.0) "swamp-blocking-plane-3")
+      )
+    ;; infin jump ceiling left
+    (when (not (process-by-name "swamp-blocking-plane-4" *active-pool*))
+      (set-vector-meters! (-> verts 0) 524.86 13.0 -2072.9)
+      (set-vector-meters! (-> verts 1) 529.2 13.0 -2087.0)
+      (blocking-plane-spawn-simple verts (meters 30.0) "swamp-blocking-plane-4")
+      )
+
+    ;; SNOWY FLUTFLUT OOBS
+    ;; replacement for original plane
+    (cond
+      ((not (process-by-name "snowy-blocking-plane-0" *active-pool*))
+        (when (on-flut?)
+          ;; plane doesnt exist and we're on flut -> spawn it
+          (set-vector-meters! (-> verts 0) 560.26 244.7 -3368.5)
+          (set-vector-meters! (-> verts 1) 655.61 244.7 -3434.7)
+          (blocking-plane-spawn-simple verts (meters 60.0) "snowy-blocking-plane-0")
+          )
+        )
+      ((not (on-flut?))
+        ;; plane exists but we're not on flut -> deactivate it
+        (deactivate (process-by-name "snowy-blocking-plane-0" *active-pool*))
+        )
+      )
+    ;; perpendicular to original plane to prevent walljump
+    (cond
+      ((not (process-by-name "snowy-blocking-plane-1" *active-pool*))
+        (when (on-flut?)
+          ;; plane doesnt exist and we're on flut -> spawn it
+          (set-vector-meters! (-> verts 0) 591.35 244.7 -3443.4)
+          (set-vector-meters! (-> verts 1) 619.42 244.7 -3409.5)
+          (blocking-plane-spawn-simple verts (meters 60.0) "snowy-blocking-plane-1")
+          )
+        )
+      ((not (on-flut?))
+        ;; plane exists but we're not on flut -> deactivate it
+        (deactivate (process-by-name "snowy-blocking-plane-1" *active-pool*))
+        )
+      )
+
+    ;; SNOWY OPEN GATE CELL
+    (cond
+      ((not (process-by-name "snowy-blocking-plane-2" *active-pool*))
+        (when (and (not (on-flut?))
+                   (not (task-complete? *game-info* (game-task snow-ball)))
+                   )
+          ;; plane doesnt exist and we're not on flut and haven't gotten cell -> spawn it
+          (set-vector-meters! (-> verts 0) 858.87 161.25 -3320.5)
+          (set-vector-meters! (-> verts 1) 814.82 161.25 -3320.5)
+          (blocking-plane-spawn-simple verts (meters 40.0) "snowy-blocking-plane-2")
+          )
+        )
+      ((or (on-flut?) (task-complete? *game-info* (game-task snow-ball)))
+        ;; plane exists but we're on flut or got cell -> deactivate it
+        (deactivate (process-by-name "snowy-blocking-plane-2" *active-pool*))
+        )
+      )
+
+    ;; SNOWY GONDOLA SKIP
+    ;; snow-start area
+    (when (not (process-by-name "snowy-blocking-plane-3" *active-pool*))
+      (set-vector-meters! (-> verts 0) 1036.8 226.59 -3513.9)
+      (set-vector-meters! (-> verts 1) 955.19 226.59 -3513.9)
+      (blocking-plane-spawn-simple verts (meters 60.0) "snowy-blocking-plane-3")
+      )
+    (when (not (process-by-name "snowy-blocking-plane-4" *active-pool*))
+      (set-vector-meters! (-> verts 0) 1064.2 226.59 -3479.2)
+      (set-vector-meters! (-> verts 1) 1013.2 226.59 -3542.9)
+      (blocking-plane-spawn-simple verts (meters 60.0) "snowy-blocking-plane-4")
+      )
+    (when (not (process-by-name "snowy-blocking-plane-5" *active-pool*))
+      (set-vector-meters! (-> verts 0) 1004.9 226.59 -3423.1)
+      (set-vector-meters! (-> verts 1) 1064.2 226.59 -3479.2)
+      (blocking-plane-spawn-simple verts (meters 60.0) "snowy-blocking-plane-5")
+      )
+    ;; bunny lurker ambush room patches
+    (when (not (process-by-name "snowy-blocking-plane-6" *active-pool*))
+      (set-vector-meters! (-> verts 0) 1009.1 220.8 -3409.8)
+      (set-vector-meters! (-> verts 1) 968.72 220.8 -3415.3)
+      (blocking-plane-spawn-simple verts (meters 40.0) "snowy-blocking-plane-6")
+      )
+    (when (not (process-by-name "snowy-blocking-plane-7" *active-pool*))
+      (set-vector-meters! (-> verts 0) 1012.6 223.27 -3384.7)
+      (set-vector-meters! (-> verts 1) 991.12 223.27 -3381.9)
+      (blocking-plane-spawn-simple verts (meters 40.0) "snowy-blocking-plane-7")
+      )
+    (when (not (process-by-name "snowy-blocking-plane-8" *active-pool*))
+      (set-vector-meters! (-> verts 0) 1026.3 223.27 -3364.7)
+      (set-vector-meters! (-> verts 1) 991.12 223.27 -3381.9)
+      (blocking-plane-spawn-simple verts (meters 40.0) "snowy-blocking-plane-8")
+      )
+    (when (not (process-by-name "snowy-blocking-plane-9" *active-pool*))
+      (set-vector-meters! (-> verts 0) 1009.1 243.34 -3375.6)
+      (set-vector-meters! (-> verts 1) 998.31 243.34 -3412.4)
+      (blocking-plane-spawn-simple verts (meters 15.0) "snowy-blocking-plane-9")
+      )
+
+    ;; SNOWY BACKWARDS AMBUSH
+    (cond
+      ((not (process-by-name "snowy-blocking-plane-10" *active-pool*))
+        (when (not (task-complete? *game-info* (game-task snow-bunnies)))
+          ;; plane doesnt exist and we haven't gotten cell -> spawn it
+          (set-vector-meters! (-> verts 0) 931.59 220.55 -3370.0)
+          (set-vector-meters! (-> verts 1) 944.19 220.55 -3333.8)
+          (blocking-plane-spawn-simple verts (meters 25.0) "snowy-blocking-plane-10")
+          )
+        )
+      ((task-complete? *game-info* (game-task snow-bunnies))
+        ;; plane exists but we got cell -> deactivate it
+        (deactivate (process-by-name "snowy-blocking-plane-10" *active-pool*))
+        )
+      )
+    
     )
+
   (none)
   )
 
