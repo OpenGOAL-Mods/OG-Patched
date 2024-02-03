@@ -208,6 +208,22 @@ an orb |#
       (set-vector-meters! (-> verts 1) 998.31 243.34 -3412.4)
       (blocking-plane-spawn-simple verts (meters 15.0) "snowy-blocking-plane-9")
       )
+
+    ;; SNOWY BACKWARDS AMBUSH
+    (cond
+      ((not (process-by-name "snowy-blocking-plane-10" *active-pool*))
+        (when (not (task-complete? *game-info* (game-task snow-bunnies)))
+          ;; plane doesnt exist and we haven't gotten cell -> spawn it
+          (set-vector-meters! (-> verts 0) 931.59 220.55 -3370.0)
+          (set-vector-meters! (-> verts 1) 944.19 220.55 -3333.8)
+          (blocking-plane-spawn-simple verts (meters 25.0) "snowy-blocking-plane-10")
+          )
+        )
+      ((task-complete? *game-info* (game-task snow-bunnies))
+        ;; plane exists but we got cell -> deactivate it
+        (deactivate (process-by-name "snowy-blocking-plane-10" *active-pool*))
+        )
+      )
     
     )
 
