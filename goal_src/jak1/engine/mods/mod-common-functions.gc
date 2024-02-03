@@ -68,6 +68,18 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
   `(and *target* (logtest? (-> *target* control root-prim prim-core action) (collide-action racer)))
   )
 
+;; PATCHED - used to extend is-object-visible? checks to prevent deload
+(defun is-object-visible-override? ((this level) (arg0 int) (ent entity))
+  (when (type-type? (-> ent type) entity-actor)
+    (case (-> (the entity-actor ent) etype symbol)
+      (('dark-plant)
+        (return #t)
+        )
+      )
+    )
+  (is-object-visible? this arg0)
+  )
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Define Approved Custom Functions/Macros to call in all mods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;

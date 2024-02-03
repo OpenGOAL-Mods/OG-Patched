@@ -7,6 +7,8 @@
 
 ;; DECOMP BEGINS
 
+(define-extern is-object-visible-override? (function level int entity symbol))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; global entity settings
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -266,7 +268,8 @@
               (let ((v1-9 (-> s2-0 data s1-0 entity)))
                 (case arg0
                   (('vis)
-                   (if (is-object-visible? s3-0 (-> v1-9 extra vis-id))
+                   ;; PATCHED - use override vis check to prevent some deloads
+                   (if (is-object-visible-override? s3-0 (-> v1-9 extra vis-id) (-> v1-9 extra entity))
                        (+! gp-0 1)
                        )
                    )
@@ -1694,7 +1697,8 @@
                (dotimes (s1-0 s2-1)
                  (let ((s0-0 (-> s3-2 data s1-0)))
                    (cond
-                     ((and (logtest? (-> s0-0 perm status) (entity-perm-status bit-7)) (is-object-visible? s4-2 (-> s0-0 vis-id)))
+                     ;; PATCHED - use override vis check to prevent some deloads
+                     ((and (logtest? (-> s0-0 perm status) (entity-perm-status bit-7)) (is-object-visible-override? s4-2 (-> s0-0 vis-id) (-> s0-0 entity)))
                       (when (not (or (-> s0-0 process) (logtest? (-> s0-0 perm status) (entity-perm-status bit-0 dead))))
                         (birth! (-> s0-0 entity))
                         (set! sv-24 (+ sv-24 1))
@@ -1777,8 +1781,9 @@
                   (dotimes (s1-2 s2-4)
                     (set! sv-32 (-> s3-5 data s1-2))
                     (cond
+                      ;; PATCHED - use override vis check to prevent some deloads
                       ((and (#if PC_PORT
-                                (or (with-pc (not (-> *pc-settings* ps2-actor-vis?))) (is-object-visible? s4-2 (-> sv-32 vis-id)))
+                                (or (with-pc (not (-> *pc-settings* ps2-actor-vis?))) (is-object-visible-override? s4-2 (-> sv-32 vis-id) (-> sv-32 entity)))
                                 (is-object-visible? s4-2 (-> sv-32 vis-id))
                                 )
                             (zero? (logand (-> sv-32 perm status) (entity-perm-status bit-9 bit-10)))
