@@ -61,11 +61,17 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
   )
 
 (defmacro on-flut? ()
-  `(and *target* (logtest? (-> *target* control root-prim prim-core action) (collide-action flut)))
+  `(if (and *target* (logtest? (-> *target* control root-prim prim-core action) (collide-action flut)))
+    #t
+    #f
+    )
   )
 
 (defmacro on-zoomer? ()
-  `(and *target* (logtest? (-> *target* control root-prim prim-core action) (collide-action racer)))
+  `(if (and *target* (logtest? (-> *target* control root-prim prim-core action) (collide-action racer)))
+    #t
+    #f
+    )
   )
 
 ;; PATCHED - used to extend is-object-visible? checks to prevent deload
