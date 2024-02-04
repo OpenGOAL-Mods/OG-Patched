@@ -59,6 +59,15 @@ an orb |#
     #f
   )
 
+(defun ogre-shortcut-boulder-alive? ()
+  (let ((boulder (the shortcut-boulder (process-by-ename "shortcut-boulder-1"))))
+    (when (and boulder (= (-> boulder next-state name) 'shortcut-boulder-idle))
+      (return #t)
+      )
+    )
+    #f
+  )
+
 (defun spawn-patched-blocking-planes ()
   (let ((verts (new 'stack-no-clear 'inline-array 'vector 2)))
     ;; test near geologist
@@ -160,7 +169,6 @@ an orb |#
     (set-vector-meters! (-> verts 1) -259.76 9.9 -283.51)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-8" #t)
 
-
     ;; SUNKEN PUZZLE SKIP
     ;; left side
     (set-vector-meters! (-> verts 0) 894.83 -170.4 -1795.44)
@@ -232,6 +240,19 @@ an orb |#
       (set-vector-meters! (-> verts 0) 180.43 25.26 -1795.1)
       (set-vector-meters! (-> verts 1) 235.87 25.26 -1794.9)
       (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-0" should-spawn?)
+      )
+
+    ;; OGRE BACKWARDS CELL/CAVEHOPS/TREEHOPS
+    ;; spawn if user hasnt blown up boulder
+    (let* ((should-spawn? (ogre-shortcut-boulder-alive?)))
+      ;; boulder side
+      (set-vector-meters! (-> verts 0) 296.78 29.83 -3145.5)
+      (set-vector-meters! (-> verts 1) 335.7 29.83 -3143.2)
+      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-1" should-spawn?)
+      ;; cave side
+      (set-vector-meters! (-> verts 0) 358.16 16.73 -3171.6)
+      (set-vector-meters! (-> verts 1) 340.53 16.73 -3206.4)
+      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-2" should-spawn?)
       )
 
     ;; SNOWY FLUTFLUT ESCAPE
