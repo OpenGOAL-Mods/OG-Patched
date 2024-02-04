@@ -122,6 +122,45 @@ an orb |#
     (set-vector-meters! (-> verts 1) -148.75 28.01 1047.9)
     (blocking-plane-cond verts (meters 21.0) "misty-blocking-plane-11" #t)
 
+    ;; BEACH TOWER CLIMB
+    ;; center window
+    (set-vector-meters! (-> verts 0) -256.51 15.67 -284.0)
+    (set-vector-meters! (-> verts 1) -252.42 15.67 -296.61)
+    (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-0" #t)
+
+    (set-vector-meters! (-> verts 0) -252.42 15.67 -296.61)
+    (set-vector-meters! (-> verts 1) -258.96 15.67 -305.17)
+    (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-1" #t)
+
+    (set-vector-meters! (-> verts 0) -258.96 15.67 -305.17)
+    (set-vector-meters! (-> verts 1) -271.42 15.67 -300.65)
+    (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-2" #t)
+    ;; right window
+    (set-vector-meters! (-> verts 0) -271.89 10.17 -303.89)
+    (set-vector-meters! (-> verts 1) -284.55 10.17 -307.83)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-3" #t)
+
+    (set-vector-meters! (-> verts 0) -284.55 10.17 -307.83)
+    (set-vector-meters! (-> verts 1) -293.03 10.17 -301.19)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-4" #t)
+
+    (set-vector-meters! (-> verts 0) -293.03 10.17 -301.19)
+    (set-vector-meters! (-> verts 1) -288.37 10.17 -288.78)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-5" #t)
+    ;; left window
+    (set-vector-meters! (-> verts 0) -275.34 9.87 -267.48)
+    (set-vector-meters! (-> verts 1) -262.48 9.87 -264.27)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-6" #t)
+
+    (set-vector-meters! (-> verts 0) -262.48 9.9 -264.27)
+    (set-vector-meters! (-> verts 1) -254.4 9.9 -271.39)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-7" #t)
+
+    (set-vector-meters! (-> verts 0) -254.4 9.9 -271.39)
+    (set-vector-meters! (-> verts 1) -259.76 9.9 -283.51)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-8" #t)
+
+
     ;; SUNKEN PUZZLE SKIP
     ;; left side
     (set-vector-meters! (-> verts 0) 894.83 -170.4 -1795.44)
