@@ -930,21 +930,23 @@
                      )
                    )
              )
-         (when (< (-> *TARGET-bank* fall-far) f0-7)
-           (when (and (target-send-attack
-                        arg0
-                        (the-as uint 'bonk)
-                        (the-as touching-shapes-entry (-> arg3 param 0))
-                        (-> self control unknown-dword50)
-                        (-> self control unknown-dword51)
-                        )
-                      (not (logtest? (-> self state-flags) (state-flags being-attacked dying)))
-                      )
-             (set! (-> self control unknown-vector52 quad) (-> self control trans quad))
-             (target-timed-invulnerable (seconds 0.1) self)
-             (go target-jump (-> *TARGET-bank* jump-height-min) (-> *TARGET-bank* jump-height-max) (the-as surface #f))
-             )
-           )
+          ;; PATCHED - dont send attacks from fall damage
+          ;;  (when (< (-> *TARGET-bank* fall-far) f0-7)
+          ;;    (when (and #f  
+          ;;               (target-send-attack
+          ;;                 arg0
+          ;;                 (the-as uint 'bonk)
+          ;;                 (the-as touching-shapes-entry (-> arg3 param 0))
+          ;;                 (-> self control unknown-dword50)
+          ;;                 (-> self control unknown-dword51)
+          ;;                 )
+          ;;               (not (logtest? (-> self state-flags) (state-flags being-attacked dying)))
+          ;;               )
+          ;;      (set! (-> self control unknown-vector52 quad) (-> self control trans quad))
+          ;;      (target-timed-invulnerable (seconds 0.1) self)
+          ;;      (go target-jump (-> *TARGET-bank* jump-height-min) (-> *TARGET-bank* jump-height-max) (the-as surface #f))
+          ;;      )
+          ;;    )
          )
        #f
        )
