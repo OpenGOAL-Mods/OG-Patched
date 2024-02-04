@@ -1888,9 +1888,31 @@
   :code anim-loop
   )
 
+;; PATCHED - extra boggy check for launch into ambush
+(defun launcher-boggy-rock-check? ((this launcher))
+  (cond
+    ((name= (-> this name) 'launcher-46)
+      (let ((rock (process-by-ename "swamp-rock-18")))
+        (when (or (not rock) 
+                  (!= (-> rock next-state name) 'swamp-rock-idle))
+          (return #t)
+          )
+        )
+      ;; rock is in idle state, no launch allowed
+      #f
+      )
+    (else
+      #t
+      )
+    )
+  )
+
 (defstate launcher-active (launcher)
   :event (behavior ((proc process) (argc int) (message symbol) (block event-message-block))
-    (when (or (= message 'touch) (= message 'attack))
+    ;; PATCHED - extra boggy check for launch into ambush
+    (when (and (launcher-boggy-rock-check? self)
+               (or (= message 'touch) (= message 'attack))
+               )
       (set-time! (-> self state-time))
       (send-event proc 'launch (-> self spring-height) (-> self camera) (-> self dest) (-> self seek-time))
       )
@@ -1925,14 +1947,16 @@
         )
     (spawn (-> self part) (-> self root trans))
     (sound-play "launch-idle" :id (-> self sound-id))
-    (if (and (and *target* (>= (+ 2867.2 (-> self root root-prim prim-core world-sphere w))
-                               (vector-vector-distance (-> self root trans) (-> *target* control trans))
-                               )
-                  )
-             (not (time-elapsed? (-> self state-time) (seconds 0.5)))
-             )
-        (send-event *target* 'launch (-> self spring-height) (-> self camera) (-> self dest) (-> self seek-time))
-        )
+    ;; PATCHED - extra boggy check for launch into ambush
+    (when (and (launcher-boggy-rock-check? self)
+               *target*
+               (>= (+ 2867.2 (-> self root root-prim prim-core world-sphere w))
+                   (vector-vector-distance (-> self root trans) (-> *target* control trans))
+                   )
+               (not (time-elapsed? (-> self state-time) (seconds 0.5)))
+               )
+      (send-event *target* 'launch (-> self spring-height) (-> self camera) (-> self dest) (-> self seek-time))
+      )
     )
   :code (behavior ()
     (sound-play "launch-start")
