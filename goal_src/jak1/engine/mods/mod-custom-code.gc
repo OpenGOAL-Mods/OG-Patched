@@ -47,6 +47,18 @@ an orb |#
     #f
   )
 
+(defun misty-ambush-beaten? ()
+  (when (task-complete? *game-info* (game-task misty-warehouse))
+    (return #t)
+    )
+  (let ((ambush-step (entity-by-name "silostep-10")))
+    (when (and ambush-step (logtest? (-> ambush-step extra perm status) (entity-perm-status complete)))
+      (return #t)
+      )
+    )
+    #f
+  )
+
 (defun spawn-patched-blocking-planes ()
   (let ((verts (new 'stack-no-clear 'inline-array 'vector 2)))
     ;; test near geologist
@@ -56,7 +68,61 @@ an orb |#
     ;;   (blocking-plane-spawn-simple verts (meters 30.0) "test-blocking-plane-1")
     ;;   )
 
-    ;; PUZZLE SKIP
+    ;; MISTY AMBUSH SKIP
+    ;; spawn if we havent beaten ambush
+    (let ((should-spawn? (not (misty-ambush-beaten?))))
+      (set-vector-meters! (-> verts 0) -147.73 38.01 1008.2)
+      (set-vector-meters! (-> verts 1) -134.66 38.01 989.46)
+      (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-0" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -134.66 38.01 989.46)
+      (set-vector-meters! (-> verts 1) -127.24 38.01 949.02)
+      (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-1" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -142.36 26.47 950.98)
+      (set-vector-meters! (-> verts 1) -162.86 26.47 976.28)
+      (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-2" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -162.86 26.47 976.28)
+      (set-vector-meters! (-> verts 1) -172.2 26.47 1007.5)
+      (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-3" should-spawn?)
+      )
+
+    ;; MISTY SKIP TO EARLY CANNON
+    (set-vector-meters! (-> verts 0) -138.6 28.95 915.82)
+    (set-vector-meters! (-> verts 1) -151.12 28.95 914.16)
+    (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-4" #t)
+
+    (set-vector-meters! (-> verts 0) -151.12 38.93 914.16)
+    (set-vector-meters! (-> verts 1) -157.11 38.93 923.73)
+    (blocking-plane-cond verts (meters 18.42) "misty-blocking-plane-5" #t)
+
+    (set-vector-meters! (-> verts 0) -138.6 28.95 915.82)
+    (set-vector-meters! (-> verts 1) -132.9 28.95 927.1)
+    (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-6" #t)
+
+    (set-vector-meters! (-> verts 0) -155.89 38.3 921.85)
+    (set-vector-meters! (-> verts 1) -149.49 38.3 931.16)
+    (blocking-plane-cond verts (meters 18.42) "misty-blocking-plane-7" #t)
+
+    ;; MISTY SKIPS TO SCOUTFLY
+    (set-vector-meters! (-> verts 0) -146.65 50.59 1030.9)
+    (set-vector-meters! (-> verts 1) -150.75 50.89 1020.3)
+    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-8" #t)
+
+    (set-vector-meters! (-> verts 0) -150.75 50.89 1020.3)
+    (set-vector-meters! (-> verts 1) -165.81 50.89 1019.2)
+    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-9" #t)
+
+    (set-vector-meters! (-> verts 0) -165.81 50.89 1019.2)
+    (set-vector-meters! (-> verts 1) -180.7 50.89 1036.1)
+    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-10" #t)
+
+    (set-vector-meters! (-> verts 0) -129.33 28.01 1048.1)
+    (set-vector-meters! (-> verts 1) -148.75 28.01 1047.9)
+    (blocking-plane-cond verts (meters 21.0) "misty-blocking-plane-11" #t)
+
+    ;; SUNKEN PUZZLE SKIP
     ;; left side
     (set-vector-meters! (-> verts 0) 894.83 -170.4 -1795.44)
     (set-vector-meters! (-> verts 1) 914.64 -170.4 -1807.53)
@@ -78,7 +144,7 @@ an orb |#
     (set-vector-meters! (-> verts 1) 920.83 -170.4 -1776.60)
     (blocking-plane-cond verts (meters 50.0) "sunken-blocking-plane-4" #t)
 
-    ;; BUTTON SKIP
+    ;; SUNKEN BUTTON SKIP
     (set-vector-meters! (-> verts 0) 579.72 -132.82 -1720.4)
     (set-vector-meters! (-> verts 1) 615.12 -132.82 -1679.2)
     (blocking-plane-cond verts (meters 30.0) "sunken-blocking-plane-5" #t)
