@@ -306,6 +306,16 @@ an orb |#
 (defun runs-every-frame ()
   ;; PATCHED - no boosteds
   (set! (-> *edge-surface* fric) 1530000.0)
+
+  ;; PATCHED - prevent nuka/zombie glitch
+  (when (<= (-> *target* fact health) 0.0)
+    (target-attack-up *target* 'attack 'instant-death)
+    )
+
+  ;; PATCHED - wet feet
+  (when (not (handle->process (-> *target* water volume)))
+    (set! (-> *target* water height) 0.0)
+    )
     
   ;; PATCHED - spawn some invisible planes
   (spawn-patched-blocking-planes)
