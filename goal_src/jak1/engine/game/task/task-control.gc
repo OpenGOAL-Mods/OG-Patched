@@ -2417,24 +2417,14 @@
             :game-task (game-task village2-warrior-money)
             :status (task-status need-hint)
             :flags (task-flags has-entity closed-by-default)
-            :condition (lambda :behavior process-taskable
-              ((arg0 task-control))
-              (and (not (task-closed? (game-task ogre-boss) (task-status need-reminder)))
-                   (not (task-closed? (game-task village2-levitator) (task-status need-reward-speech)))
-                   )
+            :condition (lambda :behavior process-taskable ((arg0 task-control)) #t)
               )
-            )
           (new 'static 'task-cstage
             :game-task (game-task village2-warrior-money)
             :status (task-status need-introduction)
             :flags (task-flags has-entity closed-by-default)
-            :condition (lambda :behavior process-taskable
-              ((arg0 task-control))
-              (and (not (task-closed? (game-task ogre-boss) (task-status need-reminder)))
-                   (not (task-closed? (game-task village2-levitator) (task-status need-reward-speech)))
-                   )
-              )
-            )
+            :condition (lambda :behavior process-taskable ((arg0 task-control)) #t)
+          )
           (new 'static 'task-cstage
             :game-task (game-task village2-warrior-money)
             :status (task-status need-reward-speech)
