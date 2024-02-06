@@ -1,6 +1,6 @@
 ("SWA.DGO"
  ("battlecontroller.o"
-  "blocking-plane.o"
+  ;; "blocking-plane.o"
   ;; "flut-part.o"
   ;; "flutflut.o"
   ;; "target-flut.o"

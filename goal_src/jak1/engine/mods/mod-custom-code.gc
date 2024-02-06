@@ -1,134 +1,451 @@
-    ;;-*-Lisp-*-
-    (in-package goal)
+;;-*-Lisp-*-
+(in-package goal)
 
-    ;; name: mod-custom-code.gc
-    ;; name in dgo: mod-custom-code
-    ;; dgos: TODO
-
-
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; What is this file for.
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-    #| This file contains function defenitions that are pre placed in the mod base,
-    so if you place custom code inside of these functions, it will exectue based on
-    the name of the function, for example, if you place (set! (-> *game-info* fuel) (+ (-> *game-info* fuel) 1))
-    to the function named runs-on-orb-pickup, then jaks powercell count will increase each time you collect
-    an orb |#
+;; name: mod-custom-code.gc
+;; name in dgo: mod-custom-code
+;; dgos: TODO
 
 
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; Begin function defintions.
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; What is this file for.
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-    (defun runs-every-frame ()
-      ;;(increase-power-cell-by-one) This is a call to increase-power-cell-by-one defined in mod-common-functions.gc
-(set! (-> *edge-surface* fric) 1530000.0)
-      (if *show-input-display* 
-        (input-display-on)
-        (input-display-off)
+#| This file contains function defenitions that are pre placed in the mod base,
+so if you place custom code inside of these functions, it will exectue based on
+the name of the function, for example, if you place (set! (-> *game-info* fuel) (+ (-> *game-info* fuel) 1))
+to the function named runs-on-orb-pickup, then jaks powercell count will increase each time you collect
+an orb |#
+
+;; will ensure blocking plane is spawned or despawned as specified by should-spawn?
+(defun blocking-plane-cond ((verts (inline-array vector)) (height float) (name string) (should-spawn? symbol))
+  (cond
+    ((process-by-name name *active-pool*)
+      ;; plane is spawned, if it shouldnt be -> deactivate
+      (when (not should-spawn?)
+        (deactivate (process-by-name name *active-pool*))
         )
-
-      (none)
       )
+    (else
+      ;; plane is not spawned, if it should be -> spawn
+      (when should-spawn?
+        (blocking-plane-spawn-simple verts height name)
+        )
+      )
+    )
+  )
 
-    (defun runs-on-orb-pickup ((parent process-tree))
-      (let* ((from-cache? (and parent (type-type? (-> parent type) orb-cache-top))))
-        ;; Code here runs on ANY orb pickup
-
-
-        (when from-cache?
-          ;; Code here runs only if the orb was from an orb cache
-
-          )
-
-        (when (not from-cache?)
-          ;; Code here runs only if the orb was NOT from an orb cache
-
+(defun klaww-fight-active? ()
+  (let ((klaww (the ogreboss (process-by-ename "ogreboss-1"))))
+    (when klaww
+      (case (-> klaww next-state name)
+        (('ogreboss-stage1 'ogreboss-stage2 'ogreboss-stage3-hit 'ogreboss-stage3-shuffle 'ogreboss-stage3-throw) 
+          (return #t)
           )
         )
-      (none)
+      )
+    )
+    #f
+  )
+
+(defun misty-ambush-beaten? ()
+  (when (task-complete? *game-info* (game-task misty-warehouse))
+    (return #t)
+    )
+  (let ((ambush-step (entity-by-name "silostep-10")))
+    (when (and ambush-step (logtest? (-> ambush-step extra perm status) (entity-perm-status complete)))
+      (return #t)
+      )
+    )
+    #f
+  )
+
+(defun ogre-shortcut-boulder-alive? ()
+  (let ((boulder (the shortcut-boulder (process-by-ename "shortcut-boulder-1"))))
+    (when (and boulder (= (-> boulder next-state name) 'shortcut-boulder-idle))
+      (return #t)
+      )
+    )
+    #f
+  )
+
+(defun spawn-patched-blocking-planes ()
+  (let ((verts (new 'stack-no-clear 'inline-array 'vector 2)))
+    ;; test near geologist
+    ;; (when (not (process-by-name "test-blocking-plane-1" *active-pool*))
+    ;;   (set-vector-meters! (-> verts 0) 194.39  10.62 -1587.11)
+    ;;   (set-vector-meters! (-> verts 1) 214.60  10.31 -1590.41)
+    ;;   (blocking-plane-spawn-simple verts (meters 30.0) "test-blocking-plane-1")
+    ;;   )
+
+    ;; MISTY AMBUSH SKIP
+    ;; spawn if we havent beaten ambush
+    (let ((should-spawn? (not (misty-ambush-beaten?))))
+      (set-vector-meters! (-> verts 0) -147.73 38.01 1008.2)
+      (set-vector-meters! (-> verts 1) -134.66 38.01 989.46)
+      (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-0" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -134.66 38.01 989.46)
+      (set-vector-meters! (-> verts 1) -127.24 38.01 949.02)
+      (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-1" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -142.36 26.47 950.98)
+      (set-vector-meters! (-> verts 1) -162.86 26.47 976.28)
+      (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-2" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -162.86 26.47 976.28)
+      (set-vector-meters! (-> verts 1) -172.2 26.47 1007.5)
+      (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-3" should-spawn?)
       )
 
-    (defun runs-on-fly-pickup ()
-      ;; Code here runs on any scout fly pickup
+    ;; MISTY SKIP TO EARLY CANNON
+    (set-vector-meters! (-> verts 0) -138.6 28.95 915.82)
+    (set-vector-meters! (-> verts 1) -151.12 28.95 914.16)
+    (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-4" #t)
 
-      (none)
+    (set-vector-meters! (-> verts 0) -151.12 38.93 914.16)
+    (set-vector-meters! (-> verts 1) -157.11 38.93 923.73)
+    (blocking-plane-cond verts (meters 18.42) "misty-blocking-plane-5" #t)
+
+    (set-vector-meters! (-> verts 0) -138.6 28.95 915.82)
+    (set-vector-meters! (-> verts 1) -132.9 28.95 927.1)
+    (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-6" #t)
+
+    (set-vector-meters! (-> verts 0) -155.89 38.3 921.85)
+    (set-vector-meters! (-> verts 1) -149.49 38.3 931.16)
+    (blocking-plane-cond verts (meters 18.42) "misty-blocking-plane-7" #t)
+
+    ;; MISTY SKIPS TO SCOUTFLY
+    (set-vector-meters! (-> verts 0) -146.65 50.59 1030.9)
+    (set-vector-meters! (-> verts 1) -150.75 50.89 1020.3)
+    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-8" #t)
+
+    (set-vector-meters! (-> verts 0) -150.75 50.89 1020.3)
+    (set-vector-meters! (-> verts 1) -165.81 50.89 1019.2)
+    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-9" #t)
+
+    (set-vector-meters! (-> verts 0) -165.81 50.89 1019.2)
+    (set-vector-meters! (-> verts 1) -180.7 50.89 1036.1)
+    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-10" #t)
+
+    (set-vector-meters! (-> verts 0) -129.33 28.01 1048.1)
+    (set-vector-meters! (-> verts 1) -148.75 28.01 1047.9)
+    (blocking-plane-cond verts (meters 21.0) "misty-blocking-plane-11" #t)
+
+    ;; BEACH TOWER CLIMB
+    ;; center window
+    (set-vector-meters! (-> verts 0) -256.51 15.67 -284.0)
+    (set-vector-meters! (-> verts 1) -252.42 15.67 -296.61)
+    (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-0" #t)
+
+    (set-vector-meters! (-> verts 0) -252.42 15.67 -296.61)
+    (set-vector-meters! (-> verts 1) -258.96 15.67 -305.17)
+    (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-1" #t)
+
+    (set-vector-meters! (-> verts 0) -258.96 15.67 -305.17)
+    (set-vector-meters! (-> verts 1) -271.42 15.67 -300.65)
+    (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-2" #t)
+    ;; right window
+    (set-vector-meters! (-> verts 0) -271.89 10.17 -303.89)
+    (set-vector-meters! (-> verts 1) -284.55 10.17 -307.83)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-3" #t)
+
+    (set-vector-meters! (-> verts 0) -284.55 10.17 -307.83)
+    (set-vector-meters! (-> verts 1) -293.03 10.17 -301.19)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-4" #t)
+
+    (set-vector-meters! (-> verts 0) -293.03 10.17 -301.19)
+    (set-vector-meters! (-> verts 1) -288.37 10.17 -288.78)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-5" #t)
+    ;; left window
+    (set-vector-meters! (-> verts 0) -275.34 9.87 -267.48)
+    (set-vector-meters! (-> verts 1) -262.48 9.87 -264.27)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-6" #t)
+
+    (set-vector-meters! (-> verts 0) -262.48 9.9 -264.27)
+    (set-vector-meters! (-> verts 1) -254.4 9.9 -271.39)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-7" #t)
+
+    (set-vector-meters! (-> verts 0) -254.4 9.9 -271.39)
+    (set-vector-meters! (-> verts 1) -259.76 9.9 -283.51)
+    (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-8" #t)
+
+    ;; SUNKEN PUZZLE SKIP
+    ;; left side
+    (set-vector-meters! (-> verts 0) 894.83 -170.4 -1795.44)
+    (set-vector-meters! (-> verts 1) 914.64 -170.4 -1807.53)
+    (blocking-plane-cond verts (meters 50.0) "sunken-blocking-plane-0" #t)
+    ;; top side
+    (set-vector-meters! (-> verts 0) 890.26 -134.2 -1811.5)
+    (set-vector-meters! (-> verts 1) 906.10 -134.2 -1759.5  )
+    (blocking-plane-cond verts (meters 30.0) "sunken-blocking-plane-1" #t)
+    ;; top-left side
+    (set-vector-meters! (-> verts 0) 883.91 -134.2 -1806.5)
+    (set-vector-meters! (-> verts 1) 898.21 -134.2 -1786.0)
+    (blocking-plane-cond verts (meters 30.0) "sunken-blocking-plane-2" #t)
+    ;; top-right side
+    (set-vector-meters! (-> verts 0) 893.33 -134.2 -1786.2)
+    (set-vector-meters! (-> verts 1) 898.32 -134.2 -1761.2)
+    (blocking-plane-cond verts (meters 30.0) "sunken-blocking-plane-3" #t)
+    ;; right side
+    (set-vector-meters! (-> verts 0) 901.30 -170.4 -1774.86)
+    (set-vector-meters! (-> verts 1) 920.83 -170.4 -1776.60)
+    (blocking-plane-cond verts (meters 50.0) "sunken-blocking-plane-4" #t)
+
+    ;; SUNKEN BUTTON SKIP
+    (set-vector-meters! (-> verts 0) 579.72 -132.82 -1720.4)
+    (set-vector-meters! (-> verts 1) 615.12 -132.82 -1679.2)
+    (blocking-plane-cond verts (meters 30.0) "sunken-blocking-plane-5" #t)
+
+    ;; BACKWARDS BOGGY
+    ;; any checkpoint besides end of boggy
+    (let ((should-spawn? (not (string= (-> *game-info* current-continue name) "swamp-cave3"))))
+      (set-vector-meters! (-> verts 0) 448.42 -0.58 -1875.3)
+      (set-vector-meters! (-> verts 1) 449.94 -0.58 -1855.2)
+      (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-0" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) 449.94 -0.58 -1855.2)
+      (set-vector-meters! (-> verts 1) 461.71 -0.58 -1838.8)
+      (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-1" should-spawn?)
       )
 
-    (defun runs-on-cell-pickup ((cell-event symbol))
-      (case cell-event
-        (('pickup)      
-          ;; Code here runs as soon as you pickup a powercell
+    ;; BOGGY FLUTFLUT OOBS
+    ;; main noLTS oob
+    (set-vector-meters! (-> verts 0) 504.75 17.81 -2125.7)
+    (set-vector-meters! (-> verts 1) 532.42 17.81 -2160.7)
+    (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-2" #t)
+    ;; infin jump ceiling right
+    (set-vector-meters! (-> verts 0) 529.2 13.0 -2087.0)
+    (set-vector-meters! (-> verts 1) 517.42 13.0 -2095.8)
+    (blocking-plane-cond verts (meters 30.0) "swamp-blocking-plane-3" #t)
+    ;; infin jump ceiling left
+    (set-vector-meters! (-> verts 0) 524.86 13.0 -2072.9)
+    (set-vector-meters! (-> verts 1) 529.2 13.0 -2087.0)
+    (blocking-plane-cond verts (meters 30.0) "swamp-blocking-plane-4" #t)
 
-          )
-        (('cutscene-end)      
-          ;; Code here runs at the end of any powercell cutscene
+    ;; VILLAGE2 BOULDER SKIP
+    ;; spawn if boulder isnt lifted
+    (let ((should-spawn? (!= (get-task-status (game-task village2-levitator)) (task-status invalid))))
+      (set-vector-meters! (-> verts 0) 286.54 -29.02 -1744.8)
+      (set-vector-meters! (-> verts 1) 287.02 -29.02 -1773.8)
+      (blocking-plane-cond verts (meters 90.0) "village2-blocking-plane-0" should-spawn?)
+     
+      (set-vector-meters! (-> verts 0) 231.41 -29.02 -1738.9)
+      (set-vector-meters! (-> verts 1) 286.54 -29.02 -1744.8)
+      (blocking-plane-cond verts (meters 90.0) "village2-blocking-plane-1" should-spawn?)
+      )
 
-          )
+    ;; OGRE KLAWW QUAD JUMP
+    ;; spawn if klaww fight is active
+    (let* ((should-spawn? (klaww-fight-active?)))
+      (set-vector-meters! (-> verts 0) 180.43 25.26 -1795.1)
+      (set-vector-meters! (-> verts 1) 235.87 25.26 -1794.9)
+      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-0" should-spawn?)
+      )
+
+    ;; OGRE BACKWARDS CELL/CAVEHOPS/TREEHOPS
+    ;; spawn if user hasnt blown up boulder
+    (let* ((should-spawn? (ogre-shortcut-boulder-alive?)))
+      ;; boulder side
+      (set-vector-meters! (-> verts 0) 296.78 29.83 -3145.5)
+      (set-vector-meters! (-> verts 1) 335.7 29.83 -3143.2)
+      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-1" should-spawn?)
+      ;; cave side
+      (set-vector-meters! (-> verts 0) 358.16 16.73 -3171.6)
+      (set-vector-meters! (-> verts 1) 340.53 16.73 -3206.4)
+      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-2" should-spawn?)
+      )
+
+    ;; SNOWY FLUTFLUT ESCAPE
+    (let ((should-spawn? (on-flut?)))
+      ;; replacement for original plane
+      (set-vector-meters! (-> verts 0) 560.26 244.7 -3368.5)
+      (set-vector-meters! (-> verts 1) 655.61 244.7 -3434.7)
+      (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-0" should-spawn?)
+      ;; perpendicular to original plane to prevent walljump
+      (set-vector-meters! (-> verts 0) 591.35 244.7 -3443.4)
+      (set-vector-meters! (-> verts 1) 619.42 244.7 -3409.5)
+      (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-1" should-spawn?)
+      )
+
+    ;; SNOWY OPEN GATE CELL
+    ;; not on flut and haven't gotten cell
+    (let ((should-spawn? (and (not (on-flut?))
+                              (not (task-complete? *game-info* (game-task snow-ball))))))
+      (set-vector-meters! (-> verts 0) 858.87 161.25 -3320.5)
+      (set-vector-meters! (-> verts 1) 814.82 161.25 -3320.5)
+      (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-2" should-spawn?)
+      )
+
+    ;; SNOWY GONDOLA SKIP
+    ;; snow-start area
+    (set-vector-meters! (-> verts 0) 1036.8 226.59 -3513.9)
+    (set-vector-meters! (-> verts 1) 955.19 226.59 -3513.9)
+    (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-3" #t)
+
+    (set-vector-meters! (-> verts 0) 1064.2 226.59 -3479.2)
+    (set-vector-meters! (-> verts 1) 1013.2 226.59 -3542.9)
+    (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-4" #t)
+
+    (set-vector-meters! (-> verts 0) 1004.9 226.59 -3423.1)
+    (set-vector-meters! (-> verts 1) 1064.2 226.59 -3479.2)
+    (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-5" #t)
+
+    ;; bunny lurker ambush room patches
+    (set-vector-meters! (-> verts 0) 1009.1 220.8 -3409.8)
+    (set-vector-meters! (-> verts 1) 968.72 220.8 -3415.3)
+    (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-6" #t)
+
+    (set-vector-meters! (-> verts 0) 1012.6 223.27 -3384.7)
+    (set-vector-meters! (-> verts 1) 991.12 223.27 -3381.9)
+    (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-7" #t)
+
+    (set-vector-meters! (-> verts 0) 1026.3 223.27 -3364.7)
+    (set-vector-meters! (-> verts 1) 991.12 223.27 -3381.9)
+    (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-8" #t)
+
+    (set-vector-meters! (-> verts 0) 1009.1 243.34 -3375.6)
+    (set-vector-meters! (-> verts 1) 998.31 243.34 -3412.4)
+    (blocking-plane-cond verts (meters 15.0) "snowy-blocking-plane-9" #t)
+
+    ;; SNOWY BACKWARDS AMBUSH
+    ;; spawn if we havent gotten cell
+    (let ((should-spawn? (not (task-complete? *game-info* (game-task snow-bunnies)))))
+      (set-vector-meters! (-> verts 0) 931.59 220.55 -3370.0)
+      (set-vector-meters! (-> verts 1) 944.19 220.55 -3333.8)
+      (blocking-plane-cond verts (meters 25.0) "snowy-blocking-plane-10" should-spawn?)
+      )
+    
+    )
+
+  (none)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Begin function defintions.
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun runs-every-frame ()
+  ;; PATCHED - no boosteds
+  (set! (-> *edge-surface* fric) 1530000.0)
+
+  ;; PATCHED - prevent nuka/zombie glitch
+  (when (<= (-> *target* fact health) 0.0)
+    (target-attack-up *target* 'attack 'instant-death)
+    )
+
+  ;; PATCHED - wet feet
+  (when (not (handle->process (-> *target* water volume)))
+    (set! (-> *target* water height) 0.0)
+    )
+    
+  ;; PATCHED - spawn some invisible planes
+  (spawn-patched-blocking-planes)
+  
+  (if *show-input-display* 
+    (input-display-on)
+    (input-display-off)
+    )
+
+  (none)
+  )
+
+(defun runs-on-orb-pickup ((parent process-tree))
+  (let* ((from-cache? (and parent (type-type? (-> parent type) orb-cache-top))))
+    ;; Code here runs on ANY orb pickup
+
+
+    (when from-cache?
+      ;; Code here runs only if the orb was from an orb cache
+
+      )
+
+    (when (not from-cache?)
+      ;; Code here runs only if the orb was NOT from an orb cache
+
+      )
+    )
+  (none)
+  )
+
+(defun runs-on-fly-pickup ()
+  ;; Code here runs on any scout fly pickup
+
+  (none)
+  )
+
+(defun runs-on-cell-pickup ((cell-event symbol))
+  (case cell-event
+    (('pickup)      
+      ;; Code here runs as soon as you pickup a powercell
+
+      )
+    (('cutscene-end)      
+      ;; Code here runs at the end of any powercell cutscene
+
+      )
+    )
+
+  (none)
+  )
+
+(defun runs-on-eco-pickup ((eco-type pickup-type) (parent process-tree))
+  (let* ((from-vent? (and parent (type-type? (-> parent type) vent))))
+    ;; Code here runs as soon as you pickup ANY eco
+
+    (case eco-type
+      (((pickup-type eco-yellow))      
+        ;; Code here runs as soon as you pickup yellow eco
+
         )
+      (((pickup-type eco-red))      
+        ;; Code here runs as soon as you pickup red eco
 
-      (none)
-      )
-
-    (defun runs-on-eco-pickup ((eco-type pickup-type) (parent process-tree))
-      (let* ((from-vent? (and parent (type-type? (-> parent type) vent))))
-        ;; Code here runs as soon as you pickup ANY eco
-
-        (case eco-type
-          (((pickup-type eco-yellow))      
-            ;; Code here runs as soon as you pickup yellow eco
-
-            )
-          (((pickup-type eco-red))      
-            ;; Code here runs as soon as you pickup red eco
-
-            )
-          (((pickup-type eco-blue))      
-            ;; Code here runs as soon as you pickup blue eco
-
-            )
-          (((pickup-type eco-pill))      
-            ;; Code here runs as soon as you pickup small green eco
-
-            )
-          (((pickup-type eco-green))      
-            ;; Code here runs as soon as you pickup big green eco 
-
-            )
-          )
-        
-        (when from-vent?
-          ;; Code here runs only if the eco was picked up from a vent
-
-          )
         )
+      (((pickup-type eco-blue))      
+        ;; Code here runs as soon as you pickup blue eco
 
-      (none)
-      )
-
-    (defun runs-on-jak-spawn ()
-      ;; Code here runs every time jak spawns (loading a file new game or death)
-
-      ;;uncomment this to use custom music for custom levels - the function is in mod-common-functions.gc
-      ;;(process-spawn-function process music-manager-proc)
-      (none)
-      )
-
-    (defun runs-on-jak-death ((death-event symbol))
-      (case death-event
-        (('dying)
-          ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
-          
-          )
-        (('blackout)
-          ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns
-
-          )
         )
+      (((pickup-type eco-pill))      
+        ;; Code here runs as soon as you pickup small green eco
+
+        )
+      (((pickup-type eco-green))      
+        ;; Code here runs as soon as you pickup big green eco 
+
+        )
+      )
+    
+    (when from-vent?
+      ;; Code here runs only if the eco was picked up from a vent
+
+      )
+    )
+
+  (none)
+  )
+
+(defun runs-on-jak-spawn ()
+  ;; Code here runs every time jak spawns (loading a file new game or death)
+
+  ;;uncomment this to use custom music for custom levels - the function is in mod-common-functions.gc
+  ;;(process-spawn-function process music-manager-proc)
+  (none)
+  )
+
+(defun runs-on-jak-death ((death-event symbol))
+  (case death-event
+    (('dying)
+      ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
       
-      (none)
       )
+    (('blackout)
+      ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns
+
+      )
+    )
+  
+  (none)
+  )
 
 
     ;;;;;;;;;;;;;;;;;;;;;;;;;;

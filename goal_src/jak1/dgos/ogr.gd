@@ -7,7 +7,7 @@
   ;;"collide-reaction-racer.o"
   "eichar-racer+0-ag.go"
   "tpage-1119.go"
-  "blocking-plane.o"
+  ;; "blocking-plane.o"
   "firecanyon-obs.o"
   "ogre-part.o"
   "ogreboss.o"
