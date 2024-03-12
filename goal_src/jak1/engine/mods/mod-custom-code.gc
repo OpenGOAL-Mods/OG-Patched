@@ -34,6 +34,17 @@ an orb |#
     )
   )
 
+(defun klaww-alive? ()
+  (let ((klaww (entity-by-name "ogreboss-1")))
+    ;; klaww is alive if the entity is found and isn't dead
+    (when (and klaww 
+               (not (logtest? (-> klaww extra status) (entity-perm-status complete))))
+      (return #t)
+      )
+    )
+  #f
+  )
+
 (defun klaww-fight-active? ()
   (let ((klaww (the ogreboss (process-by-ename "ogreboss-1"))))
     (when klaww
@@ -44,7 +55,7 @@ an orb |#
         )
       )
     )
-    #f
+  #f
   )
 
 (defun misty-ambush-beaten? ()
@@ -52,11 +63,11 @@ an orb |#
     (return #t)
     )
   (let ((ambush-step (entity-by-name "silostep-10")))
-    (when (and ambush-step (logtest? (-> ambush-step extra perm status) (entity-perm-status complete)))
+    (when (and ambush-step (logtest? (-> ambush-step extra status) (entity-perm-status complete)))
       (return #t)
       )
     )
-    #f
+  #f
   )
 
 (defun ogre-shortcut-boulder-alive? ()
@@ -65,7 +76,7 @@ an orb |#
       (return #t)
       )
     )
-    #f
+  #f
   )
 
 (defun prevent-pickup? ((cell fuel-cell))
@@ -77,6 +88,10 @@ an orb |#
     (((game-task misty-warehouse))
       ;; prevent pickup if ambush incomplete
       (not (misty-ambush-beaten?))
+      )
+    (((game-task ogre-end))
+      ;; prevent pickup if klaww not dead
+      (klaww-alive?)
       )
     (else
       #f
@@ -276,6 +291,14 @@ an orb |#
       (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-2" should-spawn?)
       )
 
+    ;; OGRE END OF MP
+    ;; spawn if they haven't collected end of MP cell (which requires beating klaww, which requires 45 cells, etc)
+    (let* ((should-spawn? (klaww-alive?)))
+      (set-vector-meters! (-> verts 0) 999.03 13.85 -3430.2)
+      (set-vector-meters! (-> verts 1) 951.9 13.85 -3360.6)
+      (blocking-plane-cond verts (meters 80.0) "ogre-blocking-plane-3" should-spawn?)
+      )
+
     ;; SNOWY FLUTFLUT ESCAPE
     (let ((should-spawn? (on-flut?)))
       ;; replacement for original plane
@@ -357,6 +380,12 @@ an orb |#
   ;; PATCHED - wet feet
   (when (not (handle->process (-> *target* water volume)))
     (set! (-> *target* water height) 0.0)
+    )
+
+  ;; PATCHED - if klaww alive, make sure player doesn't get MP checkpoint behind klaww
+  (when (and (string= (-> *game-info* current-continue name) "ogre-race")
+             (klaww-alive?))
+    (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-start"))
     )
     
   ;; PATCHED - spawn some invisible planes
