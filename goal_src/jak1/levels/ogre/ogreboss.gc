@@ -1083,6 +1083,7 @@
         (if (and (< 122880.0 (-> gp-0 y))
                  (< (-> gp-0 x) 892928.0)
                  (and (ogreboss-player-inside-range? (the-as float 737280.0)) (< 0.0 (vector4-dot gp-0 (-> self z-plane))))
+                 (= (get-task-status (game-task village2-levitator)) (task-status invalid)) ;; OG-patched only start klaww fight if boulder has been lifted
                  )
             (go ogreboss-intro)
             )
