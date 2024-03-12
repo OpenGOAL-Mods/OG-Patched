@@ -199,6 +199,30 @@ an orb |#
     (set-vector-meters! (-> verts 0) -254.4 9.9 -271.39)
     (set-vector-meters! (-> verts 1) -259.76 9.9 -283.51)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-8" #t)
+    ;; left under
+    (set-vector-meters! (-> verts 0) -248.01 -21.07 -290.19)
+    (set-vector-meters! (-> verts 1) -253.92 -21.07 -292.05)
+    (blocking-plane-cond verts (meters 34.84) "beach-blocking-plane-9" #t)
+
+    (set-vector-meters! (-> verts 0) -253.92 -21.07 -292.05)
+    (set-vector-meters! (-> verts 1) -282.01 -21.07 -269.51)
+    (blocking-plane-cond verts (meters 43.53) "beach-blocking-plane-10" #t)
+
+    (set-vector-meters! (-> verts 0) -282.01 -21.07 -269.51)
+    (set-vector-meters! (-> verts 1) -284.21 -21.07 -263.72)
+    (blocking-plane-cond verts (meters 35.684) "beach-blocking-plane-11" #t)
+    ;; right under
+    (set-vector-meters! (-> verts 0) -263.27 -20.57 -311.08)
+    (set-vector-meters! (-> verts 1) -264.37 -20.57 -304.98)
+    (blocking-plane-cond verts (meters 33.97) "beach-blocking-plane-12" #t)
+
+    (set-vector-meters! (-> verts 0) -264.37 -20.57 -304.98)
+    (set-vector-meters! (-> verts 1) -292.45 -20.57 -282.45)
+    (blocking-plane-cond verts (meters 43.53) "beach-blocking-plane-13" #t)
+
+    (set-vector-meters! (-> verts 0) -292.45 -20.57 -282.45)
+    (set-vector-meters! (-> verts 1) -298.56 -20.57 -281.41)
+    (blocking-plane-cond verts (meters 35.69) "beach-blocking-plane-14" #t)
 
     ;; SUNKEN PUZZLE SKIP
     ;; left side
