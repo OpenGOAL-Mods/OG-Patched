@@ -68,6 +68,22 @@ an orb |#
     #f
   )
 
+(defun prevent-pickup? ((cell fuel-cell))
+  (case (the-as game-task (the int (-> cell fact pickup-amount)))
+    (((game-task ogre-secret))
+      ;; prevent pickup if boulder still alive
+      (ogre-shortcut-boulder-alive?)
+      )
+    (((game-task misty-warehouse))
+      ;; prevent pickup if ambush incomplete
+      (not (misty-ambush-beaten?))
+      )
+    (else
+      #f
+      )
+    )
+  )
+
 (defun spawn-patched-blocking-planes ()
   (let ((verts (new 'stack-no-clear 'inline-array 'vector 2)))
     ;; test near geologist
