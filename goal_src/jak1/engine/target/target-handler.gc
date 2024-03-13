@@ -818,7 +818,7 @@
      )
     (('edge-grab)
       ;; OG PATCHED - block edge grab near button clip cell in LPC
-      (let ((cell (the fuel-cell (process-by-ename "fuel-cell-26"))))
+      (let ((cell (the process-drawable (process-by-ename "fuel-cell-26"))))
         (when (or (not cell)
                   (> (vector-vector-xz-distance (-> cell root trans) (-> *target* root trans)) (meters 17.5))
                   )
