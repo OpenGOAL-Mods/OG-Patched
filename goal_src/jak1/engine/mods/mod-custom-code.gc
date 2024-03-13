@@ -406,6 +406,16 @@ an orb |#
     (set! (-> *target* water height) 0.0)
     )
 
+  ;; PATCHED - lava walk
+  (when (and *target* (not (logtest? (-> *target* state-flags) (state-flags dying)))
+             (nonzero? (-> *target* water volume)))
+    (let ((wv (handle->process (-> *target* water volume))))
+      (when (name= (-> wv name) "ogre-lava-1")
+        (logclear! (-> *target* state-flags) (state-flags being-attacked))
+        )
+      )
+    )
+
   ;; PATCHED - if klaww alive, make sure player doesn't get MP checkpoint behind klaww
   (when (and (string= (-> *game-info* current-continue name) "ogre-race")
              (klaww-alive?))
