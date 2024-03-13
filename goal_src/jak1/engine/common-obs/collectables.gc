@@ -1454,6 +1454,13 @@
       (remove-setting *setting-control* *target* 'allow-progress)
       (go-virtual wait)
       )
+    ;; PATCHED - forced checkpoints when getting cells
+    (case (the-as game-task (the int (-> self fact pickup-amount)))
+      (((game-task sunken-slide))
+        ;; bottom of LPC checkpoint
+        (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "sunkenb-helix"))
+        )
+      )
     (let ((t9-1 (-> (the-as (state eco-collectable) (find-parent-state)) enter)))
       (if t9-1
           (t9-1)
