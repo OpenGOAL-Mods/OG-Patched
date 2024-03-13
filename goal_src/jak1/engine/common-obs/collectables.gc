@@ -1454,6 +1454,13 @@
       (remove-setting *setting-control* *target* 'allow-progress)
       (go-virtual wait)
       )
+    ;; PATCHED - forced checkpoints when getting cells
+    (case (the-as game-task (the int (-> self fact pickup-amount)))
+      (((game-task sunken-slide))
+        ;; bottom of LPC checkpoint
+        (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "sunkenb-helix"))
+        )
+      )
     (let ((t9-1 (-> (the-as (state eco-collectable) (find-parent-state)) enter)))
       (if t9-1
           (t9-1)
@@ -2126,12 +2133,15 @@
       (when (and (= (get-reminder s4-1 0) 127)
                  (and (-> self entity) (not (task-complete? *game-info* (the-as game-task s5-2))))
                  )
-        (if (and *target*
-                 (logtest? (-> *target* control root-prim prim-core action) (collide-action racer snowball tube flut))
-                 (not arg0)
-                 )
-            (logior! (-> self fact options) (fact-options instant-collect skip-jump-anim))
-            )
+        ;; PATCHED - disable instant collect for 7th fly cell on zoomer/flut
+        (logclear! (-> self fact options) (fact-options instant-collect))
+        (logior! (-> self fact options) (fact-options skip-jump-anim))
+        ;; (if (and *target*
+        ;;          (logtest? (-> *target* control root-prim prim-core action) (collide-action racer snowball tube flut))
+        ;;          (not arg0)
+        ;;          )
+        ;;     (logior! (-> self fact options) (fact-options instant-collect skip-jump-anim))
+        ;;     )
         (let ((v1-47 (birth-pickup-at-point
                        (vector+! (new 'stack-no-clear 'vector) (-> self root trans) (new 'static 'vector :y 4096.0 :w 1.0))
                        (pickup-type fuel-cell)

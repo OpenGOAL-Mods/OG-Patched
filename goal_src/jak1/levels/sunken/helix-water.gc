@@ -209,9 +209,10 @@
                     )
               )
           (set! (-> self fcell-handle) (ppointer->handle v1-7))
-          (if v1-7
-              (clear-collide-with-as (-> (the-as collectable (-> v1-7 0)) root))
-              )
+          ;; PATCHED - allow collide with cell
+          ;; (if v1-7
+          ;;     (clear-collide-with-as (-> (the-as collectable (-> v1-7 0)) root))
+          ;;     )
           )
         )
       )
@@ -231,7 +232,8 @@
                    )
               (go helix-button-quick-activate)
               )
-             (else
+            ;;  (else ;; PATCHED - only activate if cell has been picked up
+            ((not (handle->process (-> self fcell-handle)))
                (process-entity-status! self (entity-perm-status complete) #t)
                (go helix-button-activate)
                )
@@ -253,15 +255,16 @@
   :trans rider-trans
   :code (behavior ()
     (local-vars (v1-7 symbol))
-    (let ((a0-1 (handle->process (-> self fcell-handle))))
-      (when a0-1
-        (send-event a0-1 'pickup)
-        (until v1-7
-          (suspend)
-          (set! v1-7 (or (not *target*) (not (logtest? (-> *target* state-flags) (state-flags grabbed)))))
-          )
-        )
-      )
+    ;; PATCHED - use a real cell to prevent HUD buffer, don't need this
+    ;; (let ((a0-1 (handle->process (-> self fcell-handle))))
+    ;;   (when a0-1
+    ;;     (send-event a0-1 'pickup)
+    ;;     (until v1-7
+    ;;       (suspend)
+    ;;       (set! v1-7 (or (not *target*) (not (logtest? (-> *target* state-flags) (state-flags grabbed)))))
+    ;;       )
+    ;;     )
+    ;;   )
     (let ((v1-11
             (process-spawn
               sunkencam
