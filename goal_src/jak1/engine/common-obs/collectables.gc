@@ -1442,12 +1442,16 @@
 (define-extern prevent-pickup? (function fuel-cell symbol))
 (defstate pickup (fuel-cell)
   :virtual #t
+  ;; PATCHED - allow pause menu after cell pickup
+  :exit (behavior ()
+    (remove-setting *setting-control* *target* 'allow-progress)
+    )
   :enter (behavior ((arg0 object) (arg1 handle))
     (set-time! (-> self state-time))
     (set! (-> self state-object) #t)
-    ;; OG-Patched - prevent some cells from being collected
+    ;; PATCHED - prevent some cells from being collected
     (when (prevent-pickup? self)
-      (remove-setting! 'allow-progress)
+      (remove-setting *setting-control* *target* 'allow-progress)
       (go-virtual wait)
       )
     (let ((t9-1 (-> (the-as (state eco-collectable) (find-parent-state)) enter)))

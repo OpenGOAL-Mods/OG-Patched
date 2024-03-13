@@ -1145,8 +1145,9 @@
           (s4-0 (new 'static 'fact-info))
           )
       (set! (-> s4-0 options) (fact-options))
-      (if arg2
+      (when arg2
           (set! (-> s4-0 options) (fact-options instant-collect))
+          (set-setting *setting-control* *target* 'allow-progress #f 0.0 0) ;; PATCHED - prevent HUD buffer
           )
       (when (and (nonzero? s5-0) (not (task-complete? *game-info* s5-0)))
         (label cfg-12)

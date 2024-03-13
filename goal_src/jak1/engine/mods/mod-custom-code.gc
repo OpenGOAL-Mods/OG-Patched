@@ -422,6 +422,17 @@ an orb |#
     (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-start"))
     )
     
+  ;; PATCHED - prevent any variation of citadel skip (require all 3 blue/red/yellow sage cells)
+  (when (and (name= (-> *game-info* current-continue name) "citadel-elevator")
+             (not (and (task-complete? *game-info* (game-task citadel-sage-blue))
+                       (task-complete? *game-info* (game-task citadel-sage-red))
+                       (task-complete? *game-info* (game-task citadel-sage-yellow))
+                       )
+                 )
+             )
+    (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "citadel-start"))
+    )
+
   ;; PATCHED - spawn some invisible planes
   (spawn-patched-blocking-planes)
   
