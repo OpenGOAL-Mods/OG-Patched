@@ -632,7 +632,7 @@
     :bsp-mask #xffffffffffffffff
     :bsphere (new 'static 'sphere :x 1392640.0 :y 81920.0 :z -6770688.0 :w 696320.0)
     :buzzer 76
-    :bottom-height (meters -20)
+    :bottom-height (meters -100) ;; PATCHED - prevent LPC deathwarp
     :run-packages '("common")
     :wait-for-load #t
     )
