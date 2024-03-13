@@ -554,7 +554,7 @@
           )
         (set-time! (-> self control unknown-dword82))
         )
-      (when (cpad-pressed? (-> self control unknown-cpad-info00 number) triangle)
+      (when (or (cpad-pressed? (-> self control unknown-cpad-info00 number) triangle) (< 2048.0 (target-height-above-ground)))
         (logclear!
           (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-abs 0)
           (pad-buttons triangle)
