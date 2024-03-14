@@ -753,6 +753,8 @@
       )
     )
   :enter (behavior ()
+    ;; PATCHED - disable rockets from grab (warp gates, eggtops)
+    (vector-reset! (-> self control transv))
     (set! (-> self control unknown-surface00) *grab-mods*)
     (set! (-> self neck flex-blend) 0.0)
     (logior! (-> self state-flags) (state-flags invulnerable grabbed))
