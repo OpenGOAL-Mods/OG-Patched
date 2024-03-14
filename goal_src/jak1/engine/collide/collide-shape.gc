@@ -843,14 +843,16 @@
            )
       ;; note: the above limit is the same as the limit passed into find-ground-point. So the limiting should only kick in
       ;; if we use last safe ground.
-      (cond
-        ((< (fabs (vector-dot
-                    (-> arg0 control dynam gravity-normal)
-                    (vector-! (new 'stack-no-clear 'vector) s4-0 (-> arg0 control trans))
-                    )
-                  )
-            (meters 10)
-            )
+
+      ;; PATCHED - never fall back to FCS bounces, always jump towards ground point
+      ;; (cond
+      ;;   ((< (fabs (vector-dot
+      ;;               (-> arg0 control dynam gravity-normal)
+      ;;               (vector-! (new 'stack-no-clear 'vector) s4-0 (-> arg0 control trans))
+      ;;               )
+      ;;             )
+      ;;       (meters 10)
+      ;;       )
          ;; if we reach here, we have to jump up or down less than 10m.
          ;; reduce our jump direction to within reasonable distance
          (vector-xz-normalize! s2-1 f30-1)
@@ -870,20 +872,19 @@
               )
              )
            )
-         )
-        (else
-          ;; the last safest place we jumped is too high. just launch jak in the air and hope for the best.
-          ;; fire canyon skip jumps
-          (send-event arg0 arg1 #f (static-attack-info ((mode arg2)
-                                                        (vector (new 'static 'vector :y (meters 10) :w 1.0))
-                                                        (shove-up (meters 10))
-                                                        (angle 'up)
-                                                        (control 1.0)
-                                                        )
-                                                       )
-                      )
-          )
-        )
+        ;;  )
+        ;; (else
+        ;;   ;; the last safest place we jumped is too high. just launch jak in the air and hope for the best.
+        ;;   ;; fire canyon skip jumps
+        ;;   (send-event arg0 arg1 #f (static-attack-info ((mode arg2)
+        ;;                                                 (vector (new 'static 'vector :y (meters 10) :w 1.0))
+        ;;                                                 (shove-up (meters 10))
+        ;;                                                 (angle 'up)
+        ;;                                                 (control 1.0)
+        ;;                                                 )
+        ;;                                                )
+        ;;               )
+        ;;   )
       )
     )
   (none)

@@ -655,7 +655,10 @@
       (with-profiler "menu"
         (#when PC_PORT
           (if (and *display-sha* *debug-segment*)
-            (draw-build-revision)))
+            (draw-build-revision))
+          (if (and *display-last-ground-point* *debug-segment*)
+            (draw-last-known-safe-ground))
+            )
         (*menu-hook*)
         (add-ee-profile-frame 'draw :g #x40)
 

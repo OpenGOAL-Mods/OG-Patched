@@ -838,6 +838,7 @@
          (flag "PS2 Actor vis" #f ,(dm-lambda-boolean-flag (-> *pc-settings* ps2-actor-vis?)))
          (flag "Display actor counts" *display-actor-counts* dm-boolean-toggle-pick-func)
          (flag "Display git commit" *display-sha* dm-boolean-toggle-pick-func)
+         (flag "Display last known safe ground" *display-last-ground-point* dm-boolean-toggle-pick-func)
          (flag "Extra hud elements" #f ,(dm-lambda-boolean-flag (-> *pc-settings* extra-hud?)))
          (flag "Music fadein" #f ,(dm-lambda-boolean-flag (-> *pc-settings* music-fadein?)))
          (flag "Music fadeout" #f ,(dm-lambda-boolean-flag (-> *pc-settings* music-fadeout?)))
