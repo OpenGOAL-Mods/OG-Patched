@@ -282,6 +282,7 @@
 (define *display-actor-counts* #f)
 (define *display-text-box* #f)
 (define *display-sha* *debug-segment*)
+(define *display-last-ground-point* #f)
 
 ;; collision renderer things. debug only.
 (define *collision-renderer* #f)

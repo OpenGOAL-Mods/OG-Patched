@@ -1988,6 +1988,8 @@
   (backup-collide-with-as (-> self control))
   (set! (-> self game) *game-info*)
   (move-to-point! (-> self control) (-> arg0 trans))
+  ;; PATCHED - use continue point itself as last-known-safe-ground upon spawn (instead of 0,0,0)
+  (set! (-> self control last-known-safe-ground quad) (-> self control trans quad))
   (set! (-> (&-> (-> self control) unknown-qword00) 0) (-> arg0 trans quad))
   (set! (-> self control unknown-cpad-info00) (-> *cpad-list* cpads 0))
   (set! (-> self control unknown-surface01) (new 'process 'surface))

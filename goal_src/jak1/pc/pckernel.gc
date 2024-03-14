@@ -624,6 +624,16 @@
                           (font-color flat-yellow)
                           (font-flags shadow kerning))))
 
+(defun draw-last-known-safe-ground ()
+  (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                     (bucket-id debug-no-zbuf))
+    (when *target*
+      (let ((vec (-> *target* control last-known-safe-ground)))
+          (draw-string-xy (string-format "~M ~M ~M" (-> vec x) (-> vec y) (-> vec z))
+                          buf
+                          0 (+ 10 (* 10 (-> (get-video-params) relative-y-scale)))
+                          (font-color flat-yellow)
+                          (font-flags shadow kerning))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; process pools
