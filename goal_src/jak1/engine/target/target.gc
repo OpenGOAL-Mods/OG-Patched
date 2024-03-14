@@ -2477,9 +2477,11 @@
     )
   :exit target-exit
   :trans (behavior ()
-    (if (logtest? (-> self control status) (cshape-moving-flags onsurf))
-        (go target-hit-ground #f)
-        )
+    (when (logtest? (-> self control status) (cshape-moving-flags onsurf))
+      ;; PATCHED - prevent rocket from uppercut into ground collision
+      (vector-reset! (-> self control transv))
+      (go target-hit-ground #f)
+      )
     (when (and (cpad-pressed? (-> self control unknown-cpad-info00 number) square)
                (< (vector-dot (-> self control dynam gravity-normal) (-> self control transv)) 22118.4)
                (and (< -61440.0 (vector-dot (-> self control dynam gravity-normal) (-> self control transv)))
