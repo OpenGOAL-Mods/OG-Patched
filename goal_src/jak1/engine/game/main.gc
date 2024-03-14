@@ -374,9 +374,11 @@
     (check-cheat-code (-> *cheat-temp* 0) 0
         (up up down down left right left right x x square circle square circle)
           (cpad-clear! 0 r1)
+          ;; PATCHED = don't enable cheat mode and play bad sound
+          (sound-play "caught-eel")
           ;; toggle!
-          (not! *cheat-mode*)
-          (cheats-sound-play *cheat-mode*)
+          ;; (not! *cheat-mode*)
+          ;; (cheats-sound-play *cheat-mode*)
         )
 
     ;; debug mode
@@ -384,12 +386,14 @@
       (check-cheat-code (-> *cheat-temp* 1) 0
           (circle square circle square x x right left right left down down up up)
             (cpad-clear! 0 r1)
+            ;; PATCHED = don't enable cheat mode and play bad sound
+            (sound-play "caught-eel")
             ;; toggle between #t and debug.
-            (set! *cheat-mode* (if (= *cheat-mode* 'debug)
-                                        #t
-                                        'debug
-                                        ))
-            (cheats-sound-play *cheat-mode*)
+            ;; (set! *cheat-mode* (if (= *cheat-mode* 'debug)
+            ;;                             #t
+            ;;                             'debug
+            ;;                             ))
+            ;; (cheats-sound-play *cheat-mode*)
           )
       )
 
