@@ -128,6 +128,27 @@ an orb |#
       (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-3" should-spawn?)
       )
 
+    ;; hole in the top
+    (set-vector-meters! (-> verts 0) -143.54 57.3 970.65)
+    (set-vector-meters! (-> verts 1) -146.4 57.3 987.24)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-18" #t)
+
+    (set-vector-meters! (-> verts 0) -146.4 57.3 987.24)
+    (set-vector-meters! (-> verts 1) -157.59 57.3 1003.1)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-19" #t)
+
+    (set-vector-meters! (-> verts 0) -157.59 57.3 1003.1)
+    (set-vector-meters! (-> verts 1) -162.95 57.3 996.74)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-20" #t)
+
+    (set-vector-meters! (-> verts 0) -162.95 57.3 996.74)
+    (set-vector-meters! (-> verts 1) -155.45 57.3 975.3)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-21" #t)
+
+    (set-vector-meters! (-> verts 0) -155.45 57.3 975.3)
+    (set-vector-meters! (-> verts 1) -143.54 57.298 970.65)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-22" #t)
+
     ;; MISTY SKIP TO EARLY CANNON
     (set-vector-meters! (-> verts 0) -138.6 28.95 915.82)
     (set-vector-meters! (-> verts 1) -151.12 28.95 914.16)
@@ -144,6 +165,30 @@ an orb |#
     (set-vector-meters! (-> verts 0) -155.89 38.3 921.85)
     (set-vector-meters! (-> verts 1) -149.49 38.3 931.16)
     (blocking-plane-cond verts (meters 18.42) "misty-blocking-plane-7" #t)
+    
+    (set-vector-meters! (-> verts 0) -198.17 8.83 1012.1)
+    (set-vector-meters! (-> verts 1) -193.01 8.83 1028.2)
+    (blocking-plane-cond verts (meters 48.05) "misty-blocking-plane-12" #t)
+
+    (set-vector-meters! (-> verts 0) -193.01 8.83 1028.2)
+    (set-vector-meters! (-> verts 1) -164.45 8.83 1042.8)
+    (blocking-plane-cond verts (meters 48.05) "misty-blocking-plane-13" #t)
+
+    (set-vector-meters! (-> verts 0) -193.01 8.83 1028.2)
+    (set-vector-meters! (-> verts 1) -163.12 8.83 1025.9)
+    (blocking-plane-cond verts (meters 48.05) "misty-blocking-plane-14" #t)
+
+    (set-vector-meters! (-> verts 0) -198.17 11.24 1012.1)
+    (set-vector-meters! (-> verts 1) -170.24 11.24 1007.1)
+    (blocking-plane-cond verts (meters 45.05) "misty-blocking-plane-15" #t)
+
+    (set-vector-meters! (-> verts 0) -84.64 30.44 897.38)
+    (set-vector-meters! (-> verts 1) -105.38 30.44 904.76)
+    (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-16" #t)
+
+    (set-vector-meters! (-> verts 0) -105.38 30.44 904.76)
+    (set-vector-meters! (-> verts 1) -124.05 30.44 916.42)
+    (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-17" #t)
 
     ;; MISTY SKIPS TO SCOUTFLY
     (set-vector-meters! (-> verts 0) -146.65 50.59 1030.9)
@@ -158,9 +203,9 @@ an orb |#
     (set-vector-meters! (-> verts 1) -180.7 50.89 1036.1)
     (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-10" #t)
 
-    (set-vector-meters! (-> verts 0) -129.33 28.01 1048.1)
-    (set-vector-meters! (-> verts 1) -148.75 28.01 1047.9)
-    (blocking-plane-cond verts (meters 21.0) "misty-blocking-plane-11" #t)
+    (set-vector-meters! (-> verts 0) -119.28 27.72 1042.8)
+    (set-vector-meters! (-> verts 1) -150.11 27.72 1043.9)
+    (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-11" #t)
 
     ;; BEACH TOWER CLIMB
     ;; center window
