@@ -441,6 +441,47 @@ an orb |#
     (set-vector-meters! (-> verts 1) 998.31 243.34 -3412.4)
     (blocking-plane-cond verts (meters 15.0) "snowy-blocking-plane-9" #t)
 
+    ;; other patches cuz bin is nuts
+    (set-vector-meters! (-> verts 0) 1092.1 137.18 -3183.5)
+    (set-vector-meters! (-> verts 1) 1033.0 137.18 -3424.4)
+    (blocking-plane-cond verts (meters 245.0) "snowy-blocking-plane-11" #t)
+
+    (set-vector-meters! (-> verts 0) 986.72 253.26 -3336.9)
+    (set-vector-meters! (-> verts 1) 1054.9 253.26 -3336.4)
+    (blocking-plane-cond verts (meters 125.0) "snowy-blocking-plane-12" #t)
+    
+    (set-vector-meters! (-> verts 0) 986.72 253.26 -3336.9)
+    (set-vector-meters! (-> verts 1) 946.37 253.26 -3406.7)
+    (blocking-plane-cond verts (meters 125.0) "snowy-blocking-plane-13" #t)
+
+    (set-vector-meters! (-> verts 0) 946.37 253.26 -3406.7)
+    (set-vector-meters! (-> verts 1) 970.45 253.26 -3449.3)
+    (blocking-plane-cond verts (meters 125.0) "snowy-blocking-plane-14" #t)
+
+    (set-vector-meters! (-> verts 0) 970.45 202.81 -3449.3)
+    (set-vector-meters! (-> verts 1) 1168.8 202.81 -3384.9)
+    (blocking-plane-cond verts (meters 175.0) "snowy-blocking-plane-15" #t)
+
+    (set-vector-meters! (-> verts 0) 944.77 244.42 -3330.6)
+    (set-vector-meters! (-> verts 1) 911.2 244.42 -3431.2)
+    (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-16" #t)
+
+    (set-vector-meters! (-> verts 0) 911.2 244.42 -3431.2)
+    (set-vector-meters! (-> verts 1) 902.11 244.42 -3428.8)
+    (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-17" #t)
+    
+    (set-vector-meters! (-> verts 0) 902.11 244.42 -3428.8)
+    (set-vector-meters! (-> verts 1) 918.39 244.42 -3385.5)
+    (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-18" #t)
+
+    (set-vector-meters! (-> verts 0) 918.39 247.82 -3385.5)
+    (set-vector-meters! (-> verts 1) 930.17 247.82 -3330.6)
+    (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-19" #t)
+
+    (set-vector-meters! (-> verts 0) 930.17 247.82 -3330.6)
+    (set-vector-meters! (-> verts 1) 944.77 247.82 -3330.6)
+    (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-20" #t)
+
     ;; SNOWY BACKWARDS AMBUSH
     ;; spawn if we havent gotten cell
     (let ((should-spawn? (not (task-complete? *game-info* (game-task snow-bunnies)))))
