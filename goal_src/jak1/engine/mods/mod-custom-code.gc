@@ -323,6 +323,10 @@ an orb |#
       (set-vector-meters! (-> verts 0) 449.94 -0.58 -1855.2)
       (set-vector-meters! (-> verts 1) 461.71 -0.58 -1838.8)
       (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-1" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) 448.42 -0.58 -1875.3)
+      (set-vector-meters! (-> verts 1) 454.89 -0.58 -1883.8)
+      (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-5" should-spawn?)
       )
 
     ;; BOGGY FLUTFLUT OOBS
