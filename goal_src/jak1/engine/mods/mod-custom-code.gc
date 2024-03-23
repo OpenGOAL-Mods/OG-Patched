@@ -372,13 +372,13 @@ an orb |#
     ;; spawn if user hasnt blown up boulder
     (let* ((should-spawn? (ogre-shortcut-boulder-alive?)))
       ;; boulder side
-      (set-vector-meters! (-> verts 0) 296.78 29.83 -3145.5)
-      (set-vector-meters! (-> verts 1) 335.7 29.83 -3143.2)
+      (set-vector-meters! (-> verts 0) 260.71 29.827 -3144.8)
+      (set-vector-meters! (-> verts 1) 385.23 29.827 -3143.8)
       (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-1" should-spawn?)
       ;; cave side
-      (set-vector-meters! (-> verts 0) 358.16 16.73 -3171.6)
-      (set-vector-meters! (-> verts 1) 340.53 16.73 -3206.4)
-      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-2" should-spawn?)
+      (set-vector-meters! (-> verts 0) 359.36 10.335 -3169.3)
+      (set-vector-meters! (-> verts 1) 336.97 10.335 -3213.4)
+      (blocking-plane-cond verts (meters 63.0) "ogre-blocking-plane-2" should-spawn?)
       )
 
     ;; OGRE END OF MP
