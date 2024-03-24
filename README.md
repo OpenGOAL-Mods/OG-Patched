@@ -1,6 +1,6 @@
 # Jak & Daxter: The Precursor Legacy v1.1
 
-#### `build f1aec66` patchnotes
+#### build `f1aec66` patchnotes
 - global patches
   - fixed idle animation cancellation/level deload bug
   - blocked certain "middle of level" checkpoints from the "closest checkpoint" backup logic
