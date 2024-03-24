@@ -78,7 +78,7 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
 (defun is-object-visible-override? ((this level) (arg0 int) (ent entity))
   (when (type-type? (-> ent type) entity-actor)
     (case (-> (the entity-actor ent) etype symbol)
-      (('dark-plant)
+      (('dark-plant 'fuel-cell)
         (return #t)
         )
       )
