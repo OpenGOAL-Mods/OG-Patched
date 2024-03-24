@@ -2,7 +2,7 @@
 
 #### build `f1aec66` patchnotes
 - global patches
-  - fixed idle animation cancellation/level deload bug
+  - fixed idle animation cancellation/level deload bug when holding button/paused
   - blocked certain "middle of level" checkpoints from the "closest checkpoint" backup logic
   - fixed bug where flutflut could repeatedly jump off walls to gain height
   - fixed 1-frame bug where players could spin attack during launch jumps
