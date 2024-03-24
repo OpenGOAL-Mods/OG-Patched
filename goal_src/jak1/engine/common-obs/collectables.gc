@@ -2134,14 +2134,17 @@
                  (and (-> self entity) (not (task-complete? *game-info* (the-as game-task s5-2))))
                  )
         ;; PATCHED - disable instant collect for 7th fly cell on zoomer/flut
-        (logclear! (-> self fact options) (fact-options instant-collect))
-        (logior! (-> self fact options) (fact-options skip-jump-anim))
-        ;; (if (and *target*
-        ;;          (logtest? (-> *target* control root-prim prim-core action) (collide-action racer snowball tube flut))
-        ;;          (not arg0)
-        ;;          )
-        ;;     (logior! (-> self fact options) (fact-options instant-collect skip-jump-anim))
-        ;;     )
+        (when (and *target*
+                 (logtest? (-> *target* control root-prim prim-core action) (collide-action racer snowball tube flut))
+                 (not arg0)
+                 )
+          (logior! (-> self fact options) (fact-options skip-jump-anim))
+          ;; (logior! (-> self fact options) (fact-options instant-collect skip-jump-anim))
+          (if (or (cpad-pressed? 0 start) (cpad-hold? 0 start) (paused?))
+            (logclear! (-> self fact options) (fact-options instant-collect))
+            (logior! (-> self fact options) (fact-options instant-collect))
+            )
+          )
         (let ((v1-47 (birth-pickup-at-point
                        (vector+! (new 'stack-no-clear 'vector) (-> self root trans) (new 'static 'vector :y 4096.0 :w 1.0))
                        (pickup-type fuel-cell)
