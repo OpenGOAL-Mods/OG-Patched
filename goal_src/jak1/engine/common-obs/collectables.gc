@@ -1364,6 +1364,7 @@
                          (not (logtest? (-> *target* state-flags) (state-flags grabbed dying)))
                          )
                     )
+               (not (prevent-pickup? self)) ;; OG-PATCHED avoid going to pickup in the first place (and setting allow-progress #f)
                )
       (add-setting! 'allow-progress #f 0.0 0)
       (apply-settings *setting-control*)
@@ -1444,14 +1445,14 @@
   :virtual #t
   ;; PATCHED - allow pause menu after cell pickup
   :exit (behavior ()
-    (remove-setting *setting-control* *target* 'allow-progress)
+    (remove-setting! 'allow-progress)
     )
   :enter (behavior ((arg0 object) (arg1 handle))
     (set-time! (-> self state-time))
     (set! (-> self state-object) #t)
     ;; PATCHED - prevent some cells from being collected
     (when (prevent-pickup? self)
-      (remove-setting *setting-control* *target* 'allow-progress)
+      (remove-setting! 'allow-progress)
       (go-virtual wait)
       )
     ;; PATCHED - forced checkpoints when getting cells

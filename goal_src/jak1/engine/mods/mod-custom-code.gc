@@ -81,13 +81,17 @@ an orb |#
 
 (defun prevent-pickup? ((cell fuel-cell))
   (case (the-as game-task (the int (-> cell fact pickup-amount)))
-    (((game-task ogre-secret))
-      ;; prevent pickup if boulder still alive
-      (ogre-shortcut-boulder-alive?)
-      )
     (((game-task misty-warehouse))
       ;; prevent pickup if ambush incomplete
       (not (misty-ambush-beaten?))
+      )
+    (((game-task firecanyon-end))
+      ;; prevent pickup if haven't talked to keira
+      (not (task-closed? (game-task firecanyon-assistant) (task-status need-reward-speech)))
+      )
+    (((game-task ogre-secret))
+      ;; prevent pickup if boulder still alive
+      (ogre-shortcut-boulder-alive?)
       )
     (((game-task ogre-end))
       ;; prevent pickup if klaww not dead
@@ -545,20 +549,6 @@ an orb |#
                  )
              )
     (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "citadel-start"))
-    )
-
-  ;; PATCHED - force ps2-actor-vis OFF in certain levels
-  (case (-> *game-info* current-continue level)
-    (('training 'jungle 'snow 'rolling)
-      ;; avoid cell deload/anim skips for geyser 1st cell, flies cell in jungle, snowy fort cell with flut
-      ;; avoid plant deload in basin
-      (set! (-> *pc-settings* ps2-actor-vis?) #f)
-      )
-    (else
-      ;; anywhere else, keep ps2-actor-vis. specifically for:
-      ;; - spider tunnel, so crates only spawn when close enough)
-      (set! (-> *pc-settings* ps2-actor-vis?) #t)
-      )
     )
 
   ;; PATCHED - spawn some invisible planes
