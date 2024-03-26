@@ -86,7 +86,7 @@ an orb |#
       (not (misty-ambush-beaten?))
       )
     (((game-task firecanyon-end))
-      ;; prevent pickup if haven't talked to keira
+      ;; prevent pickup if haven't talked to keira (w/ 20+ cells)
       (not (task-closed? (game-task firecanyon-assistant) (task-status need-reward-speech)))
       )
     (((game-task ogre-secret))
@@ -94,8 +94,12 @@ an orb |#
       (ogre-shortcut-boulder-alive?)
       )
     (((game-task ogre-end))
-      ;; prevent pickup if klaww not dead
+      ;; prevent pickup if klaww not dead (klaww requires the levitator, aka 45 cells)
       (klaww-alive?)
+      )
+    (((game-task lavatube-end))
+      ;; prevent pickup if <72 cells
+      (< (-> *game-info* fuel) 72.0)
       )
     (else
       #f
