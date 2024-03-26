@@ -2442,13 +2442,20 @@
   :post target-swim-post
   )
 
+;; OG-PATCHED borrow code from Jak 2 for no fall damage animation cancel
+(define *hit-ground-hard-mods* (the-as surface #f))
+(let ((a0-79 (copy *walk-mods* 'global)))
+  (logclear! (-> a0-79 flags) (surface-flag look-around))
+  (set! *hit-ground-hard-mods* a0-79)
+  )
+
 (defstate target-hit-ground-hard (target)
   :event target-standard-event-handler
   :enter (behavior ((arg0 float))
     (set! (-> self control unknown-dword31) 0)
     (set! (-> self control unknown-dword33) 0)
     (set-forward-vel (the-as float 0.0))
-    (set! (-> self control unknown-surface00) *walk-mods*)
+    (set! (-> self control unknown-surface00) *hit-ground-hard-mods*)
     )
   :code (behavior ((arg0 float))
     (when (!= arg0 0.0)
