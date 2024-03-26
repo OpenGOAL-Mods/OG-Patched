@@ -44,16 +44,19 @@
   - fixed bug where players could avoid getting the `sunkenb-helix` checkpoint while collecting the bottom of LPC cell
 - `rolling`
   - fixed bug where `dark-plant`s could deload and spawn cell early
+  - fixed bad blocking plane allowing players access to `rolling` on-foot
 - `ogre`
   - added check that boulder has been lifted before Klaww fight will start
   - added blocking plane to prevent players from getting back up to grassy platform during Klaww fight
   - added check that Klaww has been defeated before zoomer will spawn
-  - added check that Klaww has been defeated before players can get `ogre-race` checkpoint
+  - added check that Klaww has been defeated before players can get `ogre-race` or `ogre-end` checkpoint
   - fixed bug where players could get invuln state via `being-attacked` flag, by edge grabbing while hitting lava
   - added blocking planes to prevent players from getting to the secret cell without blowing up the boulder
   - added check that boulder has been destroyed before secret cell can be collected
   - added check that Klaww has been defeated before end of MP cell can be collected
   - fixed blocking plane before `village3` to prevent players from skipping the end of MP cell
+- `village3`
+  - added check that the `village2` warp gate has been activated before the `village3` one can be activated
 - `snowy`
   - fixed blocking planes to keep flutflut in intended area
   - added blocking plane to prevent players from getting to fort gate button without flutflut
@@ -61,6 +64,10 @@
   - added blocking planes throughout level to prevent players from skipping the gondola ride
 - `robocave`
   - added check that players have collected yellow eco switch cell before they can carry yellow eco into the baby spider tunnel
+- `lavatube`
+  - added check that the `village3` warp gate has been activated before the `village4` warp gate can be activated
+  - added check that players have collected at least 72 cells before the end of `lavatube` cell can be collected
+  - fixed bad collision where players could launch zoomer into `citadel`
 - `citadel`
   - fixed bug where players got `citadel-elevator` checkpoint during intro cutscene
   - fixed bug where players could buffer pausing by triggering the HUD while collecting cells from the citadel lamps
