@@ -497,6 +497,14 @@ an orb |#
       (set-vector-meters! (-> verts 1) 944.19 220.55 -3333.8)
       (blocking-plane-cond verts (meters 25.0) "snowy-blocking-plane-10" should-spawn?)
       )
+
+    ;; CITADEL HOPS
+    ;; spawn if we havent gotten end of LT cell
+    (let ((should-spawn? (not (task-complete? *game-info* (game-task lavatube-end)))))
+      (set-vector-meters! (-> verts 0) 2680.6 -95.52 -4508.7)
+      (set-vector-meters! (-> verts 1) 2888.0 -95.52 -4508.7)
+      (blocking-plane-cond verts (meters 155.0) "citadel-blocking-plane-0" should-spawn?)
+      )
     
     )
 
