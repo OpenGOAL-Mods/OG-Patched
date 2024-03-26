@@ -527,8 +527,10 @@ an orb |#
       )
     )
 
-  ;; PATCHED - if klaww alive, make sure player doesn't get MP checkpoint behind klaww
-  (when (and (string= (-> *game-info* current-continue name) "ogre-race")
+  ;; PATCHED - if klaww alive, make sure player doesn't get MP checkpoints behind klaww
+  (when (and (or (string= (-> *game-info* current-continue name) "ogre-race")
+                 (string= (-> *game-info* current-continue name) "ogre-end")
+                 )
              (klaww-alive?))
     (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-start"))
     )

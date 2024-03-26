@@ -1441,7 +1441,6 @@
     )
   )
 
-(define-extern prevent-pickup? (function fuel-cell symbol))
 (defstate pickup (fuel-cell)
   :virtual #t
   ;; PATCHED - allow pause menu after cell pickup
