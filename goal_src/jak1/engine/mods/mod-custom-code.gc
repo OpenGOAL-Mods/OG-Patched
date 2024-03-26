@@ -319,7 +319,15 @@ an orb |#
 
     (set-vector-meters! (-> verts 0) 582.72 -232.77 -1746.8)
     (set-vector-meters! (-> verts 1) 557.5 -232.77 -1776.3)
-    (blocking-plane-cond verts (meters 35.0) "sunken-blocking-plane-7" #t)    
+    (blocking-plane-cond verts (meters 35.0) "sunken-blocking-plane-7" #t)
+
+    ;; BASIN ON FOOT
+    ;; if not on zoomer
+    (let ((should-spawn? (not (on-zoomer?))))
+      (set-vector-meters! (-> verts 0) 53.50 -6.2 -1586.4)
+      (set-vector-meters! (-> verts 1) 52.80 -6.2 -1700.7)
+      (blocking-plane-cond verts (meters 90.0) "rolling-blocking-plane-0" should-spawn?)
+      )
 
     ;; BACKWARDS BOGGY
     ;; any checkpoint besides end of boggy
@@ -400,13 +408,21 @@ an orb |#
     ;; SNOWY FLUTFLUT ESCAPE
     (let ((should-spawn? (on-flut?)))
       ;; perpendicular to original plane to prevent walljump
-      (set-vector-meters! (-> verts 0) 619.13 227.73 -3409.2)
-      (set-vector-meters! (-> verts 1) 568.69 227.73 -3485.8)
-      (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-0" should-spawn?)
+      (set-vector-meters! (-> verts 0) 619.13 150.0 -3409.2)
+      (set-vector-meters! (-> verts 1) 566.27 150.0 -3489.5)
+      (blocking-plane-cond verts (meters 140.0) "snowy-blocking-plane-0" should-spawn?)
       ;; replacement for original plane
-      (set-vector-meters! (-> verts 0) 576.8 253.89 -3379.9)
-      (set-vector-meters! (-> verts 1) 639.54 253.89 -3423.4)
-      (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-1" should-spawn?)
+      (set-vector-meters! (-> verts 0) 576.80 150.0 -3379.9)
+      (set-vector-meters! (-> verts 1) 639.54 150.0 -3423.4)
+      (blocking-plane-cond verts (meters 140.0) "snowy-blocking-plane-1" should-spawn?)
+      ;; continuing around mountain to prevent OOB
+      (set-vector-meters! (-> verts 0) 566.27 150.0 -3489.5)
+      (set-vector-meters! (-> verts 1) 648.4 150.0 -3558.6)
+      (blocking-plane-cond verts (meters 140.0) "snowy-blocking-plane-22" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) 648.4 150.0 -3558.6)
+      (set-vector-meters! (-> verts 1) 742.47 150.0 -3506.9)
+      (blocking-plane-cond verts (meters 140.0) "snowy-blocking-plane-23" should-spawn?)
       )
 
     ;; SNOWY OPEN GATE CELL
@@ -489,6 +505,10 @@ an orb |#
     (set-vector-meters! (-> verts 0) 930.17 247.82 -3330.6)
     (set-vector-meters! (-> verts 1) 944.77 247.82 -3330.6)
     (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-20" #t)
+
+    (set-vector-meters! (-> verts 0) 1033.9 193.29 -3338.3)
+    (set-vector-meters! (-> verts 1) 1061.6 193.29 -3317.6)
+    (blocking-plane-cond verts (meters 185.0) "snowy-blocking-plane-21" #t)
 
     ;; SNOWY BACKWARDS AMBUSH
     ;; spawn if we havent gotten cell
