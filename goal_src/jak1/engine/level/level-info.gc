@@ -1031,6 +1031,37 @@
         :lev1 'village2
         :disp1 #f
         )
+      ;; PATCHED - for lavatalk testing, otherwise unused/unavailable
+      (new 'static 'continue-point
+        :name "ogre-LW-test-2"
+        :level 'ogre
+        :flags (continue-flags ignore-closest-search) 
+        :trans (new 'static 'vector :x (meters 215.975) :y (meters 30.9265) :z (meters -1888.7742) :w 1.0)
+        :quat (new 'static 'quaternion :y -0.9990 :w 0.0429)
+        :camera-trans (new 'static 'vector :x (meters 214.4151) :y (meters 40.3044) :z (meters -1868.5463) :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.9970 -0.0000 -0.0769 0.0175 0.9738 -0.2267 0.0749 -0.2273 -0.9709)
+        :load-commands '()
+        :vis-nick 'ogr
+        :lev0 'ogre
+        :disp0 'display
+        :lev1 'village2
+        :disp1 'display
+        )
+      (new 'static 'continue-point
+        :name "ogre-LW-test-3"
+        :level 'ogre
+        :flags (continue-flags ignore-closest-search)
+        :trans (new 'static 'vector :x (meters 215.9580) :y (meters 30.9265) :z (meters -1888.7742) :w 1.0)
+        :quat (new 'static 'quaternion :y -0.9990 :w 0.0429)
+        :camera-trans (new 'static 'vector :x (meters 214.4151) :y (meters 40.3044) :z (meters -1868.5463) :w 1.0)
+        :camera-rot (new 'static 'array float 9 -0.9970 -0.0000 -0.0769 0.0175 0.9738 -0.2267 0.0749 -0.2273 -0.9709)
+        :load-commands '()
+        :vis-nick 'ogr
+        :lev0 'ogre
+        :disp0 'display
+        :lev1 'village2
+        :disp1 'display
+        )
       (new 'static 'continue-point
         :name "ogre-end"
         :level 'ogre
