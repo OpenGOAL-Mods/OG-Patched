@@ -10,6 +10,7 @@
 (define-extern runs-on-fly-pickup (function none))
 (define-extern runs-on-cell-pickup (function symbol none))
 (define-extern runs-on-eco-pickup (function pickup-type process-tree none))
+(define-extern prevent-pickup? (function fuel-cell symbol))
 
 (declare-type vent process-drawable)
 (declare-type eco eco-collectable)
