@@ -511,6 +511,13 @@
            )
          )
        )
+      ;; OG-PATCHED village3 button requires village2 button, citadel button requires village3 button
+      ((= v1-2 (game-task village3-button))
+       (!= (get-task-status (game-task village2-levitator)) (task-status unknown))  ;; status before button pressed
+       )
+      ((= v1-2 (game-task village4-button))
+       (!= (get-task-status (game-task village3-button)) (task-status unknown))  ;; status before button pressed
+       )
       (else
         #t
         )
