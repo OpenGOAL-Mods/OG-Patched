@@ -198,18 +198,54 @@ an orb |#
     (set-vector-meters! (-> verts 1) -124.05 30.44 916.42)
     (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-17" #t)
 
+    (set-vector-meters! (-> verts 0) -125.07 19.41 1022.1)
+    (set-vector-meters! (-> verts 1) -145.03 19.41 1004.0)
+    (blocking-plane-cond verts (meters 41.05) "misty-blocking-plane-23" #t)
+
+    (set-vector-meters! (-> verts 0) -144.47 44.55 1004.5)
+    (set-vector-meters! (-> verts 1) -146.49 44.55 1002.7)
+    (blocking-plane-cond verts (meters 12.95) "misty-blocking-plane-24" #t)
+
+    (set-vector-meters! (-> verts 0) -105.52 19.41 976.06)
+    (set-vector-meters! (-> verts 1) -132.3 19.41 973.0)
+    (blocking-plane-cond verts (meters 41.05) "misty-blocking-plane-25" #t)
+
+    (set-vector-meters! (-> verts 0) -136.1 50.08 965.33)
+    (set-vector-meters! (-> verts 1) -136.79 52.26 983.68)
+    (blocking-plane-cond verts (meters 6.01) "misty-blocking-plane-26" #t)
+
+    (set-vector-meters! (-> verts 0) -136.79 52.26 983.68)
+    (set-vector-meters! (-> verts 1) -144.12 51.43 1004.4)
+    (blocking-plane-cond verts (meters 6.01) "misty-blocking-plane-27" #t)
+
+    (set-vector-meters! (-> verts 0) -130.68 38.01 967.81)
+    (set-vector-meters! (-> verts 1) -131.66 38.01 973.1)
+    (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-28" #t)
+
+    (set-vector-meters! (-> verts 0) -147.32 48.87 935.91)
+    (set-vector-meters! (-> verts 1) -156.77 48.87 961.33)
+    (blocking-plane-cond verts (meters 6.91) "misty-blocking-plane-29" #t)
+
+    (set-vector-meters! (-> verts 0) -173.02 49.53 1009.2)
+    (set-vector-meters! (-> verts 1) -178.41 49.53 991.39)
+    (blocking-plane-cond verts (meters 6.91) "misty-blocking-plane-30" #t)
+
+    (set-vector-meters! (-> verts 0) -178.41 49.53 991.39)
+    (set-vector-meters! (-> verts 1) -171.93 49.53 985.56)
+    (blocking-plane-cond verts (meters 6.91) "misty-blocking-plane-31" #t)
+
     ;; MISTY SKIPS TO SCOUTFLY
     (set-vector-meters! (-> verts 0) -141.68 50.89 1043.6)
     (set-vector-meters! (-> verts 1) -150.75 50.89 1020.3)
-    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-8" #t)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-8" #t)
 
     (set-vector-meters! (-> verts 0) -150.75 50.89 1020.3)
     (set-vector-meters! (-> verts 1) -165.81 50.89 1019.2)
-    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-9" #t)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-9" #t)
 
     (set-vector-meters! (-> verts 0) -165.81 50.89 1019.2)
     (set-vector-meters! (-> verts 1) -180.7 50.89 1036.1)
-    (blocking-plane-cond verts (meters 25.0) "misty-blocking-plane-10" #t)
+    (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-10" #t)
 
     (set-vector-meters! (-> verts 0) -119.28 27.72 1042.8)
     (set-vector-meters! (-> verts 1) -150.11 27.72 1043.9)
@@ -324,10 +360,19 @@ an orb |#
     ;; BASIN ON FOOT
     ;; if not on zoomer
     (let ((should-spawn? (not (on-zoomer?))))
-      (set-vector-meters! (-> verts 0) 53.50 -6.2 -1586.4)
-      (set-vector-meters! (-> verts 1) 52.80 -6.2 -1700.7)
-      (blocking-plane-cond verts (meters 90.0) "rolling-blocking-plane-0" should-spawn?)
+      (set-vector-meters! (-> verts 0) 53.69 -41.73 -1555.9)
+      (set-vector-meters! (-> verts 1) 52.52 -41.73 -1747.3)
+      (blocking-plane-cond verts (meters 150.0) "rolling-blocking-plane-0" should-spawn?)
       )
+
+    ;; couple extra to block any other possible vil2 > basin path
+    (set-vector-meters! (-> verts 0) 52.53 -93.32 -1613.7)
+    (set-vector-meters! (-> verts 1) 231.7 -93.32 -1335.1)
+    (blocking-plane-cond verts (meters 300.0) "rolling-blocking-plane-1" #t)
+
+    (set-vector-meters! (-> verts 0) 231.7 -93.32 -1335.1)
+    (set-vector-meters! (-> verts 1) -65.14 -93.32 -1188.0)
+    (blocking-plane-cond verts (meters 300.0) "rolling-blocking-plane-2" #t)
 
     ;; BACKWARDS BOGGY
     ;; any checkpoint besides end of boggy
