@@ -17,6 +17,7 @@
   - fixed bug where players were launched straight up instead of towards `last-known-safe-ground` if too far away
   - fixed bug where vertical momentum from uppercut attack wasn't reset when hitting ground collision
   - fixed bug where vertical momentum from uppercut attack wasn't reset when being "grabbed" for cutscenes
+  - fixed bug where players could cancel `target-hit-ground-hard` animation by switching to first-person mode
   - disabled cheat mode :)
 - `beach`
   - added blocking planes to prevent players from climbing the cannon tower without activating blue eco vents
