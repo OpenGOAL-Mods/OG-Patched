@@ -160,7 +160,7 @@
   ((method-of-type pc-settings reset-misc) obj call-handlers)
   (set! (-> obj text-language) (the pc-language (scf-get-language)))
   (set! (-> obj subtitle-language) (the pc-language (scf-get-language)))
-  (set! (-> obj skip-movies?) #t)
+  (set! (-> obj skip-movies?) #f)
   (set! (-> obj subtitles?) *debug-segment*)
   (cond
     ((and (= *default-territory* GAME_TERRITORY_SCEE) (= (-> obj text-language) (pc-language english)))

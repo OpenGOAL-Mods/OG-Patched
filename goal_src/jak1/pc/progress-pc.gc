@@ -133,7 +133,7 @@
 
 (define *game-options-pc* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type menu) :name (text-id input-options) :scale #t :param3 (game-option-menu input-options))
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id play-hints) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id play-hints) :scale #t :option-disabled-func (lambda () (not *debug-segment*)))
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id subtitles) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id hinttitles) :scale #t)
     (new 'static 'game-option :option-type (game-option-type language) :name (text-id language) :scale #t)
@@ -285,7 +285,7 @@
 (define *misc-options* (new 'static 'boxed-array :type game-option
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id money-starburst) :scale #t)
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id discord-rpc) :scale #t)
-    (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id cutscene-skips) :scale #t)
+    (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id cutscene-skips) :scale #t :option-disabled-func (lambda () (not *debug-segment*)))
     (new 'static 'game-option :option-type (game-option-type on-off) :name (text-id speedrunner-mode) :scale #t)
     (new 'static 'game-option :option-type (game-option-type button) :name (text-id back) :scale #t)
     )

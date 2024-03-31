@@ -126,8 +126,15 @@
 (defun start-speedrun ((category speedrun-category))
   ;; randomize game id so the autosplitter knows to restart
   (update-autosplit-jak1-new-game)
-  ;; disable hints (turned back on later for all-cutscenes category)
-  (set! (-> *setting-control* default play-hints) #f)
+
+  ;; PATCHED - forced movies in retail mode
+  (when (not *debug-segment*)
+    ;; force play hints on
+    (set! (-> *setting-control* default play-hints) #t)
+    ;; don't allow cutscene skips
+    (set! (-> *pc-settings* skip-movies?) #f)
+    )
+
   ;; turn on speedrun verification display and flip flag for setting up speedrun after initialize!
   (set! (-> *speedrun-info* should-display?) #t)
   (set! (-> *speedrun-info* needs-post-blackout-setup?) #t)
@@ -221,10 +228,6 @@
       (initialize! *game-info* 'game (the-as game-save #f) "ogre-end")
       )
     (((speedrun-category all-cutscenes))
-      ;; turn play hints back on
-      (set! (-> *setting-control* default play-hints) #t)
-      ;; don't allow cutscene skips
-      (set! (-> *pc-settings* skip-movies?) #f)
       ;; spawn at the geyser warp gate checkpoint
       (initialize! *game-info* 'game (the-as game-save #f) "intro-start")
       )

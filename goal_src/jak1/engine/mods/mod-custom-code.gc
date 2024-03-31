@@ -581,6 +581,14 @@ an orb |#
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun runs-every-frame ()
+  ;; PATCHED - forced movies in retail mode
+  (when (not *debug-segment*)
+    ;; force play hints on
+    (set! (-> *setting-control* default play-hints) #t)
+    ;; don't allow cutscene skips
+    (set! (-> *pc-settings* skip-movies?) #f)
+    )
+
   ;; PATCHED - no boosteds
   (set! (-> *edge-surface* fric) 1530000.0)
 
