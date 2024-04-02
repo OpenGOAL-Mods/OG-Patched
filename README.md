@@ -26,6 +26,7 @@
   - added check that lurker ambush has been defeated before the cell can be collected
   - added blocking planes to prevent players from skipping the intended path to the cannon area
   - added blocking planes to prevent players from skipping from cannon area directly to scout fly on ledge
+  - added blocking planes to prevent players from getting the zoomer out of the intended area
 - `firecanyon`
   - added check that players have triggered the keira cutscene after getting 20 cells before end of FC cell can be collected
 - `village2`
@@ -33,6 +34,7 @@
 - `swamp`
   - added blocking planes to prevent players from going backwards through the level
   - fixed bad collision in flutflut area, where players could get OOB
+  - fixed bad collision where players could get OOB crawling under the muck
   - fixed bug where players could launch to the lurker ambush without breaking the rock
 - `sunken`
   - fixed bug in entrance elevator where players could jump and die due to village2 `bottom-height`
@@ -58,8 +60,12 @@
   - fixed blocking plane before `village3` to prevent players from skipping the end of MP cell
 - `village3`
   - added check that the `village2` warp gate has been activated before the `village3` one can be activated
+  - added blocking plane to prevent players from skipping into hut from underneath
 - `snowy`
-  - fixed blocking planes to keep flutflut in intended area
+  - fixed blocking planes to prevent players from getting flutflut out of the intended area
+  - added blocking plane to prevent players from skipping ahead to the yellow eco switch
+  - added blocking plane to prevent players from climbing wall to exit yellow eco switch overhead
+  - added blocking plane to prevent players from getting to fort gate button without flutflut
   - added blocking plane to prevent players from getting to fort gate button without flutflut
   - added blocking plane to prevent players from entering the bunny lurker ambush room backwards
   - added blocking planes throughout level to prevent players from skipping the gondola ride
