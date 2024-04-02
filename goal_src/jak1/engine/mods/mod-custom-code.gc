@@ -251,6 +251,25 @@ an orb |#
     (set-vector-meters! (-> verts 1) -150.11 27.72 1043.9)
     (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-11" #t)
 
+    ;; MISTY ZOOMER BREAKOUT
+    (let ((should-spawn? (on-zoomer?)))
+      (set-vector-meters! (-> verts 0) -31.93 -13.85 1118.4)
+      (set-vector-meters! (-> verts 1) -41.28 -13.85 1111.5)
+      (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-32" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -34.33 -13.85 1129.6)
+      (set-vector-meters! (-> verts 1) -31.93 -13.85 1118.4)
+      (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-33" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -42.04 -13.85 1139.5)
+      (set-vector-meters! (-> verts 1) -34.33 -13.85 1129.6)
+      (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-34" should-spawn?)
+
+      (set-vector-meters! (-> verts 0) -42.04 -13.85 1139.5)
+      (set-vector-meters! (-> verts 1) -93.94 -13.85 1162.2)
+      (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-35" should-spawn?)
+      )
+
     ;; BEACH TOWER CLIMB
     ;; center window
     (set-vector-meters! (-> verts 0) -256.51 15.67 -284.0)
@@ -404,6 +423,15 @@ an orb |#
     (set-vector-meters! (-> verts 1) 529.2 13.0 -2087.0)
     (blocking-plane-cond verts (meters 30.0) "swamp-blocking-plane-4" #t)
 
+    ;; BOGGY TAR OOB
+    (set-vector-meters! (-> verts 0) 520.84 -4.21 -1976.2)
+    (set-vector-meters! (-> verts 1) 550.74 -4.21 -1975.0)
+    (blocking-plane-cond verts (meters 20.1) "swamp-blocking-plane-6" #t)
+    
+    (set-vector-meters! (-> verts 0) 522.18 -4.21 -1976.7)
+    (set-vector-meters! (-> verts 1) 485.43 -4.21 -1646.5)
+    (blocking-plane-cond verts (meters 20.1) "swamp-blocking-plane-7" #t)
+
     ;; VILLAGE2 BOULDER SKIP
     ;; spawn if boulder isnt lifted
     (let ((should-spawn? (!= (get-task-status (game-task village2-levitator)) (task-status invalid))))
@@ -449,6 +477,11 @@ an orb |#
       (set-vector-meters! (-> verts 1) 951.9 13.85 -3360.6)
       (blocking-plane-cond verts (meters 80.0) "ogre-blocking-plane-3" should-spawn?)
       )
+
+    ;; VILLAGE3 EXTENDED INTO HUT
+    (set-vector-meters! (-> verts 0) 1087.4 25.31 -3481.7)
+    (set-vector-meters! (-> verts 1) 1108.2 25.31 -3475.7)
+    (blocking-plane-cond verts (meters 25.5) "village3-blocking-plane-1" #t)
 
     ;; SNOWY FLUTFLUT ESCAPE
     (let ((should-spawn? (on-flut?)))
@@ -558,10 +591,26 @@ an orb |#
     ;; SNOWY BACKWARDS AMBUSH
     ;; spawn if we havent gotten cell
     (let ((should-spawn? (not (task-complete? *game-info* (game-task snow-bunnies)))))
-      (set-vector-meters! (-> verts 0) 931.59 220.55 -3370.0)
-      (set-vector-meters! (-> verts 1) 944.19 220.55 -3333.8)
+      (set-vector-meters! (-> verts 0) 930.84 220.55 -3369.7)
+      (set-vector-meters! (-> verts 1) 943.45 220.55 -3333.5)
       (blocking-plane-cond verts (meters 25.0) "snowy-blocking-plane-10" should-spawn?)
       )
+
+    ;; SNOWY YELLOW SWITCH ENTRANCE
+    ;; spawn if we havent gotten cell
+    (let ((should-spawn? (not (task-complete? *game-info* (game-task snow-eggtop)))))
+      (set-vector-meters! (-> verts 0) 727.75 214.31 -3364.2)
+      (set-vector-meters! (-> verts 1) 758.27 214.31 -3360.1)
+      (blocking-plane-cond verts (meters 82.0) "snowy-blocking-plane-24" should-spawn?)
+      )
+    ;; SNOWY YELLOW SWITCH EXIT
+    (set-vector-meters! (-> verts 0) 763.15 231.71 -3422.4)
+    (set-vector-meters! (-> verts 1) 737.74 231.71 -3439.8)
+    (blocking-plane-cond verts (meters 21.7) "snowy-blocking-plane-25" #t)
+
+    (set-vector-meters! (-> verts 0) 742.51 231.71 -3441.6)
+    (set-vector-meters! (-> verts 1) 718.96 231.71 -3421.8)
+    (blocking-plane-cond verts (meters 21.7) "snowy-blocking-plane-26" #t)
 
     ;; CITADEL HOPS
     ;; spawn if we havent gotten end of LT cell
