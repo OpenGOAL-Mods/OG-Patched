@@ -429,7 +429,7 @@ an orb |#
     (blocking-plane-cond verts (meters 20.1) "swamp-blocking-plane-6" #t)
     
     (set-vector-meters! (-> verts 0) 522.18 -4.21 -1976.7)
-    (set-vector-meters! (-> verts 1) 485.43 -4.21 -1646.5)
+    (set-vector-meters! (-> verts 1) 485.43 -4.21 -1946.5)
     (blocking-plane-cond verts (meters 20.1) "swamp-blocking-plane-7" #t)
 
     ;; VILLAGE2 BOULDER SKIP
