@@ -14,8 +14,8 @@
 #include "common/util/Assert.h"
 #include "common/util/math_util.h"
 
-#include "third-party/fmt/color.h"
-#include "third-party/fmt/core.h"
+#include "fmt/color.h"
+#include "fmt/core.h"
 
 namespace {
 template <typename... Args>
@@ -28,7 +28,7 @@ template <typename... Args>
   }
 
   throw std::runtime_error(
-      fmt::format("Type Error: {}", fmt::format(str, std::forward<Args>(args)...)));
+      fmt::format("Type Error: {}", fmt::format(fmt::runtime(str), std::forward<Args>(args)...)));
 }
 }  // namespace
 
@@ -1442,6 +1442,21 @@ std::vector<std::string> TypeSystem::search_types_by_parent_type(
   return results;
 }
 
+std::vector<std::string> TypeSystem::search_types_by_parent_type_strict(
+    const std::string& parent_type) {
+  std::vector<std::string> results = {};
+  for (const auto& [type_name, type_info] : m_types) {
+    // Only NullType's have no parent
+    if (!type_info->has_parent()) {
+      continue;
+    }
+    if (type_info->get_parent() == parent_type) {
+      results.push_back(type_name);
+    }
+  }
+  return results;
+}
+
 std::vector<std::string> TypeSystem::search_types_by_minimum_method_id(
     const int minimum_method_id,
     const std::optional<std::vector<std::string>>& existing_matches) {
@@ -1482,8 +1497,7 @@ std::vector<std::string> TypeSystem::search_types_by_size(
     }
   } else {
     for (const auto& [type_name, type_info] : m_types) {
-      // Only NullType's have no parent
-      if (!type_info->has_parent()) {
+      if (dynamic_cast<NullType*>(type_info.get())) {
         continue;
       }
       const auto size_of_type = m_types[type_name]->get_size_in_memory();
@@ -2113,7 +2127,7 @@ std::optional<std::string> find_best_field_in_structure(const TypeSystem& ts,
   }
   for (size_t i = start_field; i < (size_t)end_field; ++i) {
     const auto& field = st->fields().at(i);
-    auto type = ts.lookup_type(field.type());
+    auto type = ts.lookup_type_allow_partial_def(field.type());
     if (field.is_dynamic() || field.offset() > offset || field.user_placed() != want_fixed) {
       continue;
     }
@@ -2147,6 +2161,12 @@ std::optional<std::string> find_best_field_in_structure(const TypeSystem& ts,
     } else {
       int rel_offset = offset - field.offset();
       // array case (and array encompasses what we want)
+      ASSERT_MSG(
+          type->get_size_in_memory() > 0,
+          fmt::format(
+              "In type {}, type size was 0 for array field {} of type {}, check that the type "
+              "is fully defined.",
+              st->get_name(), field.name(), field.type().print()));
       int array_idx = rel_offset / type->get_size_in_memory();
       if (!field.is_inline() &&
           field.offset() + field.array_size() * type->get_load_size() > offset) {

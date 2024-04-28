@@ -786,6 +786,17 @@ an orb |#
     (('dying)
       ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
       
+      (if *show-input-display* 
+        (input-display-on)
+        (input-display-off)
+        )
+
+      ;; ensure orb-placer is spawned/killed as requested, debug menu is updated
+      (when *debug-segment*
+        (orb-placer-maintenance)
+        )
+
+      (none)
       )
     (('blackout)
       ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns

@@ -348,7 +348,9 @@
   "hud-classes-pc.o" ;; added
   "mod-settings.o" ;; added
   "mod-common-functions.o" ;; added
+  "orb-placer.o" ;; added
   "mod-custom-code.o" ;; added
+  "mod-debug.o" ;; added
   ;; keep zoomer stuff loaded
   "target-racer-h.o"
   "racer-part.o"
@@ -365,7 +367,7 @@
   "target-flut.o"
   "flut-saddle-ag.go"
   "eichar-flut+0-ag.go"
-  ;; blocking plane always loaded
+  ;; keep blocking-plane stuff loaded
   "blocking-plane.o"
   "ef-plane-ag.go"
  ))

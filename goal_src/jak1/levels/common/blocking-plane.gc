@@ -23,7 +23,7 @@
 (defstate blocking-plane-idle (blocking-plane)
   :trans (behavior ()
     (if (and *debug-segment* *display-path-marks*)
-      (logclear! (-> self draw status) (draw-status skip-bones))  ;; for debugging show blocking planes
+      (logclear! (-> self draw status) (draw-status skip-bones))  ;; in debug, show blocking planes when path marks on
       (logior! (-> self draw status) (draw-status skip-bones))
       )
     )
@@ -84,7 +84,6 @@
   (go blocking-plane-idle)
   (none)
   )
-  
 ;; Use the below function to spawn a blocking-plane between 2 vectors with a given height.
 ;; 
 ;; Example (spawn):
@@ -102,8 +101,8 @@
 ;; (let ((plane (process-by-name "test-blocking-plane-1" *active-pool*)))
 ;;   (when plane (deactivate plane))
 ;;   )
-(defun blocking-plane-spawn-simple ((arg1 (inline-array vector)) (arg2 float) (name string))
-  (process-spawn blocking-plane arg1 arg2 :to *active-pool* :name name)
+(defun blocking-plane-spawn-simple ((verts (inline-array vector)) (height float) (name string))
+  (process-spawn blocking-plane verts height :to *active-pool* :name name)
   )
   
 (defbehavior blocking-plane-spawn process ((arg0 curve-control))

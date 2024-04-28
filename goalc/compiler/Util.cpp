@@ -162,7 +162,7 @@ goos::Arguments Compiler::get_va(const goos::Object& form, const goos::Object& r
 
   std::string err;
   if (!goos::get_va(rest, &err, &args)) {
-    throw_compiler_error(form, err);
+    throw_compiler_error(form, "{}", err);
   }
   return args;
 }
@@ -189,7 +189,7 @@ void Compiler::va_check(
         named) {
   std::string err;
   if (!goos::va_check(args, unnamed, named, &err)) {
-    throw_compiler_error(form, err);
+    throw_compiler_error(form, "{}", err);
   }
 }
 
@@ -314,7 +314,7 @@ bool Compiler::is_local_symbol(const goos::Object& obj, Env* env) {
   }
 
   // check global constants
-  if (m_global_constants.find(obj.as_symbol()) != m_global_constants.end()) {
+  if (m_global_constants.lookup(obj.as_symbol())) {
     return true;
   }
 
