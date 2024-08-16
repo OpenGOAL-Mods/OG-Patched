@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: prototype-h.gc
-;; name in dgo: prototype-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/draw/drawable-h.gc")
 
 ;; The "prototype" system is used for instanced background rendering (shrub and tie).
 

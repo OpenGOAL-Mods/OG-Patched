@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: matrix.gc
-;; name in dgo: matrix
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
+(require "engine/math/matrix-h.gc")
 
 ;; This file implements the GOAL matrix library.
 
@@ -1294,8 +1293,7 @@
   "If mat has its upper 3x3 as a rotation, gets the y axis rotation."
   (let ((z-row (&-> mat data 8))) (atan (-> z-row 0) (-> z-row 2))))
 
-(defmethod transform-vectors! matrix
-  ((this _type_) (dst (inline-array vector)) (src (inline-array vector)) (count int))
+(defmethod transform-vectors! ((this matrix) (dst (inline-array vector)) (src (inline-array vector)) (count int))
   "Transform many vectors. This acts like w = 1, even if it isn't. The value of w is copied."
   (rlet ((vf0 :class vf)
          (vf1 :class vf)

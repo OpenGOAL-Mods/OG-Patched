@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: mayor.gc
-;; name in dgo: mayor
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/common-obs/process-taskable.gc")
 
 ;; DECOMP BEGINS
 

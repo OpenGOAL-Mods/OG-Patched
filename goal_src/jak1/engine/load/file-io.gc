@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: file-io.gc
-;; name in dgo: file-io
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gstring.gc")
 
 ;; GOAL File I/O
 ;;  This is mostly not used in the retail game and was more for loading stuff during development.
@@ -69,8 +67,7 @@
    (tool-debug     basic)
    (mdb-file-name  basic)))
 
-(defmethod print file-info
-  ((this file-info))
+(defmethod print ((this file-info))
   "Print information about a file"
   (format #t
           "#<~A ~A :version ~D.~D @ #x~X>"

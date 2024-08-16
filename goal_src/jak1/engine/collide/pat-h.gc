@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: pat-h.gc
-;; name in dgo: pat-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/math.gc")
 (defenum pat-material
   :type uint8
   (stone)

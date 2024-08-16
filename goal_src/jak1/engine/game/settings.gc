@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: settings.gc
-;; name in dgo: settings
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/ps2/pad.gc")
+(require "engine/gfx/ocean/ocean-h.gc")
 (#when PC_PORT
   (define *progress-flava* -1))
 
@@ -159,7 +157,9 @@
       (when *sound-player-enable*
         (when (!= (-> gp-0 sfx-volume) (-> s5-1 sfx-volume))
           (seek! (-> gp-0 sfx-volume) (-> s5-1 sfx-volume) (* 100.0 (seconds-per-frame)))
-          (sound-set-volume (sound-group sfx) (-> gp-0 sfx-volume)))
+          (sound-set-volume (sound-group sfx) (-> gp-0 sfx-volume))
+          ;; og:preserve-this Fix for menu-close
+          (sound-set-volume (sound-group sog3) (-> gp-0 sfx-volume)))
         (when (!= (-> gp-0 music-volume) (-> s5-1 music-volume))
           (seek! (-> gp-0 music-volume) (-> s5-1 music-volume) (* 100.0 (seconds-per-frame)))
           (sound-set-volume (sound-group music) (-> gp-0 music-volume)))
@@ -259,9 +259,9 @@
     (set! (-> gp-0 process-mask) (process-mask execute sleep))
     (set! (-> gp-0 screenx) 0)
     (set! (-> gp-0 screeny) 0)
-    (set! (-> gp-0 vibration) #f)
+    (set! (-> gp-0 vibration) #f) ;; mod-base-change
     (set! (-> gp-0 auto-save) #f)
-    (set! (-> gp-0 play-hints) #f)
+    (set! (-> gp-0 play-hints) #f) ;; mod-base-change
     (set! (-> gp-0 movie) (the-as (pointer process) #f))
     (set! (-> gp-0 talking) (the-as (pointer process) #f))
     (set! (-> gp-0 spooling) (the-as (pointer process) #f))

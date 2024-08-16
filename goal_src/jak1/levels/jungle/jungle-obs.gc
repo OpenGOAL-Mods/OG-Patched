@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: jungle-obs.gc
-;; name in dgo: jungle-obs
-;; dgos: JUN, JUNGLE, L1
+(bundles "JUN.DGO")
+(require "engine/util/sync-info.gc")
+(require "engine/anim/joint-mod-h.gc")
+(require "engine/common-obs/baseplat.gc")
+(require "engine/common-obs/water-anim.gc")
+(require "engine/camera/pov-camera-h.gc")
 
 ;; DECOMP BEGINS
 

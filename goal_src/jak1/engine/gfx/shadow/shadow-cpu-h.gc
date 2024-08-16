@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: shadow-cpu-h.gc
-;; name in dgo: shadow-cpu-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
+(require "engine/data/art-h.gc")
 
 ;; The shadow renderer is partially on the EE and on VU1.
 ;; This "shadow-cpu" portion is what runs on the EE.
@@ -49,25 +48,21 @@
    (update-direction-from-time-of-day (_type_) none)
    (collide-to-find-planes (_type_ vector float float float) none)))
 
-(defmethod clear-offset-bit shadow-control
-  ((obj shadow-control))
+(defmethod clear-offset-bit ((obj shadow-control))
   "Clear a bit in w for the center of the shadow."
   (set! (-> obj settings center w) (the-as float (logand (lognot #x20) (the-as int (-> obj settings center w)))))
   0)
 
-(defmethod set-offset-bit shadow-control
-  ((obj shadow-control))
+(defmethod set-offset-bit ((obj shadow-control))
   "Set a bit in w for the center position of the shadow"
   (set! (-> obj settings center w) (the-as float (logior (the-as int (-> obj settings center w)) #x20)))
   0)
 
-(defmethod set-bottom-plane-offset shadow-control
-  ((obj shadow-control) (arg0 float))
+(defmethod set-bottom-plane-offset ((obj shadow-control) (arg0 float))
   (set! (-> obj settings bot-plane d) (- arg0))
   0)
 
-(defmethod set-top-plane-offset shadow-control
-  ((obj shadow-control) (arg0 float))
+(defmethod set-top-plane-offset ((obj shadow-control) (arg0 float))
   (set! (-> obj settings top-plane d) (- arg0))
   0)
 

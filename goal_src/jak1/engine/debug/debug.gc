@@ -1,9 +1,14 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: debug.gc
-;; name in dgo: debug
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display.gc")
+(require "engine/draw/drawable-group-h.gc")
+(require "engine/gfx/math-camera.gc")
+(require "engine/debug/debug-sphere.gc")
+(require "engine/camera/cam-debug-h.gc")
+(require "engine/geometry/geometry.gc")
+(require "engine/gfx/lights-h.gc")
+(require "engine/math/vector.gc")
 
 ;; This file contains functions for debug drawing.
 ;; In general, the 3d functions draw using the camera and the 2d functions draw in screen coordinated.
@@ -658,8 +663,7 @@
       (else (+! gp-0 1)))
     gp-0))
 
-(defmethod inspect debug-vertex-stats
-  ((obj debug-vertex-stats))
+(defmethod inspect ((obj debug-vertex-stats))
   (format #t "[~8x] ~A~%" obj (-> obj type))
   (format #t "~Tlength: ~D~%" (-> obj length))
   (format #t "~Tpos-count: ~D~%" (-> obj pos-count))

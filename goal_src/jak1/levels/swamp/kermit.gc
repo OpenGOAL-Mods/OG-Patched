@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
+(bundles "SWA.DGO")
+(require "engine/common-obs/nav-enemy.gc")
 
-;; name: kermit.gc
-;; name in dgo: kermit
-;; dgos: L1, SWA
 ;; note: changed for high fps
 
 (declare-type kermit nav-enemy)

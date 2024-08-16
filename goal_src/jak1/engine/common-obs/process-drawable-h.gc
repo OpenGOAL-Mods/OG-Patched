@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: process-drawable-h.gc
-;; name in dgo: process-drawable-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display-h.gc")
+(require "engine/anim/joint-h.gc")
+(require "engine/game/game-h.gc")
 (define-extern cspace-index-by-name (function process-drawable string int))
 
 (define-extern cspace-by-name (function process-drawable string cspace))

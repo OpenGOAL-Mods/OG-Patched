@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: gcommon.gc
-;; name in dgo: gcommon
-;; dgos: KERNEL
+(bundles "KERNEL.CGO")
+(require "compiler-setup.gc")
+(require "kernel-defs.gc")
 
 ;; gcommon is the first file compiled and loaded.
 ;; it implements some features of built-in types

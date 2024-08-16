@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: collide-touch.gc
-;; name in dgo: collide-touch
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/collide/collide-touch-h.gc")
+(require "kernel/gstate.gc")
+(require "engine/target/target-h.gc")
+(require "engine/collide/collide-shape-h.gc")
+(require "engine/collide/collide-mesh-h.gc")
 
 ;; DECOMP BEGINS
 
@@ -319,8 +321,7 @@
   0
   (none))
 
-(defmethod prims-touching? touching-shapes-entry
-  ((this touching-shapes-entry) (arg0 collide-shape-moving) (arg1 uint))
+(defmethod prims-touching? ((this touching-shapes-entry) (arg0 collide-shape-moving) (arg1 uint))
   "In a pair of collide shapes, is a prim from the given collide shape with the given prim-id mask touching the other shape?"
   (cond
     ((= (-> this cshape1) arg0)
@@ -336,8 +337,7 @@
     (else (format 0 "ERROR: touching-shapes-entry::prims-touching? : Bogus cshape value!~%")))
   (the-as touching-prims-entry #f))
 
-(defmethod prims-touching-action? touching-shapes-entry
-  ((this touching-shapes-entry) (arg0 collide-shape) (arg1 collide-action) (arg2 collide-action))
+(defmethod prims-touching-action? ((this touching-shapes-entry) (arg0 collide-shape) (arg1 collide-action) (arg2 collide-action))
   "In a pair of collide shapes, find a pair of colliding prims where the prim from the given collide shape has at least one of the actions in arg1
    and none of the actions in arg2."
   (cond

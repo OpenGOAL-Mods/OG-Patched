@@ -50,15 +50,15 @@
   :bitfield #t
   :type uint32
   (force-on)
+  (endless-dark)
   (active)
+  (smack)
   (bomb0)
   (bomb1)
+  (tracking)
   (invinc)
-  (giant)
+  (invis)
   (no-anim)
-  (disable-force-on)
-  (ds8 8)
-  (ds9 9)
   )
 ;; ---darkjak-stage
 
@@ -138,7 +138,7 @@
 (define-extern pre-intro-play (function none))
 (define-extern intro-play (function none))
 (define-extern find-nearest-entity (function vector type entity))
-(define-extern have-vehicle-v-type? (function int symbol))
+(define-extern have-vehicle-v-type? (function vehicle-type symbol))
 (define-extern entity-birth-no-kill (function entity process))
 (define-extern process-drawable-burn-effect (function time-frame rgbaf :behavior target))
 (define-extern warp-gate type)
@@ -258,6 +258,21 @@
 ;; ---target-anim
 
 
+;; +++target-effect
+(defenum target-effect
+  :type uint64
+  :bitfield #t
+  (te0 0)
+  (te1 1)
+  (te2 2)
+  (te3 3)
+  (te4 4)
+  (te5 5)
+  (te6 6)
+  )
+;; ---target-effect
+
+
 ;; DECOMP BEGINS
 
 (deftype target (process-focusable)
@@ -304,18 +319,18 @@
    (spool-anim                   spool-anim)
    (ambient-time                 time-frame)
    (fp-hud                       handle)
-   (no-load-wait                 uint64)
-   (no-look-around-wait          uint64)
+   (no-load-wait                 time-frame)
+   (no-look-around-wait          time-frame)
    (burn-proc                    handle)
    (pre-joint-hook               (function none :behavior target))
    (notify                       handle)
    (death-resetter               resetter-spec     :inline)
-   (mode-cache                   basic)
+   (mode-cache                   symbol)
    (mode-param1                  handle)
    (mode-param2                  uint64)
    (mode-param3                  uint64)
    (major-mode-exit-hook         (function none :behavior target))
-   (major-mode-event-hook        (function none :behavior target))
+   (major-mode-event-hook        (function process int symbol event-message-block object :behavior target))
    (sub-mode-exit-hook           (function none :behavior target))
    (ext-geo-control              external-art-buffer)
    (pending-ext-geo              target-geo)
@@ -326,8 +341,8 @@
    (tobot-state                  state)
    (tobot?                       symbol)
    (tobot-recorder               basic)
-   (target-effect                uint64)
-   (color-effect                 basic)
+   (target-effect                target-effect)
+   (color-effect                 symbol)
    (color-effect-start-time      time-frame)
    (color-effect-duration        time-frame)
    (racer                        racer-info)
@@ -550,7 +565,7 @@
     target-swim-stance
     target-swim-up
     target-swim-walk
-    target-title
+    (target-title symbol)
     target-tube
     (target-tube-death symbol)
     (target-tube-hit symbol attack-info)

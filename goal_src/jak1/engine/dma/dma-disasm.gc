@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: dma-disasm.gc
-;; name in dgo: dma-disasm
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/dma/dma-buffer.gc")
 
 ;; Debug tool to print out a DMA list.
 

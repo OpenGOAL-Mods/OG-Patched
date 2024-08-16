@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: air-h.gc
-;; name in dgo: air-h
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/math/vector-h.gc")
 
 ;; DECOMP BEGINS
 

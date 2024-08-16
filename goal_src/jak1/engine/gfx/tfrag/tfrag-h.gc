@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: tfrag-h.gc
-;; name in dgo: tfrag-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/draw/drawable-tree-h.gc")
+(require "engine/draw/drawable-inline-array-h.gc")
 
 ;; DECOMP BEGINS
 

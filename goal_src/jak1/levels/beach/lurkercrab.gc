@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: lurkercrab.gc
-;; name in dgo: lurkercrab
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/common-obs/nav-enemy.gc")
+(require "engine/target/target-util.gc")
 
 ;; DECOMP BEGINS
 

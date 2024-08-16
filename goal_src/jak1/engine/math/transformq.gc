@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: transformq.gc
-;; name in dgo: transformq
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display-h.gc")
+(require "engine/physics/dynamics-h.gc")
+(require "engine/geometry/geometry.gc")
+(require "engine/math/transformq-h.gc")
 
 ;; DECOMP BEGINS
 

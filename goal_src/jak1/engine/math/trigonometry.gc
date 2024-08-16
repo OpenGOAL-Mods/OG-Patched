@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: trigonometry.gc
-;; name in dgo: trigonometry
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
+(require "engine/math/math.gc")
 
 ;; The "rotation" unit stores an angle in a float, where 1.0 = 1/65,536 (1/2^16) of a rotation.
 ;; Use the ~r format specifier to print rotations as degrees.

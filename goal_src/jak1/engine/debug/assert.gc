@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: assert.gc
-;; name in dgo: assert
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/debug/assert-h.gc")
 (define *run-time-assert-enable* #t)
 
 ;; TODO macros

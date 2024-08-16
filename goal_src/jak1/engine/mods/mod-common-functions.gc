@@ -88,6 +88,14 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
 (defmacro current-cutscene ()
   `(-> *art-control* active-stream))
 
+(defmacro set-cpad-pressed! (pad-idx &rest buttons)
+  `(logior! (cpad-pressed ,pad-idx) (pad-buttons ,@buttons))
+  )
+
+(defmacro set-cpad-hold! (pad-idx &rest buttons)
+  `(logior! (cpad-hold ,pad-idx) (pad-buttons ,@buttons))
+  )
+
 ;;This function moves an actor to the given coordinates
 ;;example: (move-actor "farmer-3" 3.0 74.0 -120.0)
 (defun move-actor ((actor-name string) (x float) (y float) (z float))
@@ -336,6 +344,20 @@ if the result of rand-vu-int-range is 1, then DANCE! if it is not 1, then Don't 
 
 (defbehavior music-manager-proc process ()
   (music-manager)
+  (none))
+
+(define *pc-temp-vector* (new 'static 'vector :x 1.0 :y 1.0 :z 1.0))
+(defun get-joint-pos-by-name ((actor process-drawable) (name string))
+  (when actor
+    (dotimes (i (-> actor node-list length))
+      (when (string= (-> actor node-list data i joint name) name)
+        (return (the-as vector (vector<-cspace! *pc-temp-vector* (-> actor node-list data i)))))))
+  (the-as vector (new-stack-vector0)))
+
+(defun print-joint-names ((actor process-drawable))
+  (format #t (string-format "Actor: ~S has these ~D Joints:~%" (-> actor name) (-> actor node-list length)))
+  (dotimes (i (-> actor node-list length))
+  (format #t (string-format "~D. ~S~%" i (-> actor node-list data i joint name))))
   (none))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;

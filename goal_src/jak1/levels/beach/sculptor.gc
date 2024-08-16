@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sculptor.gc
-;; name in dgo: sculptor
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/common-obs/process-taskable.gc")
 (declare-type muse nav-enemy)
 
 ;; DECOMP BEGINS

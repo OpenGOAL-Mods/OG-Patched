@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: path.gc
-;; name in dgo: path
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/geometry/path-h.gc")
+(require "engine/debug/debug.gc")
+(require "engine/debug/assert.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,10 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: final-door.gc
-;; name in dgo: final-door
-;; dgos: FIN, L1
-
+(bundles "FIN.DGO")
+(require "engine/game/main.gc")
+(require "engine/physics/trajectory.gc")
+(require "engine/game/task/task-control.gc")
+(require "engine/target/logic-target.gc")
 (define-extern power-left type)
 
 ;; DECOMP BEGINS

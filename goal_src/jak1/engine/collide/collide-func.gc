@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: collide-func.gc
-;; name in dgo: collide-func
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector.gc")
+(require "kernel/gkernel-h.gc")
 
 ;; This file contains the primitive intersection functions used for collision.
 ;; Most take a description of primitive and a "probe"

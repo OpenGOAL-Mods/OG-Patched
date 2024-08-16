@@ -1,5 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
+(require "engine/entity/ambient.gc")
+(require "pc/pckernel.gc")
 
 #|
   Code for subtitles for the PC port. A PC actor pool is provided, and the subtitle process lives there.
@@ -147,8 +149,7 @@
 ;;;;  loading files
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod get-scene-by-name subtitle-text-info
-  ((obj subtitle-text-info) (kind pc-subtitle-channel) (name string))
+(defmethod get-scene-by-name ((obj subtitle-text-info) (kind pc-subtitle-channel) (name string))
   "get a subtitle scene info with the corresponding name. #f = none found"
   ;; invalid name so return invalid scene.
   (if (not name) (return (the subtitle-text #f)))
@@ -158,8 +159,7 @@
       (return (-> obj data i))))
   (the subtitle-text #f))
 
-(defmethod get-scene-by-text-id subtitle-text-info
-  ((obj subtitle-text-info) (kind pc-subtitle-channel) (id text-id))
+(defmethod get-scene-by-text-id ((obj subtitle-text-info) (kind pc-subtitle-channel) (id text-id))
   "get a subtitle scene info with the corresponding name. #f = none found"
   (dotimes (i (-> obj length))
     ;; name and kind matches, return that!
@@ -381,8 +381,7 @@
       (set! (-> *video-parms* relative-y-scale-reciprical) sv-132)
       (if (> sv-168 0) (* sv-164 (the float sv-168)) 0.0))))
 
-(defmethod subtitle-format subtitle
-  ((obj subtitle) (keyframe subtitle-keyframe))
+(defmethod subtitle-format ((obj subtitle) (keyframe subtitle-keyframe))
   "check settings and format subtitle accordingly."
   (cond
     ((= 0 (length (-> keyframe speaker)))
@@ -763,13 +762,11 @@
 ;;;; helper functions
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod length subtitle-text-info
-  ((obj subtitle-text-info))
+(defmethod length ((obj subtitle-text-info))
   "Get the length (number of subtitle scenes) in a subtitle-text-info."
   (-> obj length))
 
-(defmethod length subtitle-text
-  ((obj subtitle-text))
+(defmethod length ((obj subtitle-text))
   "Get the length (number of subtitle lines) in a subtitle-text."
   (-> obj length))
 

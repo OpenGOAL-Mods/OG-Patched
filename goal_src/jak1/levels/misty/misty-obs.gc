@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: misty-obs.gc
-;; name in dgo: misty-obs
-;; dgos: L1, MIS
+(bundles "MIS.DGO")
+(require "engine/common-obs/rigid-body.gc")
+(require "levels/common/battlecontroller.gc")
+(require "engine/camera/pov-camera-h.gc")
 
 ;; DECOMP BEGINS
 

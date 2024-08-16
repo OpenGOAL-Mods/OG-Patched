@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: pelican.gc
-;; name in dgo: pelican
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/common-obs/process-taskable.gc")
+(require "engine/anim/aligner.gc")
+(require "engine/geometry/path.gc")
 
 ;; DECOMP BEGINS
 
@@ -305,7 +305,12 @@
       (case message
         (('attack)
          (case (-> block param 1)
-           (('explode) (let ((a0-2 (handle->process (-> self fuel-cell)))) (if a0-2 (send-event a0-2 'trans (-> self root trans)))))
+           (('explode)
+            ;; PATCHED - no pelican kill
+            ;; (let ((a0-2 (handle->process (-> self fuel-cell)))) (if a0-2 (send-event a0-2 'trans (-> self root trans))))
+            ;; (go pelican-explode #f)
+            ;; #f
+            )
            (else
             (let* ((gp-0 proc)
                    (v1-13 (if (and (nonzero? gp-0) (type-type? (-> gp-0 type) process-drawable)) gp-0))

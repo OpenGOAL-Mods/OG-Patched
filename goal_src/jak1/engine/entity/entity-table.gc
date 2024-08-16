@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: entity-table.gc
-;; name in dgo: entity-table
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/entity/entity-h.gc")
 
 ;; The *entity-info* table contains some simple information that can be used to
 ;; spawn a process for an entity.

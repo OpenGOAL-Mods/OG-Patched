@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: gstring-h.gc
-;; name in dgo: gstring-h
-;; dgos: KERNEL
+(bundles "KERNEL.CGO")
+(require "kernel-defs.gc")
 
 ;; generates no code, see gstring.gc for the string implementation.
 

@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: training-part.gc
-;; name in dgo: training-part
-;; dgos: L1, TRA
+(bundles "TRA.DGO")
+(require "engine/gfx/sprite/sparticle/sparticle.gc")
+(require "engine/common-obs/generic-obs-h.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sunken-pipegame.gc
-;; name in dgo: sunken-pipegame
-;; dgos: L1, SUN, SUNKEN
+(bundles "SUN.DGO")
+(require "engine/common-obs/ticky.gc")
+(require "engine/geometry/path.gc")
+(require "engine/common-obs/collectables.gc")
+(require "engine/camera/pov-camera-h.gc")
+(require "engine/common-obs/basebutton.gc")
 
 ;; DECOMP BEGINS
 

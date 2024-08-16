@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: shrubbery-h.gc
-;; name in dgo: shrubbery-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
+(require "engine/gfx/background/prototype-h.gc")
+(require "engine/draw/drawable-tree-h.gc")
+(require "engine/draw/drawable-inline-array-h.gc")
 
 ;; DECOMP BEGINS
 

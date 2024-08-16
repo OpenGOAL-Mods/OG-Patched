@@ -1,9 +1,13 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: joint.gc
-;; name in dgo: joint
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/entity/res.gc")
+(require "engine/gfx/background/subdivide-h.gc")
+(require "engine/math/transformq.gc")
+(require "engine/anim/joint-h.gc")
+(require "engine/data/art-h.gc")
+(require "engine/anim/mspace-h.gc")
+(require "engine/game/game-h.gc")
 
 ;; a joint is just used to store the tree structure of a skeleton + bind pose.
 ;; it's mostly used as a more user-friendly interface
@@ -406,8 +410,7 @@
 (defmethod length ((this joint-anim))
   (-> this length))
 
-(defmethod inspect joint-anim-matrix
-  ((this joint-anim-matrix))
+(defmethod inspect ((this joint-anim-matrix))
   (format #t "[~8x] ~A~%" this (-> this type))
   (format #t "~Tname: ~A~%" (-> this name))
   (format #t "~Tnumber: ~D~%" (-> this number))
@@ -417,8 +420,7 @@
 (defmethod asize-of ((this joint-anim-matrix))
   (the-as int (+ (-> joint-anim-matrix size) (* (-> this length) 64))))
 
-(defmethod inspect joint-anim-transformq
-  ((this joint-anim-transformq))
+(defmethod inspect ((this joint-anim-transformq))
   (format #t "[~8x] ~A~%" this (-> this type))
   (format #t "~Tname: ~A~%" (-> this name))
   (format #t "~Tnumber: ~D~%" (-> this number))
@@ -604,8 +606,7 @@
 (defmethod asize-of ((this art-joint-anim))
   (the-as int (+ (-> art size) (* (-> this length) 4))))
 
-(defmethod inspect art-group
-  ((this art-group))
+(defmethod inspect ((this art-group))
   "Print the arts in an art-group"
   (format #t "[~8x] ~A~%" this (-> this type))
   (format #t "~Tinfo: ~A~%" (-> this info))

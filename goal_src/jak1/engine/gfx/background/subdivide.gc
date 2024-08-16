@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: subdivide.gc
-;; name in dgo: subdivide
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display.gc")
+(require "engine/gfx/tfrag/tfrag-h.gc")
+(require "engine/debug/stats-h.gc")
+(require "engine/gfx/background/subdivide-h.gc")
 
 ;; This file mainly contains statistics stuff for the background renderers.
 ;; And the mysterious "gomi stats hack", abbreviated GSH.

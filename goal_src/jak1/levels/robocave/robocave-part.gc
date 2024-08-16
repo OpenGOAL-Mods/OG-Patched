@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: robocave-part.gc
-;; name in dgo: robocave-part
-;; dgos: L1, ROB
+(bundles "ROB.DGO")
+(require "engine/gfx/sprite/sparticle/sparticle-h.gc")
+(require "engine/gfx/sprite/sparticle/sparticle-launcher-h.gc")
+(require "engine/gfx/texture/texture-h.gc")
+(require "engine/common-obs/generic-obs-h.gc")
 
 ;; DECOMP BEGINS
 

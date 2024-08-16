@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: cam-combiner.gc
-;; name in dgo: cam-combiner
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display.gc")
+(require "engine/camera/camera.gc")
 
 ;; DECOMP BEGINS
 

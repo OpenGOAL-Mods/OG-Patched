@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: target-tube.gc
-;; name in dgo: target-tube
-;; dgos: L1, SUN, SUNKEN
-
+(bundles "SUN.DGO")
+(require "engine/target/target-death.gc")
+(require "engine/anim/aligner.gc")
+(require "engine/geometry/path.gc")
 (define-extern *tube-surface* surface) ;; unknown type
 
 ;; DECOMP BEGINS
@@ -436,11 +435,9 @@
     (-> target-tube-start
         exit)
   :trans
-    (behavior ()
-      (if (and (logtest? (logior (logior (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 0)
-                                         (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 1))
-                                 (-> *cpad-list* cpads (-> self control unknown-cpad-info00 number) button0-rel 2))
-                         (pad-buttons x))
+     (behavior ()
+      ;; og:preserve-this - High FPS Fix
+      (if (and (recently-pressed? x)
                (can-jump? #f))
         (go target-tube-jump (-> *TARGET-bank* tube-jump-height-min) (-> *TARGET-bank* tube-jump-height-max))))
   :code

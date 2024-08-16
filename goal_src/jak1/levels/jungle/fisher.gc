@@ -1,10 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: fisher-JUN.gc
-;; name in dgo: fisher
-;; dgos: JUN
-
+(bundles "JUN.DGO")
+(require "engine/geometry/path.gc")
+(require "engine/common-obs/process-taskable.gc")
+(require "engine/target/logic-target.gc")
+(require "engine/target/sidekick.gc")
 (declare-type fisher-fish process-drawable)
 
 ;; DECOMP BEGINS

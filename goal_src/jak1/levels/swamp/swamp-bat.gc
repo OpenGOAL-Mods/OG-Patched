@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: swamp-bat.gc
-;; name in dgo: swamp-bat
-;; dgos: L1, SWA
-
+(bundles "SWA.DGO")
+(require "engine/util/sync-info.gc")
+(require "engine/common-obs/nav-enemy.gc")
+(require "engine/geometry/vol.gc")
 (declare-type swamp-bat-slave process-drawable)
 
 (declare-type swamp-bat process-drawable)

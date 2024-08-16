@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: shadow-vu1.gc
-;; name in dgo: shadow-vu1
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/shadow/shadow-cpu.gc")
 
 ;; DECOMP BEGINS
 
@@ -89,11 +87,7 @@
                  :regs7 (gif-reg-id st)
                  :regs8 (gif-reg-id xyzf2)))))
 
-(define shadow-vu1-block
-  (new 'static
-       'vu-function
-       #| :length #x2e4 :qlength #x172 |#
-       ))
+(define shadow-vu1-block (new 'static 'vu-function)) ;; :length #x2e4 :qlength #x172
 
 (defun shadow-vu1-add-constants ((arg0 dma-buffer))
   (let* ((a2-0 13)

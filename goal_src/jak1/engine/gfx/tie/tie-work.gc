@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: tie-work.gc
-;; name in dgo: tie-work
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/tie/tie-h.gc")
+(require "engine/dma/dma-buffer.gc")
+(require "engine/math/vector-h.gc")
 
 ;; definition for symbol *instance-tie-work*, type instance-tie-work
 

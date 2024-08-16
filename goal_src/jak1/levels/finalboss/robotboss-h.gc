@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: robotboss-h.gc
-;; name in dgo: robotboss-h
-;; dgos: FIN, L1
+(bundles "FIN.DGO")
+(require "engine/data/art-h.gc")
+(require "engine/gfx/sprite/sparticle/sparticle-launcher.gc")
 
 ;; DECOMP BEGINS
 

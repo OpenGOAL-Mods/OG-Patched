@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: cam-interface-h.gc
-;; name in dgo: cam-interface-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/camera/camera-h.gc")
+(require "engine/math/matrix-h.gc")
 
 ;; NOTE - forward declaration needed for cam-interface
 (define-extern *camera-dummy-vector* vector)

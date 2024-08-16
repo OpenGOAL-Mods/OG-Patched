@@ -1,5 +1,6 @@
 ;;-*-Lisp-*-
 (in-package goal)
+(require "engine/game/settings-h.gc")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; mimicking Java's util.Random https://docs.oracle.com/javase/8/docs/api/java/util/Random.html

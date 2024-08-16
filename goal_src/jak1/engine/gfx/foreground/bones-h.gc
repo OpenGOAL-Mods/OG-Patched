@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: bones-h.gc
-;; name in dgo: bones-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/shadow/shadow-cpu-h.gc")
 
 ;; The "bone" system computes bone matrices from joint animations.
 ;; It looks like it also expanded to do most of the DMA generation

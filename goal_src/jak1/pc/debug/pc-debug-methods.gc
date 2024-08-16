@@ -1,13 +1,16 @@
 ;;-*-Lisp-*-
 (in-package goal)
+(require "engine/gfx/hw/display.gc")
+(require "pc/debug/pc-debug-common.gc")
+(require "engine/math/quaternion-h.gc")
+(require "engine/game/game-info-h.gc")
 
 #| Various debugging displays made for the pc port. This file includes overrides or game-specific implementations. |#
 
 ;; debug-only file!
 (declare-file (debug))
 
-(defmethod print-debug-misc pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod print-debug-misc ((obj pc-settings-jak1))
   "prints various miscellaneous debug text to the game console, according to what's enabled in this object."
   (when *display-bug-report*
     (format *stdcon* "~0kbug-report ~A~%" *user*)
@@ -29,8 +32,7 @@
 
 (defconstant MEM_BAR_NUM 7) ;; amount of memory usage bars (override later if wanted)
 
-(defmethod draw-memory pc-settings
-  ((obj pc-settings) (buf dma-buffer))
+(defmethod draw-memory ((obj pc-settings) (buf dma-buffer))
   "draw the memory heap status in the bottom right corner"
   (when *display-heap-status*
     (draw-memory-bar-kheap buf global :idx 0 :color (static-rgba 32 32 255 64))

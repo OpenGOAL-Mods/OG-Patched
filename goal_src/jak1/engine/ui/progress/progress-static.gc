@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: progress-static.gc
-;; name in dgo: progress-static
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/ui/progress/progress-h.gc")
+(require "engine/ui/text-h.gc")
+(require "engine/game/task/game-task-h.gc")
 
 ;; This file contains the layouts for all of the menus.
 

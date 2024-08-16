@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: gkernel-h.gc
-;; name in dgo: gkernel-h
-;; dgos: KERNEL
+(bundles "KERNEL.CGO")
+(require "kernel/gcommon.gc")
 
 ;; Type definitions and constants for the GOAL Kernel. The GOAL kernel is dipatched
 ;; from C++ through the *kernel-dispatcher* and is responsible for:

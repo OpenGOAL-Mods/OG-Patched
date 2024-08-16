@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: load-boundary-data.gc
-;; name in dgo: load-boundary-data
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/level/load-boundary.gc")
 
 ;; this file is (mostly) generated. see ---lb-save
 

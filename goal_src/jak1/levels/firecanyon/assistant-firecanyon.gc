@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: assistant-firecanyon.gc
-;; name in dgo: assistant-firecanyon
-;; dgos: L1, FIC
+(bundles "FIC.DGO")
+(require "engine/common-obs/process-taskable.gc")
 
 ;; DECOMP BEGINS
 

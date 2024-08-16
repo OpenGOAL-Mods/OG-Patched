@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: dma.gc
-;; name in dgo: dma
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/dma/dma-h.gc")
+(require "engine/ps2/vif-h.gc")
 
 ;; DMA send and sync functions:
 ;; These functions transfer existing DMA chains and buffers.

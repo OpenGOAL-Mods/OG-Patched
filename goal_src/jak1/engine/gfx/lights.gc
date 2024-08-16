@@ -1,10 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: lights.gc
-;; name in dgo: lights
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/lights-h.gc")
+(require "engine/gfx/foreground/bones-h.gc")
+(require "engine/geometry/geometry.gc")
+(require "engine/math/vector.gc")
 (defun light-slerp ((out light) (a light) (b light) (alpha float))
   "Linearly interpolate between two light's vectors. Alpha is clamped between 0 - 1."
   (let ((clamped-alpha (fmax 0.0 (fmin 1.0 alpha))))

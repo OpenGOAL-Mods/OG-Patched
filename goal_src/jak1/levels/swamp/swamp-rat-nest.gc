@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: swamp-rat-nest.gc
-;; name in dgo: swamp-rat-nest
-;; dgos: L1, SWA
-
+(bundles "SWA.DGO")
+(require "levels/swamp/swamp-rat.gc")
 (declare-type swamp-rat-nest-dummy process-drawable)
 
 (declare-type swamp-rat-nest process-drawable)

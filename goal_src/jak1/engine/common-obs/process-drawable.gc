@@ -1,9 +1,13 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: process-drawable.gc
-;; name in dgo: process-drawable
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/engine/engines.gc")
+(require "engine/gfx/merc/merc-blend-shape.gc")
+(require "engine/game/game-info.gc")
+(require "engine/gfx/foreground/eye-h.gc")
+(require "engine/gfx/shadow/shadow-cpu-h.gc")
+(require "engine/collide/collide-shape-rider.gc")
+(require "engine/load/loader.gc")
 
 ;; TODO: there are some missing functions here...
 
@@ -72,8 +76,7 @@
     (set! (-> v0-0 process) arg0)
     v0-0))
 
-(defmethod lod-set! draw-control
-  ((obj draw-control) (arg0 int))
+(defmethod lod-set! ((obj draw-control) (arg0 int))
   (let ((v1-1 (max 0 (min arg0 (-> obj lod-set max-lod)))))
     (set! (-> obj desired-lod) v1-1)
     (when (!= (-> obj cur-lod) v1-1)
@@ -82,15 +85,13 @@
   0
   (none))
 
-(defmethod lods-assign! draw-control
-  ((obj draw-control) (arg0 lod-set))
+(defmethod lods-assign! ((obj draw-control) (arg0 lod-set))
   (mem-copy! (the-as pointer (-> obj lod-set)) (the-as pointer arg0) 33)
   (let ((a1-2 (min (-> obj cur-lod) (-> obj lod-set max-lod)))) (set! (-> obj cur-lod) -1) (lod-set! obj a1-2))
   0
   (none))
 
-(defmethod setup-lods! lod-set
-  ((obj lod-set) (arg0 skeleton-group) (arg1 art-group) (arg2 entity))
+(defmethod setup-lods! ((obj lod-set) (arg0 skeleton-group) (arg1 art-group) (arg2 entity))
   (local-vars (sv-16 res-tag))
   (let ((s4-0 arg0)
         (s5-0 arg1))
@@ -229,8 +230,7 @@
                             #f
                             (the rgba -1))))))))
 
-(defmethod do-joint-math! process-drawable
-  ((obj process-drawable))
+(defmethod do-joint-math! ((obj process-drawable))
   (cond
     ((logtest? (-> obj draw status) (draw-status hidden no-anim)))
     ((zero? (-> obj skel))
@@ -278,8 +278,7 @@
   0
   (none))
 
-(defmethod cleanup-for-death process-drawable
-  ((obj process-drawable))
+(defmethod cleanup-for-death ((obj process-drawable))
   (if (type-type? (-> obj root type) collide-shape) (clear-collide-with-as (the-as collide-shape (-> obj root))))
   (if (nonzero? (-> obj skel)) (ja-channel-set! 0))
   (process-entity-status! obj (entity-perm-status dead) #t)
@@ -298,8 +297,7 @@
                                (static-rgba 0 #xff 0 #x40)))))
   #f)
 
-(defmethod deactivate process-drawable
-  ((obj process-drawable))
+(defmethod deactivate ((obj process-drawable))
   (if (nonzero? (-> obj part)) (kill-and-free-particles (-> obj part)))
   (if (nonzero? (-> obj sound)) (stop! (-> obj sound)))
   ((method-of-type process deactivate) obj)
@@ -330,8 +328,7 @@
 ;; WARN: Stack slot offset 20 signed mismatch
 ;; WARN: Stack slot offset 20 signed mismatch
 ;; WARN: Stack slot offset 20 signed mismatch
-(defmethod initialize-skeleton process-drawable
-  ((obj process-drawable) (arg0 skeleton-group) (arg1 pair))
+(defmethod initialize-skeleton ((obj process-drawable) (arg0 skeleton-group) (arg1 pair))
   (local-vars (s3-0 draw-control) (sv-16 art-element) (sv-20 int))
   (let ((s1-0 (cond
                 ((= (-> arg0 texture-level) 2) (-> *level* level-default))
@@ -417,8 +414,7 @@
   (label cfg-59)
   (none))
 
-(defmethod initialize-skeleton-by-name process-drawable
-  ((obj process-drawable) (arg0 string) (arg1 object))
+(defmethod initialize-skeleton-by-name ((obj process-drawable) (arg0 string) (arg1 object))
   (let ((s3-0 string->symbol))
     (format (clear *temp-string*) "*~S-sg*" arg0)
     (let ((s3-1 (-> (s3-0 *temp-string*) value)))
@@ -427,8 +423,7 @@
         (go process-drawable-art-error arg0))))
   obj)
 
-(defmethod apply-alignment process-drawable
-  ((obj process-drawable) (arg0 align-opts) (arg1 transformq) (arg2 vector))
+(defmethod apply-alignment ((obj process-drawable) (arg0 align-opts) (arg1 transformq) (arg2 vector))
   (when (logtest? arg0 (align-opts adjust-x-vel adjust-y-vel adjust-xz-vel))
     (let* ((body-T-world (quaternion->matrix (new 'stack-no-clear 'matrix) (-> obj root quat)))
            (world-T-body (matrix-transpose! (new 'stack-no-clear 'matrix) body-T-world))
@@ -597,8 +592,7 @@
 
 ;; ERROR: Unsupported inline assembly instruction kind - [lw ra, return-from-thread(s7)]
 ;; ERROR: Unsupported inline assembly instruction kind - [jr ra]
-(defmethod evaluate-joint-control process-drawable
-  ((obj process-drawable))
+(defmethod evaluate-joint-control ((obj process-drawable))
   (local-vars (s7-0 none) (ra-0 int))
   (let ((gp-0 (-> obj skel)))
     (label cfg-1)
@@ -660,8 +654,7 @@
   0
   (none))
 
-(defmethod current-cycle-distance joint-control
-  ((obj joint-control))
+(defmethod current-cycle-distance ((obj joint-control))
   (cond
     ((< (the-as int (-> obj root-channel)) (the-as int (-> obj channel (-> obj active-channels))))
      (let ((s5-0 (-> obj root-channel (-> obj root-channel 0 group-size)))
@@ -736,10 +729,10 @@
     (let ((s5-0 (-> v1-0 extra perm task))
           (s4-0 (new 'static 'fact-info)))
       (set! (-> s4-0 options) (fact-options))
-      (when arg2
+      (when arg2 
         (set! (-> s4-0 options) (fact-options instant-collect))
-        (set-setting *setting-control* *target* 'allow-progress #f 0.0 0) ;; PATCHED - prevent HUD buffer
-        )
+        ;; PATCHED - prevent HUD buffer
+        (set-setting *setting-control* *target* 'allow-progress #f 0.0 0))
       (when (and (nonzero? s5-0) (not (task-complete? *game-info* s5-0)))
         (label cfg-12)
         (birth-pickup-at-point gp-0 (pickup-type fuel-cell) (the float s5-0) #f self s4-0)

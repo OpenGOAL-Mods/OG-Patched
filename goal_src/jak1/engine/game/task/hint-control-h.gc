@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: hint-control-h.gc
-;; name in dgo: hint-control-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 
 ;; The "hint" system is used to give the player hints if they appear to be stuck
 ;; Hints can belong to either a level or a task.  The hint-control types have

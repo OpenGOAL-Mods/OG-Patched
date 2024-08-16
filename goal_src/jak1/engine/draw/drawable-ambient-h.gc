@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: drawable-ambient-h.gc
-;; name in dgo: drawable-ambient-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display-h.gc")
+(require "engine/draw/drawable-tree-h.gc")
+(require "engine/draw/drawable-inline-array-h.gc")
 (declare-type entity-ambient basic)
 
 (define-extern vector-for-ambient (function process-drawable vector vector))

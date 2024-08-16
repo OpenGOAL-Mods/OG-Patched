@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: text.gc
-;; name in dgo: text
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/ui/text-h.gc")
+(require "engine/debug/debug.gc")
+(require "engine/load/load-dgo.gc")
 
 ;; This file contains functions for:
 ;; - loading text files containing translated game text

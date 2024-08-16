@@ -1,10 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: ogreboss.gc
-;; name in dgo: ogreboss
-;; dgos: L1, OGR
-
+(bundles "OGR.DGO")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/collide/collide-cache.gc")
+(require "engine/anim/joint-mod-h.gc")
+(require "engine/physics/trajectory.gc")
+(require "engine/camera/pov-camera-h.gc")
 (declare-type ogreboss process-drawable)
 
 (define-extern *ogreboss* ogreboss)

@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: loader-h.gc
-;; name in dgo: loader-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gkernel-h.gc")
 
 ;; The loader is responsible for managing streaming loads.
 

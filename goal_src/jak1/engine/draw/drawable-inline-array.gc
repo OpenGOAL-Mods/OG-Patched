@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: drawable-inline-array.gc
-;; name in dgo: drawable-inline-array
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display-h.gc")
+(require "engine/draw/drawable-inline-array-h.gc")
 
 ;; - All these methods are stubs
 

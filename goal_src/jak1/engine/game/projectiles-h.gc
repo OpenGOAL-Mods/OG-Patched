@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: projectiles-h.gc
-;; name in dgo: projectiles-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/game/game-h.gc")
 (declare-type projectile process-drawable)
 
 (define-extern projectile-init-by-other (function entity-actor vector vector uint handle none :behavior projectile)) ;; 4th arg is `options`, 5th is `last-target`

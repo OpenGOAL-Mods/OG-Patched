@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: menu.gc
-;; name in dgo: menu
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display.gc")
+(require "engine/gfx/font.gc")
 
 ;; This file contains the UI and rendering for the debug menu, but not the actual menu layout and callbacks.
 

@@ -1,14 +1,20 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: collide-cache.gc
-;; name in dgo: collide-cache
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/background/subdivide.gc")
+(require "engine/collide/collide-func.gc")
+(require "examples/debug-collide.gc")
+(require "engine/collide/collide-probe.gc")
+(require "engine/geometry/bounding-box.gc")
+(require "engine/collide/collide-mesh-h.gc")
+(require "engine/collide/main-collide.gc")
+(require "engine/common-obs/water-h.gc")
+(require "engine/collide/collide-shape-h.gc")
+(require "engine/debug/debug.gc")
 
 ;; DECOMP BEGINS
 
-(defmethod debug-draw collide-cache
-  ((obj collide-cache))
+(defmethod debug-draw ((obj collide-cache))
   "Debug draw all the things in the collide cache!"
   (let ((gp-0 (the-as collide-cache-tri (-> obj tris))))
     (countdown (s4-0 (-> obj num-tris))
@@ -46,8 +52,7 @@
 
 (define *already-printed-exeeded-max-cache-tris* #f)
 
-(defmethod initialize collide-cache
-  ((obj collide-cache))
+(defmethod initialize ((obj collide-cache))
   "Clear the collide-cache."
   (set! (-> obj num-tris) 0)
   (set! (-> obj num-prims) 0)
@@ -94,10 +99,7 @@
 
 (def-mips2c __pc-upload-collide-frag (function object object object none))
 
-(defmethod fill-from-background collide-cache
-  ((obj collide-cache)
-   (bsp-find-mesh-func (function bsp-header int collide-list none))
-   (import-mesh-func (function collide-cache object none)))
+(defmethod fill-from-background ((obj collide-cache) (bsp-find-mesh-func (function bsp-header int collide-list none)) (import-mesh-func (function collide-cache object none)))
   "This terrible function fills the collide cache with background tris from a bounding box."
   (local-vars (a0-4 int) (a0-6 int))
   ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -152,8 +154,7 @@
   0
   (none))
 
-(defmethod fill-from-water collide-cache
-  ((obj collide-cache) (arg0 water-control))
+(defmethod fill-from-water ((obj collide-cache) (arg0 water-control))
   (rlet ((vf0 :class vf)
          (vf1 :class vf)
          (vf2 :class vf)
@@ -210,8 +211,7 @@
     (+! (-> obj num-tris) 2)
     (none)))
 
-(defmethod fill-using-bounding-box collide-cache
-  ((obj collide-cache) (arg0 bounding-box) (arg1 collide-kind) (arg2 process-drawable) (arg3 pat-surface))
+(defmethod fill-using-bounding-box ((obj collide-cache) (arg0 bounding-box) (arg1 collide-kind) (arg2 process-drawable) (arg3 pat-surface))
   (rlet ((Q :class vf)
          (vf0 :class vf)
          (vf1 :class vf)
@@ -295,8 +295,7 @@
     (.mov v1-1 vf1)
     (<= (the-as int v1-1) 0)))
 
-(defmethod collide-with-box collide-fragment
-  ((obj collide-fragment) (arg0 int) (arg1 collide-list))
+(defmethod collide-with-box ((obj collide-fragment) (arg0 int) (arg1 collide-list))
   (let ((s3-0 *collide-work*))
     (dotimes (s2-0 arg0)
       (when (and (collide-cache-using-box-test (-> obj bsphere)) (drawable-sphere-box-intersect? obj (-> s3-0 collide-box4w)))
@@ -308,8 +307,7 @@
   0
   (none))
 
-(defmethod collide-with-box instance-tie
-  ((obj instance-tie) (arg0 int) (arg1 collide-list))
+(defmethod collide-with-box ((obj instance-tie) (arg0 int) (arg1 collide-list))
   (dotimes (s3-0 arg0)
     (when (and (zero? (logand (-> obj flags) 1))
                (collide-cache-using-box-test (-> obj bsphere))
@@ -332,8 +330,7 @@
 ;; Y PROBE
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod fill-using-y-probe collide-cache
-  ((obj collide-cache) (arg0 vector) (arg1 float) (arg2 collide-kind) (arg3 process-drawable) (arg4 pat-surface))
+(defmethod fill-using-y-probe ((obj collide-cache) (arg0 vector) (arg1 float) (arg2 collide-kind) (arg3 process-drawable) (arg4 pat-surface))
   (rlet ((vf1 :class vf)
          (vf2 :class vf)
          (vf3 :class vf)
@@ -417,8 +414,7 @@
 
 ;; definition for method 12 of type collide-fragment
 ;; INFO: Return type mismatch int vs none.
-(defmethod collide-y-probe collide-fragment
-  ((obj collide-fragment) (arg0 int) (arg1 collide-list))
+(defmethod collide-y-probe ((obj collide-fragment) (arg0 int) (arg1 collide-list))
   *collide-work*
   (dotimes (s3-0 arg0)
     (when (collide-cache-using-y-probe-test (-> obj bsphere))
@@ -430,8 +426,7 @@
 
 ;; definition for method 12 of type instance-tie
 ;; INFO: Return type mismatch int vs none.
-(defmethod collide-y-probe instance-tie
-  ((obj instance-tie) (arg0 int) (arg1 collide-list))
+(defmethod collide-y-probe ((obj instance-tie) (arg0 int) (arg1 collide-list))
   (dotimes (s3-0 arg0)
     (when (and (zero? (logand (-> obj flags) 1)) (collide-cache-using-y-probe-test (-> obj bsphere)))
       (let ((s2-0 (-> obj bucket-ptr collide-frag)))
@@ -465,14 +460,7 @@
     (set! (-> temp 3) (abs (-> temp 3)))
     (set! ,out (-> (the (pointer uint128) temp)))))
 
-(defmethod fill-using-line-sphere collide-cache
-  ((obj collide-cache)
-   (arg0 vector)
-   (arg1 vector)
-   (arg2 float)
-   (arg3 collide-kind)
-   (arg4 process-drawable)
-   (arg5 pat-surface))
+(defmethod fill-using-line-sphere ((obj collide-cache) (arg0 vector) (arg1 vector) (arg2 float) (arg3 collide-kind) (arg4 process-drawable) (arg5 pat-surface))
   (local-vars (zero uint128) (a0-2 uint128) (a0-3 uint128) (a0-7 int) (t0-1 uint128) (t0-2 uint128))
   (rlet ((acc :class vf)
          (Q :class vf)
@@ -734,8 +722,7 @@
     (.ppach v1-4 zero v1-3)
     (let ((v1-5 (shl (the-as int v1-4) 16))) (nop!) (zero? v1-5))))
 
-(defmethod collide-ray collide-fragment
-  ((obj collide-fragment) (arg0 int) (arg1 collide-list))
+(defmethod collide-ray ((obj collide-fragment) (arg0 int) (arg1 collide-list))
   "Inline-array function to do line-sphere with non-instanced fragments.
    If the bsphere of the mesh is in the non-aligned bounding box, the mesh will be added
    to the given collide-list.
@@ -753,8 +740,7 @@
   0
   (none))
 
-(defmethod collide-ray instance-tie
-  ((obj instance-tie) (arg0 int) (arg1 collide-list))
+(defmethod collide-ray ((obj instance-tie) (arg0 int) (arg1 collide-list))
   "Inline-array function to do line-sphere with TIE instances.
   If the bsphere of the mesh is in the non-aligned bounding box, the mesh will be added
   to the given collide-list.
@@ -785,8 +771,7 @@
 
 ;; for an unknown reason, the goal compiler went insane on this function
 
-(defmethod fill-from-foreground-using-box collide-cache
-  ((obj collide-cache))
+(defmethod fill-from-foreground-using-box ((obj collide-cache))
   (local-vars
     (zero uint128)
     (v1-2 uint128)
@@ -986,13 +971,11 @@
                 (set! s2-3 (-> s2-3 next0))))))))
     (none)))
 
-(defmethod add-fg-prim-using-box collide-shape-prim
-  ((obj collide-shape-prim) (arg0 collide-cache))
+(defmethod add-fg-prim-using-box ((obj collide-shape-prim) (arg0 collide-cache))
   (format 0 "ERROR: Illegal collide-shape-prim type passed to collide-shape-prim::add-fg-prim-using-box!~%")
   (none))
 
-(defmethod add-fg-prim-using-box collide-shape-prim-sphere
-  ((obj collide-shape-prim-sphere) (arg0 collide-cache))
+(defmethod add-fg-prim-using-box ((obj collide-shape-prim-sphere) (arg0 collide-cache))
   (local-vars (t1-1 uint))
   (nop!)
   (let* ((t0-0 (-> arg0 prims))
@@ -1021,8 +1004,7 @@
   (label cfg-3)
   (none))
 
-(defmethod add-fg-prim-using-box collide-shape-prim-group
-  ((obj collide-shape-prim-group) (arg0 collide-cache))
+(defmethod add-fg-prim-using-box ((obj collide-shape-prim-group) (arg0 collide-cache))
   (local-vars
     (zero uint128)
     (v1-2 uint128)
@@ -1084,8 +1066,7 @@
 ;; Foreground Y PROBE
 ;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod fill-from-foreground-using-y-probe collide-cache
-  ((obj collide-cache))
+(defmethod fill-from-foreground-using-y-probe ((obj collide-cache))
   (local-vars
     (zero uint128)
     (v1-2 uint128)
@@ -1279,13 +1260,11 @@
                 (set! s2-3 (-> s2-3 next0))))))))
     (none)))
 
-(defmethod add-fg-prim-using-y-probe collide-shape-prim
-  ((obj collide-shape-prim) (arg0 collide-cache))
+(defmethod add-fg-prim-using-y-probe ((obj collide-shape-prim) (arg0 collide-cache))
   (format 0 "ERROR: Illegal collide-shape-prim type passed to collide-shape-prim::add-fg-prim-using-y-probe!~%")
   (none))
 
-(defmethod add-fg-prim-using-y-probe collide-shape-prim-sphere
-  ((obj collide-shape-prim-sphere) (arg0 collide-cache))
+(defmethod add-fg-prim-using-y-probe ((obj collide-shape-prim-sphere) (arg0 collide-cache))
   (local-vars (t1-1 uint))
   (nop!)
   (let* ((t0-0 (-> arg0 prims))
@@ -1314,8 +1293,7 @@
   (label cfg-3)
   (none))
 
-(defmethod add-fg-prim-using-y-probe collide-shape-prim-group
-  ((obj collide-shape-prim-group) (arg0 collide-cache))
+(defmethod add-fg-prim-using-y-probe ((obj collide-shape-prim-group) (arg0 collide-cache))
   (local-vars
     (r0-0 int)
     (r0-1 int)
@@ -1407,8 +1385,7 @@
     (.lvf vf30 (&-> *pc-fffuls-work* reg-vf30 quad))
     (.lvf vf31 (&-> *pc-fffuls-work* reg-vf31 quad))))
 
-(defmethod fill-from-foreground-using-line-sphere collide-cache
-  ((obj collide-cache))
+(defmethod fill-from-foreground-using-line-sphere ((obj collide-cache))
   (local-vars
     (zero uint128)
     (v1-1 float)
@@ -1648,13 +1625,11 @@
                 (set! s2-3 (-> s2-3 next0))))))))
     (none)))
 
-(defmethod add-fg-prim-using-line-sphere collide-shape-prim
-  ((obj collide-shape-prim) (arg0 collide-cache))
+(defmethod add-fg-prim-using-line-sphere ((obj collide-shape-prim) (arg0 collide-cache))
   (format 0 "ERROR: Illegal collide-shape-prim type passed to collide-shape-prim::add-fg-prim-using-line-sphere!~%")
   (none))
 
-(defmethod add-fg-prim-using-line-sphere collide-shape-prim-sphere
-  ((obj collide-shape-prim-sphere) (arg0 collide-cache))
+(defmethod add-fg-prim-using-line-sphere ((obj collide-shape-prim-sphere) (arg0 collide-cache))
   (local-vars (t1-1 uint))
   (nop!)
   (let* ((t0-0 (-> arg0 prims))
@@ -1683,8 +1658,7 @@
   (label cfg-3)
   (none))
 
-(defmethod add-fg-prim-using-line-sphere collide-shape-prim-group
-  ((obj collide-shape-prim-group) (arg0 collide-cache))
+(defmethod add-fg-prim-using-line-sphere ((obj collide-shape-prim-group) (arg0 collide-cache))
   (local-vars
     (zero uint128)
     (v1-3 uint128)
@@ -1761,19 +1735,11 @@
 ;; PROBE ;; PROBE ;; PROBE ;; PROBE ;; PROBE ;; PROBE ;; PROBE ;; PROBE ;; PROBE ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod fill-and-probe-using-y-probe collide-cache
-  ((obj collide-cache)
-   (arg0 vector)
-   (arg1 float)
-   (arg2 collide-kind)
-   (arg3 process-drawable)
-   (arg4 collide-tri-result)
-   (arg5 pat-surface))
+(defmethod fill-and-probe-using-y-probe ((obj collide-cache) (arg0 vector) (arg1 float) (arg2 collide-kind) (arg3 process-drawable) (arg4 collide-tri-result) (arg5 pat-surface))
   (fill-using-y-probe obj arg0 arg1 arg2 arg3 arg5)
   (probe-using-y-probe obj arg0 arg1 arg2 arg4 arg5))
 
-(defmethod probe-using-y-probe collide-cache
-  ((obj collide-cache) (arg0 vector) (arg1 float) (arg2 collide-kind) (arg3 collide-tri-result) (arg4 pat-surface))
+(defmethod probe-using-y-probe ((obj collide-cache) (arg0 vector) (arg1 float) (arg2 collide-kind) (arg3 collide-tri-result) (arg4 pat-surface))
   (rlet ((vf0 :class vf)
          (vf1 :class vf)
          (vf3 :class vf))
@@ -1800,8 +1766,7 @@
           (set! s2-0 (-> (the-as (inline-array collide-cache-prim) s2-0) 1))))
       (let ((f0-1 (-> gp-0 best-u))) (if (< 1.0 f0-1) (set! f0-1 -100000000.0)) f0-1))))
 
-(defmethod puyp-sphere collide-cache
-  ((obj collide-cache) (arg0 collide-puyp-work) (arg1 collide-cache-prim))
+(defmethod puyp-sphere ((obj collide-cache) (arg0 collide-puyp-work) (arg1 collide-cache-prim))
   (let ((f0-1 (ray-sphere-intersect (-> arg0 start-pos)
                                     (-> arg0 move-dist)
                                     (the-as vector (-> arg1 prim-core))
@@ -1819,15 +1784,7 @@
                (a2-5 (vector-cross! (new 'stack-no-clear 'vector) (-> gp-0 normal) a0-11)))
           (vector+*! (-> gp-0 vertex 2) (-> gp-0 intersect) a2-5 4096.0))))))
 
-(defmethod fill-and-probe-using-line-sphere collide-cache
-  ((obj collide-cache)
-   (arg0 vector)
-   (arg1 vector)
-   (arg2 float)
-   (arg3 collide-kind)
-   (arg4 process)
-   (arg5 collide-tri-result)
-   (arg6 pat-surface))
+(defmethod fill-and-probe-using-line-sphere ((obj collide-cache) (arg0 vector) (arg1 vector) (arg2 float) (arg3 collide-kind) (arg4 process) (arg5 collide-tri-result) (arg6 pat-surface))
   (fill-using-line-sphere obj arg0 arg1 arg2 arg3 (the-as process-drawable arg4) arg6)
   (probe-using-line-sphere obj arg0 arg1 arg2 arg3 arg5 arg6))
 
@@ -1840,14 +1797,7 @@
   :size-assert #x30
   :flag-assert #x900000030)
 
-(defmethod probe-using-line-sphere collide-cache
-  ((obj collide-cache)
-   (arg0 vector)
-   (arg1 vector)
-   (arg2 float)
-   (arg3 collide-kind)
-   (arg4 collide-tri-result)
-   (arg5 pat-surface))
+(defmethod probe-using-line-sphere ((obj collide-cache) (arg0 vector) (arg1 vector) (arg2 float) (arg3 collide-kind) (arg4 collide-tri-result) (arg5 pat-surface))
   (rlet ((vf0 :class vf)
          (vf2 :class vf)
          (vf3 :class vf)
@@ -1890,21 +1840,18 @@
           (set! s3-0 (-> (the-as (inline-array collide-cache-prim) s3-0) 1)))
         f30-0))))
 
-(defmethod fill-and-probe-using-spheres collide-cache
-  ((obj collide-cache) (arg0 collide-using-spheres-params))
+(defmethod fill-and-probe-using-spheres ((obj collide-cache) (arg0 collide-using-spheres-params))
   (fill-using-spheres obj arg0)
   (probe-using-spheres obj arg0))
 
-(defmethod fill-using-spheres collide-cache
-  ((obj collide-cache) (arg0 collide-using-spheres-params))
+(defmethod fill-using-spheres ((obj collide-cache) (arg0 collide-using-spheres-params))
   (let ((s4-0 (new 'stack-no-clear 'bounding-box)))
     (set-from-spheres! s4-0 (-> arg0 spheres) (the-as int (-> arg0 num-spheres)))
     ;; this box looks correct
     (fill-using-bounding-box obj s4-0 (-> arg0 collide-with) (-> arg0 proc) (the-as pat-surface (-> arg0 ignore-pat))))
   (none))
 
-(defmethod probe-using-spheres collide-cache
-  ((obj collide-cache) (arg0 collide-using-spheres-params))
+(defmethod probe-using-spheres ((obj collide-cache) (arg0 collide-using-spheres-params))
   (local-vars (v1-12 symbol))
   (rlet ((vf1 :class vf)
          (vf2 :class vf)

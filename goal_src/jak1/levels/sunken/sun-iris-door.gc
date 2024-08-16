@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sun-iris-door.gc
-;; name in dgo: sun-iris-door
-;; dgos: L1, SUN, SUNKEN
+(bundles "SUN.DGO")
+(require "engine/common-obs/generic-obs.gc")
 
 ;; DECOMP BEGINS
 

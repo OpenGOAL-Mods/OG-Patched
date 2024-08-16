@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sky.gc
-;; name in dgo: sky
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/lights-h.gc")
+(require "engine/gfx/sky/sky-utils.gc")
 
 ;; DECOMP BEGINS
 

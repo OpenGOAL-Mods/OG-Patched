@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
+(bundles "GAME.CGO")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/common-obs/water-anim.gc")
+(require "engine/common-obs/rigid-body-h.gc")
 
-;; name: rigid-body.gc
-;; name in dgo: rigid-body
-;; dgos: GAME, COMMON, L1
 ;; note: changed for high fps
 
 ;; DECOMP BEGINS

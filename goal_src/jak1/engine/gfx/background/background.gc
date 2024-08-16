@@ -1,9 +1,15 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: background.gc
-;; name in dgo: background
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display.gc")
+(require "engine/gfx/tie/generic-tie-h.gc")
+(require "engine/gfx/tie/tie-h.gc")
+(require "engine/gfx/mood/time-of-day-h.gc")
+(require "engine/gfx/background/background-h.gc")
+(require "engine/gfx/tfrag/tfrag-h.gc")
+(require "engine/gfx/background/subdivide-h.gc")
+(require "engine/gfx/shrub/shrubbery-h.gc")
+(require "engine/ps2/vu1-macros.gc")
 
 ;; The "background" is a collection of renderers.
 ;; The recursive draw call through the drawable trees will add drawables to various lists.

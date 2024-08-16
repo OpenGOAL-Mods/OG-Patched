@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: font.gc
-;; name in dgo: font
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/font-h.gc")
+(require "engine/ps2/vu1-macros.gc")
 
 ;; Font asm macros:
 ;;  these could likely be reimplemented within the OpenGOAL compiler and be faster.

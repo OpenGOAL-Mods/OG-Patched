@@ -1,9 +1,13 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: default-menu.gc
-;; name in dgo: default-menu
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/camera/cam-update.gc")
+(require "engine/game/task/task-control.gc")
+(require "engine/draw/drawable.gc")
+(require "engine/math/euler.gc")
+(require "engine/entity/entity.gc")
+(require "engine/debug/memory-usage.gc")
+(require "engine/debug/menu.gc")
 
 ;; Forward declarations for stuff we haven't written yet:
 (define-extern *edit-instance* string)
@@ -209,27 +213,27 @@
       (logtest? (-> v1-0 flags) arg0))))
 
 (defun all-texture-tweak-adjust ((arg0 texture-page-dir) (arg1 float))
-  ; (dotimes (s4-0 (-> arg0 length))
-  ; (let ((s3-0 (-> arg0 entries s4-0 page)))
-  ; (dotimes (s2-0 (min (-> s3-0 length) (-> arg0 entries s4-0 length)))
-  ; (when (-> arg0 entries s4-0 link)
-  ; (let ((v1-12 (+ (the-as uint (-> arg0 entries s4-0 link)) (* s2-0 4)))
-  ; (s1-0 (-> arg0 entries s4-0 page data s2-0))
-  ; )
-  ; (+! (-> s1-0 uv-dist) arg1)
-  ; (+ v1-12 0)
-  ; (let ((s0-0 (the-as object (* (-> (dynamic-array-field-access v1-12 next PLACEHOLDER) shader) 16))))
-  ; (while (nonzero? (the-as uint s0-0))
-  ; (adgif-shader-update! (the-as adgif-shader s0-0) s1-0)
-  ; (+ (the-as uint s0-0) 40)
-  ; (set! s0-0 (* (-> (the-as adgif-shader s0-0) next shader) 16))
-  ; )
-  ; )
-  ; )
-  ; )
-  ; )
-  ; )
-  ; )
+  ;; (dotimes (s4-0 (-> arg0 length))
+  ;;   (let ((s3-0 (-> arg0 entries s4-0 page)))
+  ;;     (dotimes (s2-0 (min (-> s3-0 length) (-> arg0 entries s4-0 length)))
+  ;;       (when (-> arg0 entries s4-0 link)
+  ;;         (let ((v1-12 (+ (the-as uint (-> arg0 entries s4-0 link)) (* s2-0 4)))
+  ;;               (s1-0 (-> arg0 entries s4-0 page data s2-0))
+  ;;               )
+  ;;           (+! (-> s1-0 uv-dist) arg1)
+  ;;           (+ v1-12 0)
+  ;;           (let ((s0-0 (the-as object (* (-> (dynamic-array-field-access v1-12 next PLACEHOLDER) shader) 16))))
+  ;;             (while (nonzero? (the-as uint s0-0))
+  ;;               (adgif-shader-update! (the-as adgif-shader s0-0) s1-0)
+  ;;               (+ (the-as uint s0-0) 40)
+  ;;               (set! s0-0 (* (-> (the-as adgif-shader s0-0) next shader) 16))
+  ;;               )
+  ;;             )
+  ;;           )
+  ;;         )
+  ;;       )
+  ;;     )
+  ;;   )
   0
   (none))
 
@@ -2399,7 +2403,6 @@
     (debug-menu-append-item s5-0
                             (debug-menu-make-from-template arg0
                                                            '(menu "Display"
-                                                                 (flag "Input Display" *show-input-display* dm-boolean-toggle-pick-func)
                                                                  (flag "Profile" *display-profile* dm-boolean-toggle-pick-func)
                                                                  (flag "Ticks" *profile-ticks* dm-boolean-toggle-pick-func)
                                                                  (flag "File Info" *display-file-info* dm-boolean-toggle-pick-func)
@@ -2415,6 +2418,7 @@
                                                                  (flag "Camera Info" *display-camera-info* dm-boolean-toggle-pick-func)
                                                                  (flag "Geometry Marks" *display-geo-marks* dm-boolean-toggle-pick-func)
                                                                  (flag "Nav Marks" *display-nav-marks* dm-boolean-toggle-pick-func)
+                                                                 (flag "Nav Marks Extras" *display-nav-marks-extras* dm-boolean-toggle-pick-func)
                                                                  (flag "Path Marks" *display-path-marks* dm-boolean-toggle-pick-func)
                                                                  (flag "Vol Marks" *display-vol-marks* dm-boolean-toggle-pick-func)
                                                                  (menu "Ambient Marks"
@@ -2529,7 +2533,6 @@
                                                                  (menu "Mode"
                                                                        (function "normal" #f ,(lambda () (send-event *target* 'end-mode)))
                                                                        (function "racing" #f ,(lambda () (send-event *target* 'change-mode 'racing #f)))
-                                                                       (function "flut" #f ,(lambda () (send-event *target* 'change-mode 'flut #f)))
                                                                        (function "snowball" #f ,(lambda () (send-event *target* 'change-mode 'snowball #f))))
                                                                  (flag "Slow Frame Rate" *slow-frame-rate* dm-boolean-toggle-pick-func)
                                                                  (function "Print Pos"

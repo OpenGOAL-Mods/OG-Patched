@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: geologist.gc
-;; name in dgo: geologist
-;; dgos: L1, VI2
+(bundles "VI2.DGO")
+(require "engine/common-obs/process-taskable.gc")
 
 ;; DECOMP BEGINS
 

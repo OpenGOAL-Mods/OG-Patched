@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: puffer.gc
-;; name in dgo: puffer
-;; dgos: L1, SUN, SUNKEN
+(bundles "SUN.DGO")
+(require "engine/nav/navigate.gc")
+(require "engine/util/sync-info.gc")
+(require "engine/anim/joint-mod-h.gc")
+(require "engine/geometry/path.gc")
+(require "engine/common-obs/collectables.gc")
 
 ;; DECOMP BEGINS
 

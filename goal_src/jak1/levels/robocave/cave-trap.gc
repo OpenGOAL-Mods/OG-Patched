@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: cave-trap.gc
-;; name in dgo: cave-trap
-;; dgos: L1, ROB
-
+(bundles "ROB.DGO")
+(require "levels/maincave/baby-spider.gc")
 (declare-type spider-egg process-drawable)
 
 ;; DECOMP BEGINS

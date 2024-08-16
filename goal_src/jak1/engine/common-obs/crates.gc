@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: crates.gc
-;; name in dgo: crates
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/common-obs/collectables.gc")
 (declare-type crate process-drawable)
 
 (declare-type crate-buzzer crate)

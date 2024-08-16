@@ -1,9 +1,14 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: main.gc
-;; name in dgo: main
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/entity/ambient.gc")
+(require "pc/debug/pc-debug-methods.gc")
+(require "engine/draw/drawable.gc")
+(require "engine/gfx/depth-cue.gc")
+(require "engine/camera/cam-interface.gc")
+(require "engine/camera/cam-update.gc")
+(require "engine/common-obs/generic-obs.gc")
+(require "pc/pckernel.gc")
 
 ;; DECOMP BEGINS
 
@@ -235,7 +240,7 @@
                       (cpad-clear! 0 r1)
                       ;; PATCHED = don't enable cheat mode and play bad sound
                       (sound-play "caught-eel")
-                      ;; toggle!
+                      ;; ;; toggle!
                       ;; (not! *cheat-mode*)
                       ;; (cheats-sound-play *cheat-mode*)
                       )
@@ -247,13 +252,9 @@
                         (cpad-clear! 0 r1)
                         ;; PATCHED = don't enable cheat mode and play bad sound
                         (sound-play "caught-eel")
-                        ;; toggle between #t and debug.
-                        ;; (set! *cheat-mode* (if (= *cheat-mode* 'debug)
-                        ;;                             #t
-                        ;;                             'debug
-                        ;;                             ))
-                        ;; (cheats-sound-play *cheat-mode*)
-                        ))
+                        ;; ;; toggle between #t and debug.
+                        ;; (set! *cheat-mode* (if (= *cheat-mode* 'debug) #t 'debug))
+                        ;; (cheats-sound-play *cheat-mode*)))
     ;; language cheat, REMOVED IN PC PORT because it's literally useless
     #|
     (case (scf-get-territory)
@@ -361,7 +362,9 @@
     ;; collide dma
     (suspend)
     (while *run*
-      (runs-every-frame) ;; trigger hook for mod base
+
+      (runs-every-frame) ;; trigger hook for mod base mod-base-change entry point
+
       ;; start immediately after all process updates finish.
       (profiler-instant-event "display-loop-top")
       ;; drawing effects to be used in foreground drawing.

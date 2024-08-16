@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: jungleb-obs.gc
-;; name in dgo: jungleb-obs
-;; dgos: JUB, L1
+(bundles "JUB.DGO")
+(require "engine/common-obs/baseplat.gc")
+(require "engine/entity/entity.gc")
+(require "engine/game/task/task-control.gc")
 
 ;; DECOMP BEGINS
 

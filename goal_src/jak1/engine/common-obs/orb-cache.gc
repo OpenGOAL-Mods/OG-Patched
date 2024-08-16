@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: orb-cache.gc
-;; name in dgo: orb-cache
-;; dgos: GAME, COMMON, L1
+(bundles "GAME.CGO")
+(require "engine/common-obs/collectables.gc")
+(require "engine/common-obs/baseplat.gc")
 
 ;; DECOMP BEGINS
 

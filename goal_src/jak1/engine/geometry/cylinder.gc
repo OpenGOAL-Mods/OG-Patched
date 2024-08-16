@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: cylinder.gc
-;; name in dgo: cylinder
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/collide/collide-func.gc")
+(require "engine/camera/cam-debug-h.gc")
+(require "engine/math/matrix.gc")
 
 ;; Note: "cylinder" refers to a capsule, "cylinder-flat" refers to a real cylinder with end caps.
 

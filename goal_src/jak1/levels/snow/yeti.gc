@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: yeti.gc
-;; name in dgo: yeti
-;; dgos: L1, SNO
-
+(bundles "SNO.DGO")
+(require "engine/common-obs/nav-enemy.gc")
 (declare-type yeti process-drawable)
 
 (declare-type yeti-slave nav-enemy)

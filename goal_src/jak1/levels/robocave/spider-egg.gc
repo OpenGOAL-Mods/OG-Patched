@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: spider-egg.gc
-;; name in dgo: spider-egg
-;; dgos: L1, ROB
+(bundles "ROB.DGO")
+(require "engine/common-obs/generic-obs.gc")
 
 ;; DECOMP BEGINS
 

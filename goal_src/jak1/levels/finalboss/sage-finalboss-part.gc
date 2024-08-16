@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sage-finalboss-part.gc
-;; name in dgo: sage-finalboss-part
-;; dgos: FIN, L1
+(bundles "FIN.DGO")
+(require "engine/gfx/sprite/sparticle/sparticle.gc")
 
 ;; DECOMP BEGINS
 

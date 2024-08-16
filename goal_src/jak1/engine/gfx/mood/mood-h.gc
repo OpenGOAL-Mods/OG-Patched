@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: mood-h.gc
-;; name in dgo: mood-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
 
 ;; the "mood" system sets the fog, lights, and sun to smoothly blend between two levels.
 ;; each level has 8 "moods" corresponding to the 8 times of day.

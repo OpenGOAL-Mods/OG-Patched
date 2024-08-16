@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: generic-merc.gc
-;; name in dgo: generic-merc
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/lights.gc")
+(require "engine/gfx/generic/generic-effect.gc")
+(require "engine/gfx/foreground/bones.gc")
 
 ;; DECOMP BEGINS
 

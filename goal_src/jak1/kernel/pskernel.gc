@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: pskernel.gc
-;; name in dgo: pskernel
-;; dgos: KERNEL
+(bundles "KERNEL.CGO")
+(require "kernel/gcommon.gc")
 
 #|
 pskernel.gc contains a bunch of utilities for poking around the PS2's kernel.

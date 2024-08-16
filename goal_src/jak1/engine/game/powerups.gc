@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: powerups.gc
-;; name in dgo: powerups
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/mood/weather-part.gc")
+(require "engine/common-obs/water.gc")
+(require "engine/target/target-util.gc")
 
 ;; DECOMP BEGINS
 

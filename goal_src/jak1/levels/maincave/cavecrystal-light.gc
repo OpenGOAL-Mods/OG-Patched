@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: cavecrystal-light.gc
-;; name in dgo: cavecrystal-light
-;; dgos: L1, MAI, MAINCAVE
+(bundles "MAI.DGO")
+(require "engine/anim/joint-h.gc")
+(require "engine/gfx/mood/time-of-day.gc")
 
 ;; DECOMP BEGINS
 

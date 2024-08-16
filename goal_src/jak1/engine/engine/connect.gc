@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: connect.gc
-;; name in dgo: connect
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display-h.gc")
 
 ;; This extremely confusing "connection system" allows the connection between
 ;; "engines" and "processes".  Basically, a process can "register" itself with any number of "engines".
@@ -328,13 +326,12 @@
     (apply-to-connections this (the (function connection none) (method-of-type connection inspect)))
     this))
 
-(defmethod add-connection engine
-  ((this engine)
-   (proc process)
-   (func object) ;; not always a function, you can technically put whatever
-   (p1 object)
-   (p2 object)
-   (p3 object))
+(defmethod add-connection ((this engine)
+             (proc process)
+             (func object) ;; not always a function, you can technically put whatever
+             (p1 object)
+             (p2 object)
+             (p3 object))
   "Add a connection between this engine and a given process."
   (local-vars (con connectable))
   ;; grab a connection from the dead list

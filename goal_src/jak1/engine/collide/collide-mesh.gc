@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: collide-mesh.gc
-;; name in dgo: collide-mesh
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/collide/pat-h.gc")
+(require "engine/debug/debug.gc")
+(require "engine/collide/collide-mesh-h.gc")
 
 ;; DECOMP BEGINS
 

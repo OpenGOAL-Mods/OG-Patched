@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: shrub-work.gc
-;; name in dgo: shrub-work
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/dma/dma-buffer.gc")
+(require "engine/gfx/shrub/shrubbery-h.gc")
+(require "engine/math/matrix-h.gc")
+(require "engine/gfx/math-camera-h.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,25 +1,17 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sparticle-launcher.gc
-;; name in dgo: sparticle-launcher
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/mood/time-of-day-h.gc")
+(require "engine/draw/drawable-h.gc")
+(require "engine/gfx/sprite/sparticle/sparticle-launcher-h.gc")
+(require "engine/gfx/sprite/sprite.gc")
+(require "kernel/gstate.gc")
+(require "engine/collide/collide-shape-h.gc")
 
 ;; og:preserve-this added macro
 ;; the rate was defaulted to DISPLAY_FPS_RATIO before, but sp-launch-particles-var checks
 ;; if the rate is not 1.0 and crashes the game.
-(defmacro launch-particles (&key
-            (system *sp-particle-system-2d*)
-            particle
-            origin
-            &key
-            (launch-state (the-as sparticle-launch-state #f))
-            &key
-            (launch-control (the-as sparticle-launch-control #f))
-            &key
-            (rate 1.0
-                  #| DISPLAY_FPS_RATIO |#
-                  ))
+(defmacro launch-particles (&key (system *sp-particle-system-2d*) particle origin &key (launch-state (the-as sparticle-launch-state #f)) &key (launch-control (the-as sparticle-launch-control #f)) &key (rate 1.0))
   `(sp-launch-particles-var ,system ,particle ,origin ,launch-state ,launch-control ,rate))
 
 ;; decomp begins

@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: glist-h.gc
-;; name in dgo: glist-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 
 ;; Very very weird linked list system.
 ;; TODO add examples because this is extremely confusing.

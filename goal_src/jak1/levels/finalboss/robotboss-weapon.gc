@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: robotboss-weapon.gc
-;; name in dgo: robotboss-weapon
-;; dgos: FIN, L1
+(bundles "FIN.DGO")
+(require "engine/common-obs/process-drawable.gc")
 
 ;; DECOMP BEGINS
 

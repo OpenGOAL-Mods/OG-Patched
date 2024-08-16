@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: rpc-h.gc
-;; name in dgo: rpc-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gcommon.gc")
 
 ;; RPC channels.
 ;; these should match XXX_RPC_CHANNEL in the game/common/xxx_rpc_types.h
@@ -18,6 +16,8 @@
 (defconstant RPC-LOAD-STR 4) ;; called STR in IOP code
 
 (defconstant RPC-PLAY-STR 5) ;; called PLAY in IOP code
+
+(defun-extern sound-buffer-dump int)
 
 ;; DECOMP BEGINS
 

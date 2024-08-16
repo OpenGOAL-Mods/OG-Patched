@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: collide-cache-h.gc
-;; name in dgo: collide-cache-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 (define-extern collide-cache-using-line-sphere-test (function vector symbol))
 
 (define-extern collide-cache-using-y-probe-test (function vector symbol))

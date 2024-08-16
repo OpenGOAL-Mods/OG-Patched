@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: beach-rocks.gc
-;; name in dgo: beach-rocks
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/common-obs/collectables.gc")
+(require "engine/anim/aligner.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: flutflut.gc
-;; name in dgo: flutflut
-;; dgos: L1, SNO, SWA
+(bundles "SNO.DGO" "SWA.DGO")
+(require "levels/common/blocking-plane.gc")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/entity/ambient.gc")
 
 ;; DECOMP BEGINS
 

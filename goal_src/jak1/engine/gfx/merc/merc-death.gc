@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: merc-death.gc
-;; name in dgo: merc-death
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/sprite/sparticle/sparticle-launcher.gc")
 
 ;; DECOMP BEGINS
 

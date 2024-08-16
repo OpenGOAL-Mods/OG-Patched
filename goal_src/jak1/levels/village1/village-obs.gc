@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: village-obs-VI1.gc
-;; name in dgo: village-obs
-;; dgos: VI1
+(bundles "VI1.DGO")
+(require "engine/util/sync-info.gc")
+(require "engine/common-obs/water-anim.gc")
+(require "engine/common-obs/nav-enemy.gc")
 
 ;; DECOMP BEGINS
 
@@ -428,8 +428,7 @@
   (:state-methods
    idle))
 
-(defmethod inspect evilplant
-  ((obj evilplant))
+(defmethod inspect ((obj evilplant))
   (let ((t9-0 (method-of-type process-drawable inspect))) (t9-0 obj))
   obj)
 
@@ -451,8 +450,7 @@
           (ja :num! (seek!)))))
   :post ja-post)
 
-(defmethod init-from-entity! evilplant
-  ((obj evilplant) (arg0 entity-actor))
+(defmethod init-from-entity! ((obj evilplant) (arg0 entity-actor))
   (set! (-> obj root) (new 'process 'trsqv))
   (process-drawable-from-entity! obj arg0)
   (initialize-skeleton obj *evilplant-sg* '())

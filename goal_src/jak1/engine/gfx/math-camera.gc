@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: math-camera.gc
-;; name in dgo: math-camera
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/quaternion-h.gc")
+(require "pc/pckernel-impl.gc")
+(require "engine/ps2/vu1-macros.gc")
+(require "engine/math/trigonometry.gc")
+(require "engine/math/transform-h.gc")
 
 ;;;;;;;;;;;;;;;;;;;;;;
 ;; math camera basics

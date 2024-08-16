@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sync-info.gc
-;; name in dgo: sync-info
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/entity/res.gc")
+(require "engine/util/smush-control-h.gc")
+(require "engine/util/sync-info-h.gc")
 
 ;; DECOMP BEGINS
 

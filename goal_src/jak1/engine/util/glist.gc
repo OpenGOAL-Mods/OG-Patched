@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: glist.gc
-;; name in dgo: glist
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/util/glist-h.gc")
+(require "kernel/gstring.gc")
 
 ;; THIS FILE IS REALLY WEIRD PLEASE JUST LOOK AWAY
 

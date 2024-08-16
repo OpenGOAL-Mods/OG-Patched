@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: generic-merc-h.gc
-;; name in dgo: generic-merc-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/dma/dma-buffer.gc")
 
 ;; The "generic merc" renderer converts merc data to be used by generic.
 ;; It is used for environment mapping and scissoring in the original game.

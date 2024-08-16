@@ -1,10 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: mother-spider.gc
-;; name in dgo: mother-spider
-;; dgos: L1, MAI, MAINCAVE
-
+(bundles "MAI.DGO")
+(require "levels/maincave/mother-spider-egg.gc")
+(require "levels/maincave/mother-spider-proj.gc")
+(require "levels/maincave/baby-spider.gc")
+(require "levels/maincave/mother-spider-h.gc")
 (declare-type mother-spider process-drawable)
 
 (define-extern mother-spider-full-joint-callback (function mother-spider none))

@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sparticle-launcher-h.gc
-;; name in dgo: sparticle-launcher-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gcommon.gc")
 
 ;; The "sparticle" system is the particle system.
 ;; Features

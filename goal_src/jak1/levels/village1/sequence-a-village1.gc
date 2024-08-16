@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sequence-a-village1.gc
-;; name in dgo: sequence-a-village1
-;; dgos: L1, VI1
-
+(bundles "VI1.DGO")
+(require "engine/common-obs/process-taskable.gc")
+(require "engine/ui/credits.gc")
 (define-extern *sidekick-human-sg* skeleton-group)
 
 ;; DECOMP BEGINS

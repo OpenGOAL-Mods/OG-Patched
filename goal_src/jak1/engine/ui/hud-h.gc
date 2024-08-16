@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: hud-h.gc
-;; name in dgo: hud-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 (define-extern activate-hud (function process none))
 
 (define-extern activate-orb-all (function int int))

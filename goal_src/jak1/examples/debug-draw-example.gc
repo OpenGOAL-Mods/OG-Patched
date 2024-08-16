@@ -1,5 +1,6 @@
 ;;-*-Lisp-*-
 (in-package goal)
+(require "engine/gfx/sprite/sparticle/sparticle-launcher.gc")
 
 ;; This file demonstrates how to use the debug draw.
 

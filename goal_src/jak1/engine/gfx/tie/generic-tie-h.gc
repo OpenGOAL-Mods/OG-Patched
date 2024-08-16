@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: generic-tie-h.gc
-;; name in dgo: generic-tie-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 
 ;; Generic tie converts tie data to generic and supports environment mapping.
 

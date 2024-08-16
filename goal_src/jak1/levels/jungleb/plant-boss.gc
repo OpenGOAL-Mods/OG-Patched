@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: plant-boss.gc
-;; name in dgo: plant-boss
-;; dgos: JUB, L1
-
+(bundles "JUB.DGO")
+(require "levels/jungleb/aphid.gc")
 (declare-type plant-boss-leaf process-drawable)
 
 ;; DECOMP BEGINS

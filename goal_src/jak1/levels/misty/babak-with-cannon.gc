@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: babak-with-cannon.gc
-;; name in dgo: babak-with-cannon
-;; dgos: BEA, L1, MIS
-
+(bundles "BEA.DGO" "MIS.DGO")
+(require "levels/misty/mistycannon.gc")
+(require "engine/common-obs/babak.gc")
 (declare-type babak-with-cannon babak)
 
 ;; DECOMP BEGINS

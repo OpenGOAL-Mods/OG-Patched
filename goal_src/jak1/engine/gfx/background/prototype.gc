@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: prototype.gc
-;; name in dgo: prototype
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/collide/collide-frag.gc")
+(require "engine/draw/drawable.gc")
 
 ;; shared code for the tie and shrub prototypes
 

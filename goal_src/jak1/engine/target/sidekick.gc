@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sidekick.gc
-;; name in dgo: sidekick
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/common-obs/process-drawable.gc")
+(require "engine/target/target-util.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: viewer.gc
-;; name in dgo: viewer
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/anim/aligner.gc")
+(require "engine/entity/entity.gc")
 
 ;; DECOMP BEGINS
 

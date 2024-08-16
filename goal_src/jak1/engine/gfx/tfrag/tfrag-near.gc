@@ -1,10 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: tfrag-near.gc
-;; name in dgo: tfrag-near
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
+(require "engine/gfx/tfrag/tfrag-h.gc")
+(require "engine/math/matrix-h.gc")
+(require "engine/camera/cam-debug-h.gc")
 (define tnear-vu1-block (new 'static 'vu-function :length #x0 :qlength #x0))
 
 (defun-debug tfrag-details ((arg0 tfragment))

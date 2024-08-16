@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: tippy.gc
-;; name in dgo: tippy
-;; dgos: GAME, COMMON, L1
+(bundles "GAME.CGO")
+(require "engine/math/quaternion.gc")
+(require "engine/game/game-h.gc")
 
 ;; DECOMP BEGINS
 

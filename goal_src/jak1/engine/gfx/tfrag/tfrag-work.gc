@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: tfrag-work.gc
-;; name in dgo: tfrag-work
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/dma/dma-buffer.gc")
+(require "engine/math/vector-h.gc")
+(require "engine/gfx/tfrag/tfrag-h.gc")
+(require "kernel/gkernel.gc")
 
 ;; definition for symbol *tfrag-work*, type tfrag-work
 (define *tfrag-work*

@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: display.gc
-;; name in dgo: display
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "pc/pckernel-impl.gc")
+(require "engine/ps2/timer.gc")
 (defconstant DMA_BUFFER_GLOBAL_SIZE
   (#if (not PC_PORT)
     (* 1712 1024) ;; 1712K

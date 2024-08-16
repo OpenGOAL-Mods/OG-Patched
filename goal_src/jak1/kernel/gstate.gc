@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: gstate.gc
-;; name in dgo: gstate
-;; dgos: KERNEL
+(bundles "KERNEL.CGO")
+(require "kernel/gkernel.gc")
 
 #|
 Summary of state system:
@@ -126,10 +124,13 @@ It type checks the arguments for the entry function.
   (define *defstate-current-state-name* #f))
 
 ;; *no-state* is just used for the compiler to know whether a handler was actually set or not
-(defmacro defstate (state-name parents &key (virtual #f) &key (event *no-state*) &key (enter *no-state*) &key (trans *no-state*) &key (exit *no-state*) &key (code *no-state*) &key (post *no-state*))
+(defmacro defstate (state-name parents &key (virtual #f) &key (event *no-state*) &key (enter *no-state*) &key (trans *no-state*) &key (exit *no-state*) &key (code *no-state*) &key (post *no-state*) &rest body)
   "Define a new state!"
   (with-gensyms (new-state)
-    (let ((defstate-type (first parents)))
+    (let ((defstate-type (first parents))
+          (docstring ""))
+      (when (and (> (length body) 1) (string? (first body)))
+        (set! docstring (first body)))
       (when (not (null? *defstate-type-stack*))
         (fmt #t
              "*defstate-type-stack* leaked! An error probably happened in a previous defstate. stack is: {}"
@@ -181,6 +182,7 @@ It type checks the arguments for the entry function.
           `(define-virtual-state-hook ,state-name
                                      ,defstate-type
                                      ,new-state
+                                     ,docstring
                                      ,(eq? virtual 'override)
                                      :event ,event
                                      :enter ,enter
@@ -191,6 +193,7 @@ It type checks the arguments for the entry function.
           `(define-state-hook ,state-name
                              ,defstate-type
                              ,new-state
+                             ,docstring
                              :event ,event
                              :enter ,enter
                              :trans ,trans

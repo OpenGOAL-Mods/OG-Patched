@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: baseplat.gc
-;; name in dgo: baseplat
-;; dgos: GAME, COMMON, L1
-
+(bundles "GAME.CGO")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/game/projectiles.gc")
 (defenum eco-door-flags
   :bitfield #t
   :type int32

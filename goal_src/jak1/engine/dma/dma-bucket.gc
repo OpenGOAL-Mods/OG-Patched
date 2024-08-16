@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: dma-bucket.gc
-;; name in dgo: dma-bucket
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/dma/dma-buffer.gc")
 
 ;; A dma-bucket is used to organize dma data.
 ;; When an object is drawn, it may add data to multiple buckets.

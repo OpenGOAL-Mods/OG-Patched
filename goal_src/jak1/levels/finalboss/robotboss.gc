@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: robotboss.gc
-;; name in dgo: robotboss
-;; dgos: FIN, L1
+(bundles "FIN.DGO")
+(require "levels/finalboss/light-eco.gc")
+(require "levels/finalboss/robotboss-misc.gc")
+(require "levels/finalboss/robotboss-weapon.gc")
+(require "levels/finalboss/green-eco-lurker.gc")
 
 ;; DECOMP BEGINS
 

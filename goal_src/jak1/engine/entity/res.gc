@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: res.gc
-;; name in dgo: res
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/geometry/geometry-h.gc")
+(require "engine/entity/res-h.gc")
+(require "engine/gfx/texture/texture.gc")
 
 #|
 res is a generic storage system for not very large data, used mostly for the game entities.

@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: effect-control.gc
-;; name in dgo: effect-control
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/common-obs/generic-obs-h.gc")
+(require "engine/gfx/merc/merc-death.gc")
+(require "engine/common-obs/process-drawable-h.gc")
 
 ;; DECOMP BEGINS
 

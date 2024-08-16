@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: generic.gc
-;; name in dgo: generic
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/level/level-h.gc")
+(require "engine/dma/dma-bucket.gc")
+(require "engine/gfx/lights.gc")
 (define *generic-foreground-sinks*
   (new 'static 'boxed-array :type generic-dma-foreground-sink :length 0 :allocated-length 9))
 

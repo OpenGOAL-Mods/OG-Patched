@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: bonelurker.gc
-;; name in dgo: bonelurker
-;; dgos: L1, MIS
-
+(bundles "MIS.DGO")
+(require "engine/common-obs/nav-enemy.gc")
 (declare-type bonelurker nav-enemy)
 
 ;; DECOMP BEGINS

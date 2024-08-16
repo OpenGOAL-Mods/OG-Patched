@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: fact-h.gc
-;; name in dgo: fact-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/entity/res.gc")
+(require "kernel/gstate.gc")
+(require "engine/draw/drawable-h.gc")
 
 ;; DECOMP BEGINS
 

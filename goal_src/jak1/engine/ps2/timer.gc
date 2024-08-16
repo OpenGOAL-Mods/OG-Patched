@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: timer.gc
-;; name in dgo: timer
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/ps2/timer-h.gc")
+(require "kernel/gcommon.gc")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Timer (EE timers)

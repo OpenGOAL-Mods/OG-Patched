@@ -1,10 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: process-taskable.gc
-;; name in dgo: process-taskable
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/geometry/path-h.gc")
+(require "engine/anim/joint-mod-h.gc")
+(require "engine/game/task/task-control.gc")
+(require "engine/common-obs/collectables.gc")
+(require "engine/game/main.gc")
 (defmacro is-nan-hack (flt)
   `(and (< 0.0 ,flt) (< ,flt 0.0)))
 

@@ -1,9 +1,17 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: game-info.gc
-;; name in dgo: game-info
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/common-obs/generic-obs-h.gc")
+(require "pc/features/speedruns-h.gc")
+(require "engine/game/task/hint-control-h.gc")
+(require "engine/game/task/task-control-h.gc")
+(require "engine/ui/hud-h.gc")
+(require "engine/game/fact-h.gc")
+(require "engine/camera/cam-interface-h.gc")
+(require "engine/target/target-h.gc")
+(require "engine/collide/collide-shape-h.gc")
+(require "engine/debug/debug.gc")
+(require "engine/game/game-info-h.gc")
 
 ;; The game-info is the logic for pickups/lives/eco/tasks/collectables/check points/saved data
 ;; The *game-info* object constains the "game state", like how many lives you have etc.
@@ -165,8 +173,8 @@
        (else
         ;; not in play mode, we're done.
         (set! this this)
-        (goto cfg-50)))
-     (runs-on-jak-death 'blackout)))
+        (goto cfg-50)))))
+  (runs-on-jak-death 'blackout) ;;mod-base-change
   (kill-current-level-hint '() '() 'die)
   (case cause
     (('game)
@@ -177,7 +185,7 @@
                     (cond
                       (continue-point-override (empty) continue-point-override)
                       ((!= *kernel-boot-message* 'play) "demo-start")
-                      ((and *debug-segment* (not (string= startingDebugContinuePoint "village1-hut"))) startingDebugContinuePoint)
+                      ((and *debug-segment* (not (string= startingDebugContinuePoint "village1-hut"))) startingDebugContinuePoint) ;; mod-base-change
                       (*debug-segment* "village1-hut")
                       (else "title-start")))
      (set! (-> this auto-save-count) 0)
@@ -198,7 +206,7 @@
      (set-time! (-> this continue-time))
      (set-time! (-> this death-time))
      (set-time! (-> this hit-time))
-     (dotimes (v1-50 (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max)
+     (dotimes (v1-50 (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max) mod-base-change
        (set! (-> this fuel-cell-time 0) 0)
        (nop!))
      (dotimes (v1-53 32)
@@ -655,7 +663,7 @@
   (inspect this)
   (when (or (not arg0) (= arg0 'game-task))
     (format #t "~Tgame-task:~%")
-    (dotimes (s4-0 (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max)
+    (dotimes (s4-0 (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max) ;; mod-base-change
       (if (task-complete? this (the-as game-task s4-0)) (format #t "~T~T~S~%" (game-task->string (the-as game-task s4-0))))))
   (when (or (not arg0) (= arg0 'entity-perm))
     (format #t "~Tentity-perm:~%")
@@ -673,7 +681,7 @@
     0)
   ;; task perms
   (when (zero? (-> gp-0 task-perm-list))
-    (let ((v1-15 (new 'global 'entity-perm-array (the int (game-task max))))) ;; changed from hard-coded 116 to (game-task max)
+    (let ((v1-15 (new 'global 'entity-perm-array (the int (game-task max))))) ;; mod-base-change changed from hard-coded 116 to (game-task max)
       (set! (-> gp-0 task-perm-list) v1-15)
       (dotimes (a0-24 (-> v1-15 length))
         (set! (-> v1-15 data a0-24 task) (the-as game-task a0-24)))

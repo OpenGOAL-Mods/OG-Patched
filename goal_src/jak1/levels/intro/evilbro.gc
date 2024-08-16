@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: evilbro.gc
-;; name in dgo: evilbro
-;; dgos: INT, L1
+(bundles "INT.DGO")
+(require "engine/common-obs/process-taskable.gc")
 
 ;; DECOMP BEGINS
 

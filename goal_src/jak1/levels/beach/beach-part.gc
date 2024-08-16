@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: beach-part.gc
-;; name in dgo: beach-part
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/gfx/sprite/sparticle/sparticle-launcher.gc")
+(require "engine/common-obs/generic-obs-h.gc")
 
 ;; DECOMP BEGINS
 

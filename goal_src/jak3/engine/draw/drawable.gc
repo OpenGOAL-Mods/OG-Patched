@@ -277,7 +277,7 @@
    Yes it says instance. No it does not return an instance."
   (let ((s5-0 (-> arg1 bsp drawable-trees)))
     (dotimes (s4-0 (-> s5-0 length))
-      (let ((v1-3 (-> s5-0 data s4-0)))
+      (let ((v1-3 (-> s5-0 trees s4-0)))
         (case (-> v1-3 type)
           ((drawable-tree-instance-shrub)
            (let ((s3-0 (-> (the-as drawable-tree-instance-shrub v1-3) info prototype-inline-array-shrub)))
@@ -349,7 +349,7 @@
           (when (or (not arg2) (= a3-4 arg2))
             (let ((a3-5 (-> a3-4 drawable-trees)))
               (dotimes (t0-5 (-> a3-5 length))
-                (let ((t1-3 (-> a3-5 data t0-5)))
+                (let ((t1-3 (-> a3-5 trees t0-5)))
                   (case (-> t1-3 type)
                     ((drawable-tree-instance-shrub)
                      (when (= arg0 (-> t1-3 type))
@@ -412,7 +412,7 @@
         (format #t "-------- level ~S~%" (-> s5-0 name))
         (let ((s5-1 (-> s5-0 bsp drawable-trees)))
           (dotimes (s4-0 (-> s5-1 length))
-            (let ((v1-8 (-> s5-1 data s4-0)))
+            (let ((v1-8 (-> s5-1 trees s4-0)))
               (case (-> v1-8 type)
                 ((drawable-tree-instance-shrub)
                  (let ((s3-0 (-> (the-as drawable-tree-instance-shrub v1-8) info prototype-inline-array-shrub)))
@@ -527,7 +527,7 @@
             (when (= (-> v1-5 status) 'active)
               (let ((s3-0 (-> v1-5 bsp drawable-trees)))
                 (dotimes (s2-0 (-> s3-0 length))
-                  (let ((v1-9 (-> s3-0 data s2-0)))
+                  (let ((v1-9 (-> s3-0 trees s2-0)))
                     (case (-> v1-9 type)
                       ((drawable-tree-instance-shrub)
                        )
@@ -1455,10 +1455,10 @@
     (bones-init gp-0)
     (bones-mtx-calc-execute)
     (generic-merc-execute-all gp-0)
-    ;; (shadow-execute-all gp-0)
+    (shadow-execute-all gp-0)
     )
   (lightning-draw-all)
-  ;(prim-engine-execute)
+  (prim-engine-execute)
   (none)
   )
 
@@ -1536,14 +1536,14 @@
       (set! (-> pp clock) gp-2)
       )
 
-    ; ;; draw sky
-    ; (with-profiler 'sky *profile-sky-color*
-    ;   (if (-> *sky-work* draw-vortex)
-    ;       (draw-vortex)
-    ;       (draw *sky-work*)
-    ;       )
-    ;   (flush-cache 0)
-    ;   )
+    ;; draw sky
+    (with-profiler 'sky *profile-sky-color*
+      (if (-> *sky-work* draw-vortex)
+          (draw-vortex)
+          (draw *sky-work*)
+          )
+      (flush-cache 0)
+      )
 
 
     ; ;; draw ocean
@@ -1593,13 +1593,14 @@
       (debug-draw-actors *level* *display-actor-marks*)
       (collide-shape-draw-debug-marks)
       )
-    ; (when *display-trail-graph*
-    ;   (let ((a0-67 *trail-graph*))
-    ;     (if a0-67
-    ;         (debug-draw a0-67)
-    ;         )
-    ;     )
-    ;   )
+
+    (when *display-trail-graph*
+      (let ((a0-67 *trail-graph*))
+        (if a0-67
+            (debug-draw a0-67)
+            )
+        )
+      )
 
     ;; dispatch collision events
     (send-events-for-touching-shapes *touching-list*)
@@ -1921,6 +1922,65 @@
         (update-eyes)
         )
       (when *debug-segment*
+        ;; do all debug drawing.
+        (#when PC_PORT
+          (when (and (or (= *master-mode* 'game) (= *master-mode* 'pause)))
+            (when (-> *entity-debug-inspect* entity)
+              (define-extern entity-inspect-draw (function entity-debug-inspect object))
+              (entity-inspect-draw *entity-debug-inspect*)
+              )
+            ;; go through active levels
+            (dotimes (lev-i (-> *level* length))
+              (let ((lev (-> *level* level lev-i)))
+                (when (= (-> lev status) 'active)
+                  (let ((region-trees (-> lev bsp region-trees)))
+                    (when (nonzero? region-trees)
+                      (let* ((s3-5 (-> region-trees length))
+                              (tree-i 0)
+                              (region-tree (-> region-trees tree-i))
+                              )
+                        (while (< tree-i s3-5)
+                          (let ((tree-name (-> region-tree name)))
+                          (let* ((s0-4 (-> region-tree data2 (+ (-> region-tree length) -1) length))
+                                  (i 0)
+                                  (region (-> (the-as drawable-inline-array-region-prim (-> region-tree data2 (+ (-> region-tree length) -1))) data i))
+                                  )
+                            (while (< i s0-4)
+                              (let ((draw? #f))
+                                (when (and *display-region-inside* (!= tree-name 'water) (point-in-region-debug! (-> region region) (target-pos 0)))
+                                  (true! draw?)
+                                  (format *stdcon* "~1kinside region-~D [~A] (l: ~A)~%" (-> region region id) tree-name (-> lev name)))
+                                (when (and *region-debug-inspect* (or (= *region-debug-inspect* region) (and *merge-region-prims* (= (-> region region id) (-> *region-debug-inspect* region id)))))
+                                  (when (= *region-debug-inspect* region)
+                                    (format *stdcon* "~1kinspecting region-~D [~A] (l: ~A)~%" (-> *region-debug-inspect* region id) tree-name (-> lev name))
+                                    (format *stdcon* "  on-enter: ~A~%" (-> *region-debug-inspect* region on-enter))
+                                    (format *stdcon* "  on-inside: ~A~%" (-> *region-debug-inspect* region on-inside))
+                                    (format *stdcon* "  on-exit: ~A~%" (-> *region-debug-inspect* region on-exit))
+                                    )
+                                  (true! draw?)
+                                  )
+                                (when draw?
+                                  (set! *debug-region-tree-name* tree-name)
+                                  (debug-draw-region region 0)))
+                              (set! i (+ i 1))
+                              (set! region (-> (the-as drawable-inline-array-region-prim (-> region-tree data2 (+ (-> region-tree length) -1))) data i))
+                              )
+                            )
+                            )
+                          (+! tree-i 1)
+                          (set! region-tree (-> region-trees tree-i))
+                          )
+                        )
+                      )
+                    )
+                  )
+                )
+              )
+            (set! *debug-region-tree-name* #f)
+            )
+          (if *debug-track-skill*
+              (debug-track-skill))
+          )
         (with-profiler 'debug *profile-debug-color*
           (debug-draw-buffers)
           )
@@ -2017,7 +2077,7 @@
         (new 'static 'gs-test :zte #x1 :ztst (gs-ztest always))
         )
       (default-init-buffer
-        (bucket-id bucket8)
+        (bucket-id hfrag)
         (new 'static 'gs-zbuf :zbp #x130 :psm (gs-psm ct24))
         (new 'static 'gs-test :zte #x1 :ztst (gs-ztest always))
         )

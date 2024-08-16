@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: gnawer.gc
-;; name in dgo: gnawer
-;; dgos: L1, MAI, MAINCAVE
-
+(bundles "MAI.DGO")
+(require "engine/game/task/task-control.gc")
+(require "engine/geometry/path.gc")
+(require "levels/maincave/maincave-obs.gc")
 (declare-type gnawer process-drawable)
 
 (define-extern gnawer-joint-callback (function gnawer none))

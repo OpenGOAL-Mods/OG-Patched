@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: draw-node.gc
-;; name in dgo: draw-node
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/level/bsp.gc")
+(require "engine/draw/draw-node-h.gc")
 
 ;; DECOMP BEGINS
 
@@ -61,8 +60,7 @@
 ;; This class is a convenient wrapper around an inline-array of draw-nodes.
 ;; It lets you treat this array like a normal drawable (at least for collisions).
 
-(defmethod inspect drawable-inline-array-node
-  ((this drawable-inline-array-node))
+(defmethod inspect ((this drawable-inline-array-node))
   "Custom inspect for drawable-inline-array-node to print our nodes."
   (format #t "[~8x] ~A~%" this (-> this type))
   (format #t "~Tlength: ~D~%" (-> this length))

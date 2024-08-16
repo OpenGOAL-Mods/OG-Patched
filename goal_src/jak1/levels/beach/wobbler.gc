@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: wobbler.gc
-;; name in dgo: wobbler
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/gfx/hw/display-h.gc")
+(require "engine/math/quaternion.gc")
 
 ;; DECOMP BEGINS
 

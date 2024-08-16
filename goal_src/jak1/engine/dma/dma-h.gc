@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: dma-h.gc
-;; name in dgo: dma-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gcommon.gc")
 
 ;; DECOMP BEGINS
 
@@ -37,8 +35,7 @@
    (str uint8 :offset 8 :size 1) ;; start!
    (tag uint16 :offset 16)))
 
-(defmethod inspect dma-chcr
-  ((obj dma-chcr))
+(defmethod inspect ((obj dma-chcr))
   (format #t "~Tdir: ~D~%" (-> obj dir))
   (format #t "~Tmod: ~D~%" (-> obj mod))
   (format #t "~Tasp: ~D~%" (-> obj asp))
@@ -344,8 +341,7 @@
    (irq uint8 :offset 31 :size 1)
    (msk uint8 :offset 28 :size 1)))
 
-(defmethod inspect vif-tag
-  ((obj vif-tag))
+(defmethod inspect ((obj vif-tag))
   (format #t "~Timm: #x~X~%" (-> obj imm))
   (format #t "~Tnum: ~D~%" (-> obj num))
   (format #t "~Tcmd: ~D~%" (-> obj cmd))

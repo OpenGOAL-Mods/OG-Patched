@@ -1,5 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
+(require "pc/util/pc-anim-util.gc")
+(require "engine/gfx/mood/time-of-day.gc")
+(require "engine/level/level.gc")
+(require "pc/pckernel-common.gc")
 
 #|
   This file runs the game-specific version of the pckernel.
@@ -10,8 +14,17 @@
 ;;;; methods
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod set-game-setting! pc-settings-jak1
-  ((obj pc-settings-jak1) (setting symbol) (value symbol))
+(defmethod initialize ((obj pc-settings-jak1))
+  "initial initialize method to be run after allocating"
+  ((method-of-type pc-settings initialize) obj)
+  (set! (-> *setting-control* default sfx-volume) (-> obj memcard-volume-sfx))
+  (set! (-> *setting-control* default music-volume) (-> obj memcard-volume-music))
+  (set! (-> *setting-control* default dialog-volume) (-> obj memcard-volume-dialog))
+  (set! (-> *setting-control* default vibration) (-> obj memcard-vibration?))
+  (set! (-> *setting-control* default play-hints) (-> obj memcard-play-hints?))
+  obj)
+
+(defmethod set-game-setting! ((obj pc-settings-jak1) (setting symbol) (value symbol))
   (case setting
     (('video-mode)
      (set! (-> *setting-control* current video-mode) #f)
@@ -19,26 +32,22 @@
     (('aspect-ratio) (set! (-> *setting-control* default aspect-ratio) value))
     (else (format #t "unknown setting  ~A (~A) to set-game-setting!" setting value))))
 
-(defmethod get-game-setting pc-settings-jak1
-  ((obj pc-settings-jak1) (setting symbol))
+(defmethod get-game-setting ((obj pc-settings-jak1) (setting symbol))
   (case setting
     (('video-mode) (-> *setting-control* default video-mode))
     (('aspect-ratio) (-> *setting-control* default aspect-ratio))
     (else (format #t "unknown setting  ~A to get-game-setting" setting) #f)))
 
-(defmethod set-game-language! pc-settings-jak1
-  ((obj pc-settings-jak1) (lang language-enum))
+(defmethod set-game-language! ((obj pc-settings-jak1) (lang language-enum))
   (set! (-> *setting-control* default language) lang))
 
-(defmethod get-game-language pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod get-game-language ((obj pc-settings-jak1))
   (-> *setting-control* default language))
 
 ;; where we store the input progress for the cheat codes. make sure there's enough space for all cheats.
 (define *pc-cheat-temp* (new 'global 'inline-array 'uint8 PC_CHEAT_MAX))
 
-(defmethod update-cheats pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod update-cheats ((obj pc-settings-jak1))
   "run cheats."
   ;; first check for cheat inputs.
   (when (and (cpad-hold? 0 l2) (cpad-hold? 0 l1) (cpad-hold? 0 r2) (cpad-hold? 0 r1))
@@ -130,7 +139,8 @@
       (when (zero? (-> date stat))
         (set-time-of-day (+ (the float (bcd->dec (-> date hour))) (/ (the float (bcd->dec (-> date minute))) 60))))))
   (pc-set-gfx-hack (pc-gfx-hack no-tex) (logtest? (-> obj cheats) (pc-cheats no-tex)))
-  (if (pc-cheats? (-> obj cheats) mirror)
+  (if (or (pc-cheats? (-> obj cheats) mirror)
+          *PC-MIRROR-MODE-SET*)
     (sound-set-mirror-mode (sound-mirror-mode mirrored))
     (sound-set-mirror-mode (sound-mirror-mode normal)))
   ;; run cheats end!!!
@@ -138,8 +148,7 @@
   (logior! (-> obj cheats-known) (-> obj cheats))
   0)
 
-(defmethod update-music-log pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod update-music-log ((obj pc-settings-jak1))
   "update music log settings."
   ;; add whatever is playing to the music log.
   (add-to-music-log obj (-> *setting-control* current music) (the int (-> *setting-control* current sound-flava)))
@@ -190,8 +199,7 @@
     (add-to-music-log obj 'credits 2))
   0)
 
-(defmethod update-discord-rpc pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod update-discord-rpc ((obj pc-settings-jak1))
   "update discord rpc module"
   (let ((info (new 'stack 'discord-info)))
     (set! (-> info fuel) (&-> *game-info* fuel))
@@ -248,15 +256,13 @@
       (pc-discord-rpc-update info)))
   (none))
 
-(defmethod update-speedrun pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod update-speedrun ((obj pc-settings-jak1))
   "update speedrun module"
   (with-profiler "speedrun-update"
     (speedrun-mode-update))
   (none))
 
-(defmethod update-video-hacks pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod update-video-hacks ((obj pc-settings-jak1))
   "update the graphics hacks used for sprites and other things. ugh."
   (set! (-> (get-video-params) relative-x-scale) (-> obj aspect-ratio-reciprocal))
   (set! (-> (get-video-params) relative-x-scale-reciprical) (-> obj aspect-ratio-scale))
@@ -276,13 +282,11 @@
       ;(set! (-> pr button-scale) (+ 1.0 (* wide-adjust 0.1)))
       )))
 
-(defmethod led-enabled? pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod led-enabled? ((obj pc-settings-jak1))
   "should the controller led be set?"
   (or (-> obj controller-led-hp?) (-> obj controller-led-eco?) (-> obj controller-led-heat?)))
 
-(defmethod update-led pc-settings-jak1
-  ((obj pc-settings-jak1))
+(defmethod update-led ((obj pc-settings-jak1))
   "set the controller led color by modifying the controller-led-color vector"
   ;; default color is just blue.
   (set! (-> obj controller-led-color r) 0.0)
@@ -408,8 +412,7 @@
   (dotimes (i PC_MUSIC_LOG_LENGTH)
     (set! (-> *pc-settings* secrets music i flava-mask) -1)))
 
-(defmethod add-to-music-log pc-settings-jak1
-  ((obj pc-settings-jak1) (music symbol) (flava int))
+(defmethod add-to-music-log ((obj pc-settings-jak1) (music symbol) (flava int))
   "add music and flava information to the music log.
    if music already exists, adds flava. if flava already exists, nothing happens."
   ;; go through our music log
@@ -430,44 +433,43 @@
 ;;;; file I/O
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defmethod handle-input-settings pc-settings-jak1
-  ((obj pc-settings-jak1) (file file-stream))
+(defmethod handle-input-settings ((obj pc-settings-jak1) (file file-stream))
   "handle the text parsing input for the 'settings' group"
   ((method-of-type pc-settings handle-input-settings) obj file)
   (case-str *pc-temp-string*
-    (("money-starburst?") (set! (-> obj money-starburst?) (file-stream-read-symbol file)))
-    (("extra-hud?") (set! (-> obj extra-hud?) (file-stream-read-symbol file)))
-    (("skip-movies?") (set! (-> obj skip-movies?) (file-stream-read-symbol file)))
-    (("subtitles?") (set! (-> obj subtitles?) (file-stream-read-symbol file)))
-    (("subtitle-language") (set! (-> obj subtitle-language) (the-as pc-language (file-stream-read-int file))))
-    (("text-language") (set! (-> obj text-language) (the-as pc-language (file-stream-read-int file))))
-    (("scenes-seen") (dotimes (i PC_SPOOL_LOG_LENGTH) (set! (-> obj scenes-seen i) (file-stream-read-int file))))
-    (("secrets")
-     (dosettings (file)
-                 (case-str *pc-temp-string*
-                   (("hard-rats?") (set! (-> obj secrets hard-rats?) (file-stream-read-symbol file)))
-                   (("hero-mode?") (set! (-> obj secrets hero-mode?) (file-stream-read-symbol file)))
-                   (("hud-map?") (set! (-> obj secrets hud-map?) (file-stream-read-symbol file)))
-                   (("hud-counters?") (set! (-> obj secrets hud-counters?) (file-stream-read-symbol file)))
-                   (("hud-watch?") (set! (-> obj secrets hud-watch?) (file-stream-read-symbol file)))
-                   (("watch-12hr?") (set! (-> obj secrets watch-12hr?) (file-stream-read-symbol file)))
-                   (("art") (set! (-> obj secrets art) (the-as pc-jak1-concept-art (file-stream-read-int file))))
-                   (("hard-fish-hiscore") (set! (-> obj secrets hard-fish-hiscore) (file-stream-read-int file)))
-                   (("hard-rats-hiscore") (set! (-> obj secrets hard-rats-hiscore) (file-stream-read-int file)))
-                   (("hard-rats-hiwave") (set! (-> obj secrets hard-rats-hiwave) (file-stream-read-int file)))
-                   (("cheats")
-                    (set! (-> obj cheats-known) (the pc-cheats (file-stream-read-int file)))
-                    (set! (-> obj cheats) (logand (-> obj cheats-known) (file-stream-read-int file))))
-                   (("music")
-                    (dotimes (i PC_MUSIC_LOG_LENGTH)
-                      (when (!= #x29 (file-stream-get-next-char-ret file))
-                        (with-settings-scope (file)
-                                             (set! (-> obj secrets music i name) (file-stream-read-symbol file))
-                                             (set! (-> obj secrets music i flava-mask) (file-stream-read-int file))))))))))
+            (("money-starburst?") (set! (-> obj money-starburst?) (file-stream-read-symbol file)))
+            (("extra-hud?") (set! (-> obj extra-hud?) (file-stream-read-symbol file)))
+            (("skip-movies?") (set! (-> obj skip-movies?) (file-stream-read-symbol file)))
+            (("subtitles?") (set! (-> obj subtitles?) (file-stream-read-symbol file)))
+            (("subtitle-language") (set! (-> obj subtitle-language) (the-as pc-language (file-stream-read-int file))))
+            (("text-language") (set! (-> obj text-language) (the-as pc-language (file-stream-read-int file))))
+            (("scenes-seen") (dotimes (i PC_SPOOL_LOG_LENGTH) (set! (-> obj scenes-seen i) (file-stream-read-int file))))
+            (("memcard-play-hints?") (set! (-> obj memcard-play-hints?) (file-stream-read-symbol file)))
+            (("secrets")
+             (dosettings (file)
+                         (case-str *pc-temp-string*
+                                   (("hard-rats?") (set! (-> obj secrets hard-rats?) (file-stream-read-symbol file)))
+                                   (("hero-mode?") (set! (-> obj secrets hero-mode?) (file-stream-read-symbol file)))
+                                   (("hud-map?") (set! (-> obj secrets hud-map?) (file-stream-read-symbol file)))
+                                   (("hud-counters?") (set! (-> obj secrets hud-counters?) (file-stream-read-symbol file)))
+                                   (("hud-watch?") (set! (-> obj secrets hud-watch?) (file-stream-read-symbol file)))
+                                   (("watch-12hr?") (set! (-> obj secrets watch-12hr?) (file-stream-read-symbol file)))
+                                   (("art") (set! (-> obj secrets art) (the-as pc-jak1-concept-art (file-stream-read-int file))))
+                                   (("hard-fish-hiscore") (set! (-> obj secrets hard-fish-hiscore) (file-stream-read-int file)))
+                                   (("hard-rats-hiscore") (set! (-> obj secrets hard-rats-hiscore) (file-stream-read-int file)))
+                                   (("hard-rats-hiwave") (set! (-> obj secrets hard-rats-hiwave) (file-stream-read-int file)))
+                                   (("cheats")
+                                    (set! (-> obj cheats-known) (the pc-cheats (file-stream-read-int file)))
+                                    (set! (-> obj cheats) (logand (-> obj cheats-known) (file-stream-read-int file))))
+                                   (("music")
+                                    (dotimes (i PC_MUSIC_LOG_LENGTH)
+                                      (when (!= #x29 (file-stream-get-next-char-ret file))
+                                        (with-settings-scope (file)
+                                                             (set! (-> obj secrets music i name) (file-stream-read-symbol file))
+                                                             (set! (-> obj secrets music i flava-mask) (file-stream-read-int file))))))))))
   0)
 
-(defmethod handle-output-settings pc-settings-jak1
-  ((obj pc-settings-jak1) (file file-stream))
+(defmethod handle-output-settings ((obj pc-settings-jak1) (file file-stream))
   "handle the text writing output for the 'settings' group"
   ((method-of-type pc-settings handle-output-settings) obj file)
   (format file "  (money-starburst? ~A)~%" (-> obj money-starburst?))
@@ -476,6 +478,7 @@
   (format file "  (subtitles? ~A)~%" (-> obj subtitles?))
   (format file "  (subtitle-language ~D)~%" (-> obj subtitle-language))
   (format file "  (text-language ~D)~%" (-> obj text-language))
+  (format file "  (memcard-play-hints? ~A)~%" (-> obj memcard-play-hints?))
   #|
   (format file "  (scenes-seen")
   (dotimes (i PC_SPOOL_LOG_LENGTH)
@@ -525,15 +528,15 @@
                     (font-flags shadow kerning))))
 
 (defun draw-last-known-safe-ground ()
-  (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf)) (bucket-id debug-no-zbuf))
+  (with-dma-buffer-add-bucket ((buf (-> (current-frame) global-buf))
+                                     (bucket-id debug-no-zbuf))
     (when *target*
       (let ((vec (-> *target* control last-known-safe-ground)))
-        (draw-string-xy (string-format "~M ~M ~M" (-> vec x) (-> vec y) (-> vec z))
-                        buf
-                        0
-                        (+ 10 (* 10 (-> (get-video-params) relative-y-scale)))
-                        (font-color flat-yellow)
-                        (font-flags shadow kerning))))))
+          (draw-string-xy (string-format "~M ~M ~M" (-> vec x) (-> vec y) (-> vec z))
+                          buf
+                          0 (+ 10 (* 10 (-> (get-video-params) relative-y-scale)))
+                          (font-color flat-yellow)
+                          (font-flags shadow kerning))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; process pools

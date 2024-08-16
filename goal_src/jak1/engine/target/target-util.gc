@@ -1,10 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: target-util.gc
-;; name in dgo: target-util
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/anim/joint.gc")
+(require "engine/collide/collide-shape.gc")
+(require "engine/gfx/shadow/shadow-cpu-h.gc")
+(require "engine/common-obs/process-drawable-h.gc")
 (define-extern target-collide-set! (function symbol float int :behavior target))
 
 ;; DECOMP BEGINS

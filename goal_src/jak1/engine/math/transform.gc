@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: transform.gc
-;; name in dgo: transform
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/matrix.gc")
+(require "engine/math/transform-h.gc")
 
 ;; note: transformq and trsq is mostly used instead of transform.
 

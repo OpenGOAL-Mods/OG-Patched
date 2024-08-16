@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: flying-lurker.gc
-;; name in dgo: flying-lurker
-;; dgos: L1, OGR
+(bundles "OGR.DGO")
+(require "engine/geometry/path.gc")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/collide/collide-cache.gc")
+(require "engine/entity/entity.gc")
 
 ;; DECOMP BEGINS
 

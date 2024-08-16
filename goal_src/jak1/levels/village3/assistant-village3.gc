@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: assistant-village3.gc
-;; name in dgo: assistant-village3
-;; dgos: L1, VI3
+(bundles "VI3.DGO")
+(require "engine/common-obs/process-taskable.gc")
 
 ;; DECOMP BEGINS
 

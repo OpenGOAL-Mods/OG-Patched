@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: vector-h.gc
-;; name in dgo: vector-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gcommon.gc")
+(require "engine/util/types-h.gc")
 
 ;; Type definitions/inline functions for bit array and vector types.
 

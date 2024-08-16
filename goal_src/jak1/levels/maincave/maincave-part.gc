@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: maincave-part.gc
-;; name in dgo: maincave-part
-;; dgos: L1, MAI, MAINCAVE
+(bundles "MAI.DGO")
+(require "engine/gfx/sprite/sparticle/sparticle.gc")
+(require "engine/common-obs/generic-obs-h.gc")
 
 ;; DECOMP BEGINS
 

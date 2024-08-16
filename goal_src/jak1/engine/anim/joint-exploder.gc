@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: joint-exploder.gc
-;; name in dgo: joint-exploder
-;; dgos: GAME, COMMON, L1
+(bundles "GAME.CGO")
+(require "engine/collide/collide-cache.gc")
+(require "engine/common-obs/process-drawable.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: citb-plat.gc
-;; name in dgo: citb-plat
-;; dgos: CIT, L1
+(bundles "CIT.DGO")
+(require "engine/common-obs/rigid-body.gc")
+(require "engine/common-obs/plat-eco.gc")
+(require "engine/common-obs/plat-button.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: game-save.gc
-;; name in dgo: game-save
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/game/game-info.gc")
+(require "engine/ui/text-h.gc")
+(require "engine/gfx/sprite/sparticle/sparticle-launcher.gc")
+(require "engine/ps2/memcard-h.gc")
+(require "engine/load/loader.gc")
 
 ;; The game-save system implements the "background autosave" feature.
 
@@ -489,11 +491,11 @@
                                                                     (let ((v1-95 (&+ v1-94 16)))
                                                                       (let ((a0-63 (the-as game-save-tag (&+ v1-95 0))))
                                                                         (set! (-> a0-63 elt-type) (game-save-elt fuel-cell-time))
-                                                                        (set! (-> a0-63 elt-count) (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max)
+                                                                        (set! (-> a0-63 elt-count) (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max) mod-base-change
                                                                         (set! (-> a0-63 elt-size) (the-as uint 8)))
                                                                       (let ((v1-96 (&+ v1-95 16)))
                                                                         (let ((a0-64 (the-as object 0)))
-                                                                          (while (< (the-as int a0-64) (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max)
+                                                                          (while (< (the-as int a0-64) (the int (game-task max))) ;; changed from hard-coded 116 to (game-task max) mod-base-change
                                                                             (set! (-> (the-as (pointer int64) (&+ v1-96 (* (the-as int a0-64) 8)))) (-> this fuel-cell-time (the-as int a0-64)))
                                                                             (set! a0-64 (+ (the-as int a0-64) 1))))
                                                                         (let ((v1-97 (&+ v1-96 928)))
@@ -592,14 +594,16 @@
     ;; loop over all tags
     (while (< (the-as int save-data) (the-as int (+ (+ (-> save length) 76) (the-as int save))))
       (let ((a0-1 (-> save-data elt-type)))
+        ;; og:preserve-this Moved these settings to pc-settings
         (cond
-          ((= a0-1 (game-save-elt sfx-volume)) (set! (-> *setting-control* default sfx-volume) (-> save-data user-float0)))
-          ((= a0-1 (game-save-elt music-volume)) (set! (-> *setting-control* default music-volume) (-> save-data user-float0)))
-          ((= a0-1 (game-save-elt dialog-volume)) (set! (-> *setting-control* default dialog-volume) (-> save-data user-float0)))
+          ;; ((= a0-1 (game-save-elt sfx-volume)) (set! (-> *setting-control* default sfx-volume) (-> save-data user-float0)))
+          ;; ((= a0-1 (game-save-elt music-volume)) (set! (-> *setting-control* default music-volume) (-> save-data user-float0)))
+          ;; ((= a0-1 (game-save-elt dialog-volume)) (set! (-> *setting-control* default dialog-volume) (-> save-data user-float0)))
           ((= a0-1 (game-save-elt language))
            (set! (-> *setting-control* default language) (the-as language-enum (-> save-data user-uint64))))
-          ((= a0-1 (game-save-elt vibration)) (set! (-> *setting-control* default vibration) (= (-> save-data user-uint64) 1)))
-          ((= a0-1 (game-save-elt play-hints)) (set! (-> *setting-control* default play-hints) (= (-> save-data user-uint64) 1)))))
+          ;; ((= a0-1 (game-save-elt vibration)) (set! (-> *setting-control* default vibration) (= (-> save-data user-uint64) 1)))
+          ;; ((= a0-1 (game-save-elt play-hints)) (set! (-> *setting-control* default play-hints) (= (-> save-data user-uint64) 1)))
+          (else (format 0 "PC PORT: Skipping setting from game save, its stored in the pc-settings now"))))
       (set! save-data
             (the-as game-save-tag
                     (&+ (the-as pointer save-data) (logand -16 (+ (* (the-as int (-> save-data elt-size)) (-> save-data elt-count)) 31)))))))
@@ -716,8 +720,7 @@
     (let ((a1-68 (-> *level* level s4-1))) (if (= (-> a1-68 status) 'active) (copy-perms-to-level! this a1-68))))
   ;; update tasks
   (let ((s5-1 2) ;; jungle eggtop
-        ;; changed to use enum
-        (s4-2 (- (the int (game-task max)) 1)) ;; max - 1
+        (s4-2 (- (the int (game-task max)) 1)) ;; max - 1  mod-base-change changed to use enum
         )
     (while (>= (the-as uint s4-2) (the-as uint s5-1))
       ;; calling this will run the function to see if the task is done or not

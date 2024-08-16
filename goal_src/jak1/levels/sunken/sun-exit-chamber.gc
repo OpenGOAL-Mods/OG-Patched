@@ -1,10 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sun-exit-chamber.gc
-;; name in dgo: sun-exit-chamber
-;; dgos: L1, SUN, SUNKEN
-
+(bundles "SUN.DGO")
+(require "levels/sunken/sunken-obs.gc")
+(require "engine/game/task/task-control.gc")
+(require "levels/sunken/sun-iris-door.gc")
+(require "engine/common-obs/basebutton.gc")
 (declare-type blue-eco-charger process-drawable)
 
 (declare-type exit-chamber-button basebutton)

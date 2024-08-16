@@ -1,9 +1,12 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: training-obs.gc
-;; name in dgo: training-obs
-;; dgos: L1, TRA
+(bundles "TRA.DGO")
+(require "engine/common-obs/rigid-body.gc")
+(require "engine/common-obs/baseplat.gc")
+(require "engine/game/task/task-control.gc")
+(require "engine/game/effect-control.gc")
+(require "engine/anim/joint-exploder.gc")
+(require "engine/camera/pov-camera-h.gc")
 
 ;; DECOMP BEGINS
 

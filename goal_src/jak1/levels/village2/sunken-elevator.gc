@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sunken-elevator.gc
-;; name in dgo: sunken-elevator
-;; dgos: L1, VI2
+(bundles "VI2.DGO")
+(require "levels/village2/village2-obs.gc")
+(require "engine/common-obs/plat-button.gc")
 
 ;; DECOMP BEGINS
 

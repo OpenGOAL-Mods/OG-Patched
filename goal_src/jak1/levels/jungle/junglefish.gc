@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: junglefish.gc
-;; name in dgo: junglefish
-;; dgos: JUN, JUNGLE, L1
+(bundles "JUN.DGO")
+(require "engine/common-obs/nav-enemy.gc")
+(require "engine/common-obs/water.gc")
 
 ;; DECOMP BEGINS
 

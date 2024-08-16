@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: aligner-h.gc
-;; name in dgo: aligner-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/draw/drawable-h.gc")
+(require "kernel/gstate.gc")
 (defenum align-flags
   :bitfield #t
   :type uint32

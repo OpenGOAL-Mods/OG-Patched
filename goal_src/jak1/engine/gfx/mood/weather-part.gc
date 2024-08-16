@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: weather-part.gc
-;; name in dgo: weather-part
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/camera/cam-interface-h.gc")
+(require "engine/gfx/sky/sky-h.gc")
+(require "engine/target/target-h.gc")
+(require "engine/gfx/sprite/sparticle/sparticle.gc")
 
 ;; DECOMP BEGINS
 

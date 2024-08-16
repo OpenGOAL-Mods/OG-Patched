@@ -1,10 +1,17 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: tie-methods.gc
-;; name in dgo: tie-methods
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/tie/tie.gc")
+(require "engine/gfx/background/wind-h.gc")
+(require "engine/level/bsp.gc")
+(require "kernel/gstate.gc")
+(require "engine/draw/draw-node-h.gc")
+(require "engine/gfx/generic/generic-h.gc")
+(require "engine/gfx/background/background.gc")
+(require "engine/camera/cam-interface-h.gc")
+(require "engine/collide/collide-shape-h.gc")
+(require "engine/gfx/tie/tie-work.gc")
+(require "engine/gfx/background/subdivide.gc")
 (def-mips2c draw-inline-array-instance-tie (function pointer (inline-array instance-tie) int dma-buffer none))
 
 (def-mips2c draw-inline-array-prototype-tie-generic-asm (function dma-buffer int prototype-array-tie none))
@@ -217,8 +224,7 @@
 ;; draw-inline-array-prototype-tie-asm
 ;; draw-inline-array-prototype-tie-near-asm
 
-(defmethod login drawable-tree-instance-tie
-  ((this drawable-tree-instance-tie))
+(defmethod login ((this drawable-tree-instance-tie))
   (if (nonzero? (-> this prototypes prototype-array-tie)) (login (-> this prototypes prototype-array-tie)))
   (dotimes (s5-0 (-> this length))
     (login (-> this data s5-0)))

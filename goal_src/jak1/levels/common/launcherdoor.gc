@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: launcherdoor.gc
-;; name in dgo: launcherdoor
-;; dgos: JUN, JUNGLE, L1, MAI, MAINCAVE, SUN, SUNKEN
+(bundles "JUN.DGO" "MAI.DGO" "SUN.DGO")
+(require "engine/common-obs/generic-obs.gc")
 
 ;; DECOMP BEGINS
 

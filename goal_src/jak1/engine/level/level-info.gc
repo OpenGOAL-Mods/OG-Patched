@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: level-info.gc
-;; name in dgo: level-info
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/quaternion-h.gc")
+(require "engine/math/vector-h.gc")
+(require "engine/level/level-h.gc")
+(require "engine/game/game-info-h.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: load-dgo.gc
-;; name in dgo: load-dgo
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/hw/display-h.gc")
+(require "kernel/gstring.gc")
+(require "engine/ps2/rpc-h.gc")
+(require "engine/sound/gsound-h.gc")
+(require "engine/util/types-h.gc")
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 ;; OVERLORD messages

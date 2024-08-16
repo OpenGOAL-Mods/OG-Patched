@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sync-info-h.gc
-;; name in dgo: sync-info-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 
 ;; The sync-info system is used to synchronize the motion of objects.
 ;; For example, platforms use this to have consistent relative positions.

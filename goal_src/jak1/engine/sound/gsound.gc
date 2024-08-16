@@ -1,9 +1,14 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: gsound.gc
-;; name in dgo: gsound
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/game/settings-h.gc")
+(require "engine/camera/cam-update-h.gc")
+(require "engine/game/main-h.gc")
+(require "engine/ui/progress/progress-h.gc")
+(require "engine/entity/entity-h.gc")
+(require "engine/game/effect-control-h.gc")
+(require "engine/ps2/rpc-h.gc")
+(require "engine/sound/gsound-h.gc")
 
 ;; DECOMP BEGINS
 
@@ -156,7 +161,9 @@
       (let* ((cmd (the sound-rpc-play (&+ (-> *sound-player-rpc* current base) (* elt-size (the-as uint i)))))
              (a3-0 (sound-command->string (-> cmd command)))
              (command (-> cmd command)))
-        (if (= command (sound-command play)) (format #t "~D ~A ~G~%" i a3-0 (-> cmd name)) (format #t "~D ~A~%" i a3-0)))))
+        (if (= command (sound-command play))
+          (format #t "~D ~A ~G~%" i a3-0 (&-> cmd name)) ;; og:preserve-this it's meant to point to the name i guess...
+          (format #t "~D ~A~%" i a3-0)))))
   0)
 
 (define *sound-current-mirror* (sound-mirror-mode normal))

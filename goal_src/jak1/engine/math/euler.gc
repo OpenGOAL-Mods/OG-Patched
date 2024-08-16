@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: euler.gc
-;; name in dgo: euler
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/quaternion.gc")
+(require "engine/math/euler-h.gc")
 
 ;; In general, the euler angle stuff is really inefficient. I don't think it's really used outside of
 ;; a few camera debugging functions.

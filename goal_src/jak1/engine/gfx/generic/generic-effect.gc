@@ -1,10 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: generic-effect.gc
-;; name in dgo: generic-effect
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/lights-h.gc")
+(require "engine/gfx/generic/generic-vu0.gc")
+(require "engine/gfx/texture/texture.gc")
+(require "engine/gfx/background/subdivide-h.gc")
+(require "engine/gfx/generic/generic-h.gc")
 (define-extern *generic-envmap-texture* texture)
 
 (define *target-lock* (the-as symbol 0))

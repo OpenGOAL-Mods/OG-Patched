@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: warrior.gc
-;; name in dgo: warrior
-;; dgos: L1, VI2
+(bundles "VI2.DGO")
+(require "levels/village2/village2-obs.gc")
+(require "engine/common-obs/process-taskable.gc")
 
 ;; DECOMP BEGINS
 

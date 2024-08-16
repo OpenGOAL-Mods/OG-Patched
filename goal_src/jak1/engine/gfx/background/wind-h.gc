@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: wind-h.gc
-;; name in dgo: wind-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
 
 ;; These "wind" types are used in the tie/shrub renderers to make things sway in the breeze.
 ;; It generates vectors that are applied as shear to the instance matrices.

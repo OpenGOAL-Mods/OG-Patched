@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: oracle.gc
-;; name in dgo: oracle
-;; dgos: CIT, L1, VI1, VI2, VI3, VILLAGEP
+(bundles "CIT.DGO" "VI1.DGO" "VI2.DGO" "VI3.DGO")
+(require "engine/common-obs/process-taskable.gc")
 
 ;; DECOMP BEGINS
 

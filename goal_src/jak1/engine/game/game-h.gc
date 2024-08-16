@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: game-h.gc
-;; name in dgo: game-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 (declare-type target process-drawable)
 
 (declare-type voicebox process-drawable)

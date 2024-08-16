@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: capture.gc
-;; name in dgo: capture
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gkernel.gc")
+(require "engine/gfx/hw/gs.gc")
 
 ;; Functions for taking a screenshot of VRAM.
 ;; These are debug-only and leak memory.

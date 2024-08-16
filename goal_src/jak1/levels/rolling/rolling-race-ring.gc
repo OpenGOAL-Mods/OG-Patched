@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: rolling-race-ring.gc
-;; name in dgo: rolling-race-ring
-;; dgos: L1, ROL
+(bundles "ROL.DGO")
+(require "engine/common-obs/collectables.gc")
 
 ;; DECOMP BEGINS
 

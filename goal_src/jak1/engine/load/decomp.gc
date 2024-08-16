@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: decomp.gc
-;; name in dgo: decomp
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/ps2/pad.gc")
+(require "engine/draw/drawable-ambient-h.gc")
+(require "engine/gfx/font.gc")
+(require "engine/load/ramdisk.gc")
 
 ;; This file contains update-vis! which updates the vis-bits string from the loaded VIS file.
 

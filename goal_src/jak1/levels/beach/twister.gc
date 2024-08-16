@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: twister.gc
-;; name in dgo: twister
-;; dgos: BEA, L1
+(bundles "BEA.DGO")
+(require "engine/math/matrix.gc")
+(require "engine/math/vector.gc")
+(require "engine/game/game-h.gc")
 
 ;; DECOMP BEGINS
 

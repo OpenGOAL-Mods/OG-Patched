@@ -1,9 +1,12 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: cam-interface.gc
-;; name in dgo: cam-interface
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/camera/cam-interface-h.gc")
+(require "engine/math/quaternion.gc")
+(require "kernel/gstate.gc")
+(require "engine/gfx/math-camera-h.gc")
+(require "engine/entity/entity-h.gc")
+(require "engine/math/transformq-h.gc")
 
 ;; definition for function position-in-front-of-camera!
 (defun position-in-front-of-camera! ((arg0 vector) (arg1 float) (arg2 float))

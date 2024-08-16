@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sage-bluehut.gc
-;; name in dgo: sage-bluehut
-;; dgos: L1, VI2
+(bundles "VI2.DGO")
+(require "levels/village1/sage.gc")
 
 ;; DECOMP BEGINS
 

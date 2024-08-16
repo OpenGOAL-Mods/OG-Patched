@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: drawable-group.gc
-;; name in dgo: drawable-group
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/draw/drawable.gc")
 
 ;; DECOMP BEGINS
 
@@ -13,8 +11,7 @@
     (set! (-> v0-0 length) arg0)
     v0-0))
 
-(defmethod inspect drawable-group
-  ((this drawable-group))
+(defmethod inspect ((this drawable-group))
   (format #t "[~8x] ~A~%" this (-> this type))
   (format #t "~Tid: ~D~%" (-> this id))
   (format #t "~Tlength: ~D~%" (-> this length))

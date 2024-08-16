@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: video.gc
-;; name in dgo: video
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/shadow/shadow-cpu.gc")
 
 ;; DECOMP BEGINS
 

@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: voicebox.gc
-;; name in dgo: voicebox
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/camera/camera.gc")
+(require "engine/common-obs/process-drawable.gc")
+(require "engine/game/settings.gc")
 
 ;; DECOMP BEGINS
 

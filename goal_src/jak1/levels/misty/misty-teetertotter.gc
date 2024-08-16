@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: misty-teetertotter.gc
-;; name in dgo: misty-teetertotter
-;; dgos: L1, MIS
-
+(bundles "MIS.DGO")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/game/task/hint-control.gc")
 (declare-type teetertotter process-drawable)
 
 ;; DECOMP BEGINS

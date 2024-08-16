@@ -1,14 +1,12 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: quaternion.gc
-;; name in dgo: quaternion
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/quaternion-h.gc")
+(require "engine/math/matrix.gc")
 
 ;; DECOMP BEGINS
 
-(defmethod inspect quaternion
-  ((this quaternion))
+(defmethod inspect ((this quaternion))
   "Print a quaternion. Prints the values and axis-angle"
   (format #t "[~8x] quaternion~%" this)
   (format #t "~T[~F] [~F] [~F] [~F]~%" (-> this x) (-> this y) (-> this z) (-> this w))

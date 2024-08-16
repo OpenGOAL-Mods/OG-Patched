@@ -1,10 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: robotboss-misc.gc
-;; name in dgo: robotboss-misc
-;; dgos: FIN, L1
-
+(bundles "FIN.DGO")
+(require "levels/finalboss/robotboss-h.gc")
+(require "levels/citadel/citadel-sages.gc")
 (declare-type ecoclaw process-drawable)
 
 (define-extern *ecoclaw* (pointer ecoclaw))

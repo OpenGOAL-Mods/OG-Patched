@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: engines.gc
-;; name in dgo: engines
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gkernel-h.gc")
+(require "engine/engine/connect.gc")
 
 ;; Allocate some engines.
 

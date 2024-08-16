@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: collide-frag.gc
-;; name in dgo: collide-frag
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/level/bsp.gc")
+(require "engine/collide/collide-frag-h.gc")
 
 ;; This file contains the drawable-tree implementation for collide-fragment
 

@@ -1,9 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: water.gc
-;; name in dgo: water
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/game/effect-control.gc")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/gfx/foreground/ripple.gc")
+(require "engine/common-obs/water-h.gc")
+(require "engine/geometry/vol.gc")
 
 ;; DECOMP BEGINS
 

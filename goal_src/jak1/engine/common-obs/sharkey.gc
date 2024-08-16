@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sharkey.gc
-;; name in dgo: sharkey
-;; dgos: GAME, COMMON, L1
+(bundles "GAME.CGO")
+(require "engine/common-obs/nav-enemy.gc")
+(require "engine/common-obs/water.gc")
 
 ;; DECOMP BEGINS
 

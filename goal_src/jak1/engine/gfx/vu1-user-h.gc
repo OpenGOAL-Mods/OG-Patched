@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: vu1-user-h.gc
-;; name in dgo: vu1-user-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 
 ;; VU1 renderers are enabled/disabled with a bitmask.
 

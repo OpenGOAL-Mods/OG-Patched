@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: load-boundary-h.gc
-;; name in dgo: load-boundary-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/math/vector-h.gc")
+(require "engine/game/game-info-h.gc")
 
 ;; Load Boundary
 ;; This system is responsible for more than just the load boundaries - it also processes the commands

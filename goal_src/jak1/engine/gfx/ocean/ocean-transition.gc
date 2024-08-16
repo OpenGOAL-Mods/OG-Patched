@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: ocean-transition.gc
-;; name in dgo: ocean-transition
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/ocean/ocean-mid.gc")
+(require "engine/collide/collide-frag-h.gc")
 
 ;; definition for function ocean-trans-camera-masks-bit?
 (defun ocean-trans-camera-masks-bit? ((arg0 uint) (arg1 uint))

@@ -1,5 +1,7 @@
 #include "build_level.h"
 
+#include "common/util/gltf_util.h"
+
 #include "decompiler/extractor/extractor_util.h"
 #include "decompiler/level_extractor/extract_merc.h"
 #include "goalc/build_level/collide/jak1/collide_bvh.h"
@@ -15,9 +17,9 @@ bool run_build_level(const std::string& input_file,
                      const std::string& output_prefix) {
   auto level_json = parse_commented_json(
       file_util::read_text_file(file_util::get_file_path({input_file})), input_file);
-  LevelFile file;          // GOAL level file
-  tfrag3::Level pc_level;  // PC level file
-  TexturePool tex_pool;    // pc level texture pool
+  LevelFile file;                   // GOAL level file
+  tfrag3::Level pc_level;           // PC level file
+  gltf_util::TexturePool tex_pool;  // pc level texture pool
 
   // process input mesh from blender
   gltf_mesh_extract::Input mesh_extract_in;
@@ -202,8 +204,16 @@ bool run_build_level(const std::string& input_file,
     }
   }
 
+  // add custom models to fr3
+  if (level_json.contains("custom_models") && !level_json.at("custom_models").empty()) {
+    auto models = level_json.at("custom_models").get<std::vector<std::string>>();
+    for (auto& name : models) {
+      add_model_to_level(GameVersion::Jak1, name, pc_level);
+    }
+  }
+
   // Save the PC level
-  save_pc_data(file.nickname, pc_level,
+  save_pc_data(file.name, pc_level,
                file_util::get_jak_project_dir() / "out" / output_prefix / "fr3");
 
   return true;

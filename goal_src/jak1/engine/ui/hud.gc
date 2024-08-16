@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: hud.gc
-;; name in dgo: hud
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/common-obs/collectables.gc")
 
 ;; DECOMP BEGINS
 
@@ -42,6 +40,7 @@
     (when (or (!= (-> this value) arg0)
               (!= (-> this value2) arg1)
               (-> this force-on-screen)
+              ;; PATCHED - prevent pause buffer
               (or (and (cpad-hold? 0 l2) (not (-> this disable)) (not (cpad-pressed? 0 start)) (not (cpad-pressed? 0 select)))
                   (and (not *cheat-mode*) (cpad-hold? 0 r2) (not (cpad-pressed? 0 start)) (not (cpad-pressed? 0 select)))
                   (-> this first-init)))

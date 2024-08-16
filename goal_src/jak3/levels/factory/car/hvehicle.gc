@@ -223,6 +223,10 @@
     (when (!= *vehicle-shadow-control-disabled* s5-0)
       (let ((s4-0 (new 'stack-no-clear 'inline-array 'vector 2)))
         (set! (-> s4-0 0 y) (vector-vector-xz-distance-squared (camera-pos) (-> this root trans)))
+        ;; og:preserve-this shadow cull toggle
+        (#when PC_PORT
+            (if (not (-> *pc-settings* ps2-shadow?))
+                (set! (-> s4-0 0 y) 0.0)))
         (let ((f0-1 245760.0))
           (cond
             ((< (* f0-1 f0-1) (-> s4-0 0 y))
@@ -281,7 +285,6 @@
       )
     )
   ((method-of-type vehicle rigid-body-object-method-30) this)
-  (none)
   )
 
 (defmethod rigid-body-object-method-54 ((this hvehicle))
@@ -1051,7 +1054,7 @@
                                                                         (damage f0-11)
                                                                         (vehicle-damage-factor 1.0)
                                                                         (vehicle-impulse-factor 1.0)
-                                                                        (attacker (process->handle (vehicle-method-68 this)))
+                                                                        (attacker (process->handle (find-rider this)))
                                                                         (mode 'vehicle)
                                                                         (vector (-> s5-0 force))
                                                                         (penetrate-using (penetrate vehicle))

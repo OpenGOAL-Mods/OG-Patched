@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: qbert-plat.gc
-;; name in dgo: qbert-plat
-;; dgos: L1, SUN, SUNKEN
-
+(bundles "SUN.DGO")
+(require "engine/game/task/hint-control.gc")
+(require "engine/camera/pov-camera-h.gc")
+(require "engine/common-obs/rigid-body.gc")
 (declare-type qbert-plat-master process-drawable)
 
 (declare-type qbert-plat rigid-body-platform)

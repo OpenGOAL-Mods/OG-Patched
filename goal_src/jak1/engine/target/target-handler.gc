@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: target-handler.gc
-;; name in dgo: target-handler
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/target/logic-target.gc")
 (define-extern target-powerup-effect (function symbol none :behavior target))
 
 ;; DECOMP BEGINS
@@ -592,26 +589,20 @@
                      (-> arg3 param 0)
                      (fmax (-> self control ground-impact-vel)
                            (- (vector-dot (-> self control transv) (-> self control dynam gravity-normal))))))
-       (let ((f0-7 (vector-dot (-> self control dynam gravity-normal)
-                               (vector-! (new 'stack-no-clear 'vector) (-> self control unknown-vector111) (-> self control trans)))))
-         ;; PATCHED - dont send attacks from fall damage
-         ;;  (when (< (-> *TARGET-bank* fall-far) f0-7)
-         ;;    (when (and #f  
-         ;;               (target-send-attack
-         ;;                 arg0
-         ;;                 (the-as uint 'bonk)
-         ;;                 (the-as touching-shapes-entry (-> arg3 param 0))
-         ;;                 (-> self control unknown-dword50)
-         ;;                 (-> self control unknown-dword51)
-         ;;                 )
-         ;;               (not (logtest? (-> self state-flags) (state-flags being-attacked dying)))
-         ;;               )
-         ;;      (set! (-> self control unknown-vector52 quad) (-> self control trans quad))
-         ;;      (target-timed-invulnerable (seconds 0.1) self)
-         ;;      (go target-jump (-> *TARGET-bank* jump-height-min) (-> *TARGET-bank* jump-height-max) (the-as surface #f))
-         ;;      )
-         ;;    )
-         )
+      ;; PATCHED - dont send attacks from fall damage
+      ;;  (let ((f0-7 (vector-dot (-> self control dynam gravity-normal)
+      ;;                          (vector-! (new 'stack-no-clear 'vector) (-> self control unknown-vector111) (-> self control trans)))))
+      ;;    (when (< (-> *TARGET-bank* fall-far) f0-7)
+      ;;      (when (and (target-send-attack arg0
+      ;;                                     (the-as uint 'bonk)
+      ;;                                     (the-as touching-shapes-entry (-> arg3 param 0))
+      ;;                                     (-> self control unknown-dword50)
+      ;;                                     (-> self control unknown-dword51))
+      ;;                 (not (logtest? (-> self state-flags) (state-flags being-attacked dying))))
+      ;;        (set! (-> self control unknown-vector52 quad) (-> self control trans quad))
+      ;;        (target-timed-invulnerable (seconds 0.1) self)
+      ;;        (go target-jump (-> *TARGET-bank* jump-height-min) (-> *TARGET-bank* jump-height-max) (the-as surface #f))))
+      ;;        )
        #f)
       ((= arg2 'jump)
        (sound-play "jump-long")

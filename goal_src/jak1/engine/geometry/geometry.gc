@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: geometry.gc
-;; name in dgo: geometry
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/geometry/geometry-h.gc")
+(require "engine/math/quaternion.gc")
+(require "engine/gfx/font.gc")
 
 ;; Geometry functions are common vector/plane utilities + the "curve" stuff
 

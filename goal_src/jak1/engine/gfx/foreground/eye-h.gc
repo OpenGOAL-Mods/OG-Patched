@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: eye-h.gc
-;; name in dgo: eye-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel/gkernel-h.gc")
 (define-extern get-eye-block (function int int int))
 
 (define-extern merc-eye-anim (function process-drawable none))

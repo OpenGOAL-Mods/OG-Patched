@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: math-camera-h.gc
-;; name in dgo: math-camera-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 
 ;; The "math-camera" is responsible for computing the projection matrix used in the renderer
 ;; from the position of the in-game camera. It also computes some other common camera info.

@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: snow-ram-h.gc
-;; name in dgo: snow-ram-h
-;; dgos: L1, SNO
+(bundles "SNO.DGO")
+(require "engine/game/game-h.gc")
 
 ;; DECOMP BEGINS
 

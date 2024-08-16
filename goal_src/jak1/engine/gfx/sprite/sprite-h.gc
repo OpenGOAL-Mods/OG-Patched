@@ -1,10 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sprite-h.gc
-;; name in dgo: sprite-h
-;; dgos: GAME, ENGINE
-
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "kernel-defs.gc")
 (#when PC_BIG_MEMORY
   (defconstant SPRITE_MAX_AMOUNT_MULT 12))
 

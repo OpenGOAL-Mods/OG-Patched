@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: vol.gc
-;; name in dgo: vol
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/debug/debug-h.gc")
+(require "engine/geometry/vol-h.gc")
+(require "engine/geometry/cylinder.gc")
 
 ;; DECOMP BEGINS
 

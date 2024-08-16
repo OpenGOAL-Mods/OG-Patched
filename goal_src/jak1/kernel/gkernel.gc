@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: gkernel.gc
-;; name in dgo: gkernel
-;; dgos: KERNEL
+(bundles "KERNEL.CGO")
+(require "kernel/gkernel-h.gc")
+(require "kernel/gstring-h.gc")
 
 ;; The GOAL kernel provides:
 ;;  - threads/stack management
@@ -85,6 +84,10 @@
     (when pack
       (set! *kernel-packages* (delete! (car pack) *kernel-packages*)))
     *kernel-packages*))
+
+(define *test-vec4s* (new 'static 'vec4s :x 0. :y 0. :z 0. :w 0.))
+
+(inspect *test-vec4s*)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Kernel Globals
@@ -281,8 +284,7 @@
     (set! (-> this ppointer) (the (pointer process) (&-> this self)))
     this))
 
-(defmethod inspect process-tree
-  ((this process-tree))
+(defmethod inspect ((this process-tree))
   "Inspect a process-tree node."
   (format #t "[~8x] ~A~%" this (-> this type))
   (format #t "~Tname: ~S~%" (-> this name))

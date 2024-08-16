@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: ocean-tables.gc
-;; name in dgo: ocean-tables
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/ocean/ocean-h.gc")
+(require "engine/math/vector-h.gc")
+(require "engine/math/math.gc")
 
 ;; These tables contain information for particular oceans.
 ;; All of the information is contained in *ocean-map-<name>*

@@ -1,10 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: beach-obs.gc
-;; name in dgo: beach-obs
-;; dgos: BEA, L1
-
+(bundles "BEA.DGO")
+(require "engine/common-obs/process-taskable.gc")
+(require "engine/camera/pov-camera-h.gc")
+(require "levels/beach/wobbler.gc")
 (define-extern spawn-flying-rock (function vector vector float entity none))
 
 ;; DECOMP BEGINS

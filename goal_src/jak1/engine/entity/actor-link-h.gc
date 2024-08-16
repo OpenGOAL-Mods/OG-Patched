@@ -1,9 +1,10 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: actor-link-h.gc
-;; name in dgo: actor-link-h
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/entity/res.gc")
+(require "kernel/gstate.gc")
+(require "engine/entity/entity-h.gc")
+(require "engine/game/game-h.gc")
 
 ;; The exact details of actor-link-h are not yet understood, but this system caches lookups for entities/process.
 ;; Some entities may reference other entities.  This is done with an element in a res-lump/entity that contains
@@ -126,15 +127,13 @@
   (set! (-> this prev) (prev-actor (-> this process entity)))
   (-> this next))
 
-(defmethod apply-function-forward actor-link-info
-  ((this actor-link-info) (arg0 (function entity-actor object object)) (arg1 object))
+(defmethod apply-function-forward ((this actor-link-info) (arg0 (function entity-actor object object)) (arg1 object))
   "Iterate forward through actors, and apply this function. Starts at (-> this next)
    If the function returns truthy, stop iterating."
   (let ((s3-0 (-> this next))) (while s3-0 (if (arg0 s3-0 arg1) (return (the-as int #f))) (set! s3-0 (next-actor s3-0))))
   0)
 
-(defmethod apply-function-reverse actor-link-info
-  ((this actor-link-info) (arg0 (function entity-actor object object)) (arg1 object))
+(defmethod apply-function-reverse ((this actor-link-info) (arg0 (function entity-actor object object)) (arg1 object))
   "Iterate backward through actors and apply function.
    If the function returns truth, stop iterating."
   (let ((s3-0 (-> this prev))) (while s3-0 (if (arg0 s3-0 arg1) (return (the-as int #f))) (set! s3-0 (prev-actor s3-0))))

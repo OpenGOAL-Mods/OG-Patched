@@ -17,4 +17,4 @@ for file in files:
 
 print(f"In total that took {total_ms}ms for {len(files)} files!")
 
-# subprocess.run(["git", "diff", "--shortstat", "origin/master"])
+subprocess.run(["git", "diff", "--shortstat", "origin/master"])

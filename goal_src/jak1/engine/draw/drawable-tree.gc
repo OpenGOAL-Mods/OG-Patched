@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: drawable-tree.gc
-;; name in dgo: drawable-tree
-;; dgos: GAME, ENGINE
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/level/bsp.gc")
+(require "engine/draw/draw-node-h.gc")
 
 ;; The "drawable tree" represents a BVH for a specific render.
 ;; Typically, levels will have ~10 drawable trees.  There will be a tree for

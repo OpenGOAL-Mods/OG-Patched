@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: mud.gc
-;; name in dgo: mud
-;; dgos: L1, MIS
+(bundles "MIS.DGO")
+(require "engine/common-obs/water-anim.gc")
 
 ;; DECOMP BEGINS
 

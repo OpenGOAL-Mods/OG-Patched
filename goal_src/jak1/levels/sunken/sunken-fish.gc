@@ -1,9 +1,8 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: sunken-fish.gc
-;; name in dgo: sunken-fish
-;; dgos: L1, SUN, SUNKEN
+(bundles "SUN.DGO")
+(require "engine/common-obs/generic-obs.gc")
+(require "engine/geometry/path.gc")
 
 ;; DECOMP BEGINS
 

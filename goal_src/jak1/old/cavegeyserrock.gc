@@ -1,9 +1,9 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: cavegeyserrock.gc
-;; name in dgo: cavegeyserrock
-;; dgos: L1
+(require "engine/math/vector-h.gc")
+(require "engine/sound/gsound-h.gc")
+(require "kernel/gstate.gc")
+(require "engine/gfx/sprite/sparticle/sparticle-launcher-h.gc")
 
 #| This file is only found in early demos. |#
 
@@ -18,8 +18,7 @@
   :flag-assert #x900000020)
 
 ;; definition for method 3 of type cavegeyserrock-control-pt
-(defmethod inspect cavegeyserrock-control-pt
-  ((obj cavegeyserrock-control-pt))
+(defmethod inspect ((obj cavegeyserrock-control-pt))
   (format #t "[~8x] ~A~%" obj 'cavegeyserrock-control-pt)
   (format #t "~Ttrans: #<vector @ #x~X>~%" (-> obj trans))
   (format #t "~Ttransv: #<vector @ #x~X>~%" (-> obj transv))
@@ -46,8 +45,7 @@
   (:states cavegeyserrock-idle))
 
 ;; definition for method 3 of type cavegeyserrock
-(defmethod inspect cavegeyserrock
-  ((obj cavegeyserrock))
+(defmethod inspect ((obj cavegeyserrock))
   (let ((t9-0 (method-of-type process-drawable inspect))) (t9-0 obj))
   (format #t "~T~Tdo-burst?: ~A~%" (-> obj do-burst?))
   (format #t "~T~Tdo-falling-sound?: ~A~%" (-> obj do-falling-sound?))
@@ -587,16 +585,14 @@
 
 ;; definition for method 7 of type cavegeyserrock
 ;; INFO: Return type mismatch process-drawable vs cavegeyserrock.
-(defmethod relocate cavegeyserrock
-  ((obj cavegeyserrock) (arg0 int))
+(defmethod relocate ((obj cavegeyserrock) (arg0 int))
   (if (nonzero? (-> obj part2)) (&+! (-> obj part2) arg0))
   (the-as cavegeyserrock
           ((the-as (function process-drawable int process-drawable) (find-parent-method cavegeyserrock 7)) obj arg0)))
 
 ;; definition for method 20 of type cavegeyserrock
 ;; INFO: Return type mismatch object vs none.
-(defmethod dummy-20 cavegeyserrock
-  ((obj cavegeyserrock))
+(defmethod dummy-20 ((obj cavegeyserrock))
   (with-pp
     (when *target*
       (let* ((a1-0 (target-pos 0))
@@ -628,8 +624,7 @@
 ;; definition for method 21 of type cavegeyserrock
 ;; INFO: Return type mismatch quaternion vs none.
 ;; Used lq/sq
-(defmethod dummy-21 cavegeyserrock
-  ((obj cavegeyserrock))
+(defmethod dummy-21 ((obj cavegeyserrock))
   (local-vars (at-0 int) (at-1 int) (s5-0 symbol))
   (rlet ((vf0 :class vf)
          (vf1 :class vf)
@@ -756,8 +751,7 @@
             rider-post))
 
 ;; definition for method 10 of type cavegeyserrock
-(defmethod deactivate cavegeyserrock
-  ((obj cavegeyserrock))
+(defmethod deactivate ((obj cavegeyserrock))
   (if (nonzero? (-> obj part2)) (kill-and-free-particles (-> obj part2)))
   ((method-of-type process-drawable deactivate) obj)
   (none))
@@ -782,8 +776,7 @@
 ;; definition for method 11 of type cavegeyserrock
 ;; INFO: Return type mismatch object vs none.
 ;; Used lq/sq
-(defmethod copy-defaults! cavegeyserrock
-  ((obj cavegeyserrock) (arg0 res-lump))
+(defmethod copy-defaults! ((obj cavegeyserrock) (arg0 res-lump))
   (local-vars (sv-16 int) (sv-32 int))
   (set! (-> obj mask) (logior (process-mask platform) (-> obj mask)))
   (let ((s4-0 (new 'process 'collide-shape-moving obj (collide-list-enum hit-by-player))))

@@ -1,9 +1,7 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: citadel-sages.gc
-;; name in dgo: citadel-sages
-;; dgos: CIT, L1
+(bundles "CIT.DGO")
+(require "levels/village2/sage-bluehut.gc")
 
 ;; TODO
 (define-extern *robotboss-sg* skeleton-group)

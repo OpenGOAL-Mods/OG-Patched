@@ -1,15 +1,11 @@
 ;;-*-Lisp-*-
 (in-package goal)
-
-;; name: ocean-mid.gc
-;; name in dgo: ocean-mid
-;; dgos: GAME, ENGINE
-
-(define ocean-mid-block
-  (new 'static
-       'vu-function
-       #| :length #x497 :qlength #x24c |#
-       ))
+(bundles "ENGINE.CGO" "GAME.CGO")
+(require "engine/gfx/ocean/ocean.gc")
+(require "kernel/gstate.gc")
+(require "engine/debug/debug.gc")
+(require "engine/gfx/ocean/ocean-trans-tables.gc")
+(define ocean-mid-block (new 'static 'vu-function)) ;; :length #x497 :qlength #x24c
 
 (defun ocean-mid-setup-constants ((arg0 ocean-mid-constants))
   "Generate the ocean VU1 renderer constants in-place."
