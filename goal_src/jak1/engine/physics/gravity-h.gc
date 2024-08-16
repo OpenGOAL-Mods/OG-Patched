@@ -7,4 +7,5 @@
 
 ;; This file generates no code.
 (defconstant GRAVITY_AMOUNT (meters 60)) ;; gravity force
+
 (defconstant GRAVITY_MAX (meters 40)) ;; regular terminal velocity

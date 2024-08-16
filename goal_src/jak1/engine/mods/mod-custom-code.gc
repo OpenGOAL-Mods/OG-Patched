@@ -5,107 +5,76 @@
 ;; name in dgo: mod-custom-code
 ;; dgos: TODO
 
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; What is this file for.
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-#| This file contains function defenitions that are pre placed in the mod base,
+#|
+ This file contains function defenitions that are pre placed in the mod base,
 so if you place custom code inside of these functions, it will exectue based on
 the name of the function, for example, if you place (set! (-> *game-info* fuel) (+ (-> *game-info* fuel) 1))
 to the function named runs-on-orb-pickup, then jaks powercell count will increase each time you collect
-an orb |#
+an orb
+|#
 
 ;; will ensure blocking plane is spawned or despawned as specified by should-spawn?
 (defun blocking-plane-cond ((verts (inline-array vector)) (height float) (name string) (should-spawn? symbol))
   (cond
     ((process-by-name name *active-pool*)
-      ;; plane is spawned, if it shouldnt be -> deactivate
-      (when (not should-spawn?)
-        (deactivate (process-by-name name *active-pool*))
-        )
-      )
+     ;; plane is spawned, if it shouldnt be -> deactivate
+     (when (not should-spawn?)
+       (deactivate (process-by-name name *active-pool*))))
     (else
-      ;; plane is not spawned, if it should be -> spawn
-      (when should-spawn?
-        (blocking-plane-spawn-simple verts height name)
-        )
-      )
-    )
-  )
+     ;; plane is not spawned, if it should be -> spawn
+     (when should-spawn?
+       (blocking-plane-spawn-simple verts height name)))))
 
 (defun klaww-alive? ()
   (let ((klaww (entity-by-name "ogreboss-1")))
     ;; klaww is alive if the entity is found and isn't dead
-    (when (and klaww 
-               (not (logtest? (-> klaww extra status) (entity-perm-status complete))))
-      (return #t)
-      )
-    )
-  #f
-  )
+    (when (and klaww (not (logtest? (-> klaww extra status) (entity-perm-status complete))))
+      (return #t)))
+  #f)
 
 (defun klaww-fight-active? ()
   (let ((klaww (the ogreboss (process-by-ename "ogreboss-1"))))
     (when klaww
       (case (-> klaww next-state name)
-        (('ogreboss-stage1 'ogreboss-stage2 'ogreboss-stage3-hit 'ogreboss-stage3-shuffle 'ogreboss-stage3-throw) 
-          (return #t)
-          )
-        )
-      )
-    )
-  #f
-  )
+        (('ogreboss-stage1 'ogreboss-stage2 'ogreboss-stage3-hit 'ogreboss-stage3-shuffle 'ogreboss-stage3-throw) (return #t)))))
+  #f)
 
 (defun misty-ambush-beaten? ()
   (when (task-complete? *game-info* (game-task misty-warehouse))
-    (return #t)
-    )
+    (return #t))
   (let ((ambush-step (entity-by-name "silostep-10")))
     (when (and ambush-step (logtest? (-> ambush-step extra status) (entity-perm-status complete)))
-      (return #t)
-      )
-    )
-  #f
-  )
+      (return #t)))
+  #f)
 
 (defun ogre-shortcut-boulder-alive? ()
   (let ((boulder (the shortcut-boulder (process-by-ename "shortcut-boulder-1"))))
     (when (and boulder (= (-> boulder next-state name) 'shortcut-boulder-idle))
-      (return #t)
-      )
-    )
-  #f
-  )
+      (return #t)))
+  #f)
 
 (defun prevent-pickup? ((cell fuel-cell))
   (case (the-as game-task (the int (-> cell fact pickup-amount)))
     (((game-task misty-warehouse))
-      ;; prevent pickup if ambush incomplete
-      (not (misty-ambush-beaten?))
-      )
+     ;; prevent pickup if ambush incomplete
+     (not (misty-ambush-beaten?)))
     (((game-task firecanyon-end))
-      ;; prevent pickup if haven't talked to keira (w/ 20+ cells)
-      (not (task-closed? (game-task firecanyon-assistant) (task-status need-reward-speech)))
-      )
+     ;; prevent pickup if haven't talked to keira (w/ 20+ cells)
+     (not (task-closed? (game-task firecanyon-assistant) (task-status need-reward-speech))))
     (((game-task ogre-secret))
-      ;; prevent pickup if boulder still alive
-      (ogre-shortcut-boulder-alive?)
-      )
+     ;; prevent pickup if boulder still alive
+     (ogre-shortcut-boulder-alive?))
     (((game-task ogre-end))
-      ;; prevent pickup if klaww not dead (klaww requires the levitator, aka 45 cells)
-      (klaww-alive?)
-      )
+     ;; prevent pickup if klaww not dead (klaww requires the levitator, aka 45 cells)
+     (klaww-alive?))
     (((game-task lavatube-end))
-      ;; prevent pickup if <72 cells
-      (< (-> *game-info* fuel) 72.0)
-      )
-    (else
-      #f
-      )
-    )
-  )
+     ;; prevent pickup if <72 cells
+     (< (-> *game-info* fuel) 72.0))
+    (else #f)))
 
 (defun spawn-patched-blocking-planes ()
   (let ((verts (new 'stack-no-clear 'inline-array 'vector 2)))
@@ -115,171 +84,130 @@ an orb |#
     ;;   (set-vector-meters! (-> verts 1) 214.60  10.31 -1590.41)
     ;;   (blocking-plane-spawn-simple verts (meters 30.0) "test-blocking-plane-1")
     ;;   )
-
     ;; MISTY AMBUSH SKIP
     ;; spawn if we havent beaten ambush
     (let ((should-spawn? (not (misty-ambush-beaten?))))
       (set-vector-meters! (-> verts 0) -147.73 38.01 1008.2)
       (set-vector-meters! (-> verts 1) -134.66 38.01 989.46)
       (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-0" should-spawn?)
-
       (set-vector-meters! (-> verts 0) -134.66 38.01 989.46)
       (set-vector-meters! (-> verts 1) -127.24 38.01 949.02)
       (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-1" should-spawn?)
-
       (set-vector-meters! (-> verts 0) -142.36 26.47 950.98)
       (set-vector-meters! (-> verts 1) -162.86 26.47 976.28)
       (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-2" should-spawn?)
-
       (set-vector-meters! (-> verts 0) -162.86 26.47 976.28)
       (set-vector-meters! (-> verts 1) -172.2 26.47 1007.5)
-      (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-3" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-3" should-spawn?))
     ;; hole in the top
     (set-vector-meters! (-> verts 0) -143.54 57.3 970.65)
     (set-vector-meters! (-> verts 1) -146.4 57.3 987.24)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-18" #t)
-
     (set-vector-meters! (-> verts 0) -146.4 57.3 987.24)
     (set-vector-meters! (-> verts 1) -157.59 57.3 1003.1)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-19" #t)
-
     (set-vector-meters! (-> verts 0) -157.59 57.3 1003.1)
     (set-vector-meters! (-> verts 1) -162.95 57.3 996.74)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-20" #t)
-
     (set-vector-meters! (-> verts 0) -162.95 57.3 996.74)
     (set-vector-meters! (-> verts 1) -155.45 57.3 975.3)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-21" #t)
-
     (set-vector-meters! (-> verts 0) -155.45 57.3 975.3)
     (set-vector-meters! (-> verts 1) -143.54 57.298 970.65)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-22" #t)
-
     ;; MISTY SKIP TO EARLY CANNON
     (set-vector-meters! (-> verts 0) -138.6 28.95 915.82)
     (set-vector-meters! (-> verts 1) -151.12 28.95 914.16)
     (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-4" #t)
-
     (set-vector-meters! (-> verts 0) -151.12 38.93 914.16)
     (set-vector-meters! (-> verts 1) -157.11 38.93 923.73)
     (blocking-plane-cond verts (meters 18.42) "misty-blocking-plane-5" #t)
-
     (set-vector-meters! (-> verts 0) -138.6 28.95 915.82)
     (set-vector-meters! (-> verts 1) -132.9 28.95 927.1)
     (blocking-plane-cond verts (meters 28.42) "misty-blocking-plane-6" #t)
-
     (set-vector-meters! (-> verts 0) -155.89 38.3 921.85)
     (set-vector-meters! (-> verts 1) -149.49 38.3 931.16)
     (blocking-plane-cond verts (meters 18.42) "misty-blocking-plane-7" #t)
-    
     (set-vector-meters! (-> verts 0) -198.17 8.83 1012.1)
     (set-vector-meters! (-> verts 1) -193.01 8.83 1028.2)
     (blocking-plane-cond verts (meters 48.05) "misty-blocking-plane-12" #t)
-
     (set-vector-meters! (-> verts 0) -193.01 8.83 1028.2)
     (set-vector-meters! (-> verts 1) -164.45 8.83 1042.8)
     (blocking-plane-cond verts (meters 48.05) "misty-blocking-plane-13" #t)
-
     (set-vector-meters! (-> verts 0) -193.01 8.83 1028.2)
     (set-vector-meters! (-> verts 1) -163.12 8.83 1025.9)
     (blocking-plane-cond verts (meters 48.05) "misty-blocking-plane-14" #t)
-
     (set-vector-meters! (-> verts 0) -198.17 11.24 1012.1)
     (set-vector-meters! (-> verts 1) -170.24 11.24 1007.1)
     (blocking-plane-cond verts (meters 45.05) "misty-blocking-plane-15" #t)
-
     (set-vector-meters! (-> verts 0) -84.64 30.44 897.38)
     (set-vector-meters! (-> verts 1) -105.38 30.44 904.76)
     (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-16" #t)
-
     (set-vector-meters! (-> verts 0) -105.38 30.44 904.76)
     (set-vector-meters! (-> verts 1) -124.05 30.44 916.42)
     (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-17" #t)
-
     (set-vector-meters! (-> verts 0) -125.07 19.41 1022.1)
     (set-vector-meters! (-> verts 1) -145.03 19.41 1004.0)
     (blocking-plane-cond verts (meters 41.05) "misty-blocking-plane-23" #t)
-
     (set-vector-meters! (-> verts 0) -144.47 44.55 1004.5)
     (set-vector-meters! (-> verts 1) -146.49 44.55 1002.7)
     (blocking-plane-cond verts (meters 12.95) "misty-blocking-plane-24" #t)
-
     (set-vector-meters! (-> verts 0) -105.52 19.41 976.06)
     (set-vector-meters! (-> verts 1) -132.3 19.41 973.0)
     (blocking-plane-cond verts (meters 41.05) "misty-blocking-plane-25" #t)
-
     (set-vector-meters! (-> verts 0) -136.1 50.08 965.33)
     (set-vector-meters! (-> verts 1) -136.79 52.26 983.68)
     (blocking-plane-cond verts (meters 6.01) "misty-blocking-plane-26" #t)
-
     (set-vector-meters! (-> verts 0) -136.79 52.26 983.68)
     (set-vector-meters! (-> verts 1) -144.12 51.43 1004.4)
     (blocking-plane-cond verts (meters 6.01) "misty-blocking-plane-27" #t)
-
     (set-vector-meters! (-> verts 0) -130.68 38.01 967.81)
     (set-vector-meters! (-> verts 1) -131.66 38.01 973.1)
     (blocking-plane-cond verts (meters 21.6) "misty-blocking-plane-28" #t)
-
     (set-vector-meters! (-> verts 0) -147.32 48.87 935.91)
     (set-vector-meters! (-> verts 1) -156.77 48.87 961.33)
     (blocking-plane-cond verts (meters 6.91) "misty-blocking-plane-29" #t)
-
     (set-vector-meters! (-> verts 0) -173.02 49.53 1009.2)
     (set-vector-meters! (-> verts 1) -178.41 49.53 991.39)
     (blocking-plane-cond verts (meters 6.91) "misty-blocking-plane-30" #t)
-
     (set-vector-meters! (-> verts 0) -178.41 49.53 991.39)
     (set-vector-meters! (-> verts 1) -171.93 49.53 985.56)
     (blocking-plane-cond verts (meters 6.91) "misty-blocking-plane-31" #t)
-
     ;; MISTY SKIPS TO SCOUTFLY
     (set-vector-meters! (-> verts 0) -141.68 50.89 1043.6)
     (set-vector-meters! (-> verts 1) -150.75 50.89 1020.3)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-8" #t)
-
     (set-vector-meters! (-> verts 0) -150.75 50.89 1020.3)
     (set-vector-meters! (-> verts 1) -165.81 50.89 1019.2)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-9" #t)
-
     (set-vector-meters! (-> verts 0) -165.81 50.89 1019.2)
     (set-vector-meters! (-> verts 1) -180.7 50.89 1036.1)
     (blocking-plane-cond verts (meters 40.0) "misty-blocking-plane-10" #t)
-
     (set-vector-meters! (-> verts 0) -119.28 27.72 1042.8)
     (set-vector-meters! (-> verts 1) -150.11 27.72 1043.9)
     (blocking-plane-cond verts (meters 30.0) "misty-blocking-plane-11" #t)
-
     ;; MISTY ZOOMER BREAKOUT
     (let ((should-spawn? (on-zoomer?)))
       (set-vector-meters! (-> verts 0) -31.93 -13.85 1118.4)
       (set-vector-meters! (-> verts 1) -41.28 -13.85 1111.5)
       (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-32" should-spawn?)
-
       (set-vector-meters! (-> verts 0) -34.33 -13.85 1129.6)
       (set-vector-meters! (-> verts 1) -31.93 -13.85 1118.4)
       (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-33" should-spawn?)
-
       (set-vector-meters! (-> verts 0) -42.04 -13.85 1139.5)
       (set-vector-meters! (-> verts 1) -34.33 -13.85 1129.6)
       (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-34" should-spawn?)
-
       (set-vector-meters! (-> verts 0) -42.04 -13.85 1139.5)
       (set-vector-meters! (-> verts 1) -93.94 -13.85 1162.2)
-      (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-35" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 28.4) "misty-blocking-plane-35" should-spawn?))
     ;; BEACH TOWER CLIMB
     ;; center window
     (set-vector-meters! (-> verts 0) -256.51 15.67 -284.0)
     (set-vector-meters! (-> verts 1) -252.42 15.67 -296.61)
     (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-0" #t)
-
     (set-vector-meters! (-> verts 0) -252.42 15.67 -296.61)
     (set-vector-meters! (-> verts 1) -258.96 15.67 -305.17)
     (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-1" #t)
-
     (set-vector-meters! (-> verts 0) -258.96 15.67 -305.17)
     (set-vector-meters! (-> verts 1) -271.42 15.67 -300.65)
     (blocking-plane-cond verts (meters 16.0) "beach-blocking-plane-2" #t)
@@ -287,11 +215,9 @@ an orb |#
     (set-vector-meters! (-> verts 0) -271.89 10.17 -303.89)
     (set-vector-meters! (-> verts 1) -284.55 10.17 -307.83)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-3" #t)
-
     (set-vector-meters! (-> verts 0) -284.55 10.17 -307.83)
     (set-vector-meters! (-> verts 1) -293.03 10.17 -301.19)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-4" #t)
-
     (set-vector-meters! (-> verts 0) -293.03 10.17 -301.19)
     (set-vector-meters! (-> verts 1) -288.37 10.17 -288.78)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-5" #t)
@@ -299,11 +225,9 @@ an orb |#
     (set-vector-meters! (-> verts 0) -275.34 9.87 -267.48)
     (set-vector-meters! (-> verts 1) -262.48 9.87 -264.27)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-6" #t)
-
     (set-vector-meters! (-> verts 0) -262.48 9.9 -264.27)
     (set-vector-meters! (-> verts 1) -254.4 9.9 -271.39)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-7" #t)
-
     (set-vector-meters! (-> verts 0) -254.4 9.9 -271.39)
     (set-vector-meters! (-> verts 1) -259.76 9.9 -283.51)
     (blocking-plane-cond verts (meters 22.0) "beach-blocking-plane-8" #t)
@@ -311,11 +235,9 @@ an orb |#
     (set-vector-meters! (-> verts 0) -248.01 -21.07 -290.19)
     (set-vector-meters! (-> verts 1) -253.92 -21.07 -292.05)
     (blocking-plane-cond verts (meters 34.84) "beach-blocking-plane-9" #t)
-
     (set-vector-meters! (-> verts 0) -253.92 -21.07 -292.05)
     (set-vector-meters! (-> verts 1) -282.01 -21.07 -269.51)
     (blocking-plane-cond verts (meters 43.53) "beach-blocking-plane-10" #t)
-
     (set-vector-meters! (-> verts 0) -282.01 -21.07 -269.51)
     (set-vector-meters! (-> verts 1) -284.21 -21.07 -263.72)
     (blocking-plane-cond verts (meters 35.684) "beach-blocking-plane-11" #t)
@@ -323,23 +245,18 @@ an orb |#
     (set-vector-meters! (-> verts 0) -263.27 -20.57 -311.08)
     (set-vector-meters! (-> verts 1) -264.37 -20.57 -304.98)
     (blocking-plane-cond verts (meters 33.97) "beach-blocking-plane-12" #t)
-
     (set-vector-meters! (-> verts 0) -264.37 -20.57 -304.98)
     (set-vector-meters! (-> verts 1) -292.45 -20.57 -282.45)
     (blocking-plane-cond verts (meters 43.53) "beach-blocking-plane-13" #t)
-
     (set-vector-meters! (-> verts 0) -292.45 -20.57 -282.45)
     (set-vector-meters! (-> verts 1) -298.56 -20.57 -281.41)
     (blocking-plane-cond verts (meters 35.69) "beach-blocking-plane-14" #t)
-
     (set-vector-meters! (-> verts 0) -252.68 6.799 -289.69)
     (set-vector-meters! (-> verts 1) -265.7 6.799 -306.73)
     (blocking-plane-cond verts (meters 9.2) "beach-blocking-plane-15" #t)
-
     (set-vector-meters! (-> verts 0) -294.89 6.799 -284.42)
     (set-vector-meters! (-> verts 1) -281.87 6.799 -267.38)
     (blocking-plane-cond verts (meters 9.2) "beach-blocking-plane-16" #t)
-
     ;; SUNKEN PUZZLE SKIP
     ;; left side
     (set-vector-meters! (-> verts 0) 894.83 -170.4 -1795.44)
@@ -347,7 +264,7 @@ an orb |#
     (blocking-plane-cond verts (meters 50.0) "sunken-blocking-plane-0" #t)
     ;; top side
     (set-vector-meters! (-> verts 0) 890.26 -134.2 -1811.5)
-    (set-vector-meters! (-> verts 1) 906.10 -134.2 -1759.5  )
+    (set-vector-meters! (-> verts 1) 906.10 -134.2 -1759.5)
     (blocking-plane-cond verts (meters 30.0) "sunken-blocking-plane-1" #t)
     ;; top-left side
     (set-vector-meters! (-> verts 0) 883.91 -134.2 -1806.5)
@@ -361,54 +278,42 @@ an orb |#
     (set-vector-meters! (-> verts 0) 901.30 -170.4 -1774.86)
     (set-vector-meters! (-> verts 1) 920.83 -170.4 -1776.60)
     (blocking-plane-cond verts (meters 50.0) "sunken-blocking-plane-4" #t)
-
     ;; SUNKEN BUTTON SKIP
     (set-vector-meters! (-> verts 0) 579.72 -132.82 -1720.4)
     (set-vector-meters! (-> verts 1) 615.12 -132.82 -1679.2)
     (blocking-plane-cond verts (meters 30.0) "sunken-blocking-plane-5" #t)
-
     ;; SUNKEN VENT CLIP
     (set-vector-meters! (-> verts 0) 591.92 -232.77 -1771.2)
     (set-vector-meters! (-> verts 1) 565.42 -232.77 -1742.8)
     (blocking-plane-cond verts (meters 35.0) "sunken-blocking-plane-6" #t)
-
     (set-vector-meters! (-> verts 0) 582.72 -232.77 -1746.8)
     (set-vector-meters! (-> verts 1) 557.5 -232.77 -1776.3)
     (blocking-plane-cond verts (meters 35.0) "sunken-blocking-plane-7" #t)
-
     ;; BASIN ON FOOT
     ;; if not on zoomer
     (let ((should-spawn? (not (on-zoomer?))))
       (set-vector-meters! (-> verts 0) 53.69 -41.73 -1555.9)
       (set-vector-meters! (-> verts 1) 52.52 -41.73 -1747.3)
-      (blocking-plane-cond verts (meters 150.0) "rolling-blocking-plane-0" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 150.0) "rolling-blocking-plane-0" should-spawn?))
     ;; couple extra to block any other possible vil2 > basin path
     (set-vector-meters! (-> verts 0) 52.53 -93.32 -1613.7)
     (set-vector-meters! (-> verts 1) 231.7 -93.32 -1335.1)
     (blocking-plane-cond verts (meters 300.0) "rolling-blocking-plane-1" #t)
-
     (set-vector-meters! (-> verts 0) 231.7 -93.32 -1335.1)
     (set-vector-meters! (-> verts 1) -65.14 -93.32 -1188.0)
     (blocking-plane-cond verts (meters 300.0) "rolling-blocking-plane-2" #t)
-
     ;; BACKWARDS BOGGY
     ;; any checkpoint besides end of boggy
     (let ((should-spawn? (not (string= (-> *game-info* current-continue name) "swamp-cave3"))))
       (set-vector-meters! (-> verts 0) 448.42 -0.58 -1875.3)
       (set-vector-meters! (-> verts 1) 449.94 -0.58 -1855.2)
       (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-0" should-spawn?)
-
       (set-vector-meters! (-> verts 0) 449.94 -0.58 -1855.2)
       (set-vector-meters! (-> verts 1) 461.71 -0.58 -1838.8)
       (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-1" should-spawn?)
-
       (set-vector-meters! (-> verts 0) 448.42 -0.58 -1875.3)
       (set-vector-meters! (-> verts 1) 454.89 -0.58 -1883.8)
-      (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-5" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 35.0) "swamp-blocking-plane-5" should-spawn?))
     ;; BOGGY FLUTFLUT OOBS
     ;; main noLTS oob
     (set-vector-meters! (-> verts 0) 504.75 17.81 -2125.7)
@@ -422,41 +327,32 @@ an orb |#
     (set-vector-meters! (-> verts 0) 524.86 13.0 -2072.9)
     (set-vector-meters! (-> verts 1) 529.2 13.0 -2087.0)
     (blocking-plane-cond verts (meters 30.0) "swamp-blocking-plane-4" #t)
-
     ;; BOGGY TAR OOB
     (set-vector-meters! (-> verts 0) 520.84 -4.21 -1976.2)
     (set-vector-meters! (-> verts 1) 550.74 -4.21 -1975.0)
     (blocking-plane-cond verts (meters 20.1) "swamp-blocking-plane-6" #t)
-    
     (set-vector-meters! (-> verts 0) 522.18 -4.21 -1976.7)
     (set-vector-meters! (-> verts 1) 485.43 -4.21 -1946.5)
     (blocking-plane-cond verts (meters 20.1) "swamp-blocking-plane-7" #t)
-
     ;; VILLAGE2 BOULDER SKIP
     ;; spawn if boulder isnt lifted
     (let ((should-spawn? (!= (get-task-status (game-task village2-levitator)) (task-status invalid))))
       (set-vector-meters! (-> verts 0) 286.54 -29.02 -1744.8)
       (set-vector-meters! (-> verts 1) 287.02 -29.02 -1773.8)
       (blocking-plane-cond verts (meters 90.0) "village2-blocking-plane-0" should-spawn?)
-     
       (set-vector-meters! (-> verts 0) 231.41 -29.02 -1738.9)
       (set-vector-meters! (-> verts 1) 286.54 -29.02 -1744.8)
-      (blocking-plane-cond verts (meters 90.0) "village2-blocking-plane-1" should-spawn?)
-      )
+      (blocking-plane-cond verts (meters 90.0) "village2-blocking-plane-1" should-spawn?))
     ;; OOB near boulder skip (keep spawned always)
     (set-vector-meters! (-> verts 0) 328.9 -13.353 -1757.8)
     (set-vector-meters! (-> verts 1) 321.4 -13.353 -1762.5)
     (blocking-plane-cond verts (meters 22.35) "village2-blocking-plane-2" #t)
-
-
     ;; OGRE KLAWW QUAD JUMP
     ;; spawn if klaww fight is active
     (let* ((should-spawn? (klaww-fight-active?)))
       (set-vector-meters! (-> verts 0) 180.43 25.26 -1795.1)
       (set-vector-meters! (-> verts 1) 235.87 25.26 -1794.9)
-      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-0" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 50.0) "ogre-blocking-plane-0" should-spawn?))
     ;; OGRE BACKWARDS CELL/CAVEHOPS/TREEHOPS
     ;; spawn if user hasnt blown up boulder
     (let* ((should-spawn? (ogre-shortcut-boulder-alive?)))
@@ -467,22 +363,17 @@ an orb |#
       ;; cave side
       (set-vector-meters! (-> verts 0) 359.36 10.335 -3169.3)
       (set-vector-meters! (-> verts 1) 336.97 10.335 -3213.4)
-      (blocking-plane-cond verts (meters 63.0) "ogre-blocking-plane-2" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 63.0) "ogre-blocking-plane-2" should-spawn?))
     ;; OGRE END OF MP
     ;; spawn if they haven't collected end of MP cell (which requires beating klaww, which requires 45 cells, etc)
     (let* ((should-spawn? (klaww-alive?)))
       (set-vector-meters! (-> verts 0) 999.03 13.85 -3430.2)
       (set-vector-meters! (-> verts 1) 951.9 13.85 -3360.6)
-      (blocking-plane-cond verts (meters 80.0) "ogre-blocking-plane-3" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 80.0) "ogre-blocking-plane-3" should-spawn?))
     ;; VILLAGE3 EXTENDED INTO HUT
     (set-vector-meters! (-> verts 0) 1087.4 25.31 -3481.7)
     (set-vector-meters! (-> verts 1) 1108.2 25.31 -3475.7)
     (blocking-plane-cond verts (meters 25.5) "village3-blocking-plane-1" #t)
-
     ;; SNOWY FLUTFLUT ESCAPE
     (let ((should-spawn? (on-flut?)))
       ;; perpendicular to original plane to prevent walljump
@@ -497,133 +388,99 @@ an orb |#
       (set-vector-meters! (-> verts 0) 566.27 150.0 -3489.5)
       (set-vector-meters! (-> verts 1) 648.4 150.0 -3558.6)
       (blocking-plane-cond verts (meters 140.0) "snowy-blocking-plane-22" should-spawn?)
-
       (set-vector-meters! (-> verts 0) 648.4 150.0 -3558.6)
       (set-vector-meters! (-> verts 1) 742.47 150.0 -3506.9)
-      (blocking-plane-cond verts (meters 140.0) "snowy-blocking-plane-23" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 140.0) "snowy-blocking-plane-23" should-spawn?))
     ;; SNOWY OPEN GATE CELL
     ;; not on flut and haven't gotten cell
-    (let ((should-spawn? (and (not (on-flut?))
-                              (not (task-complete? *game-info* (game-task snow-ball))))))
+    (let ((should-spawn? (and (not (on-flut?)) (not (task-complete? *game-info* (game-task snow-ball))))))
       (set-vector-meters! (-> verts 0) 858.87 161.25 -3320.5)
       (set-vector-meters! (-> verts 1) 814.82 161.25 -3320.5)
-      (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-2" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-2" should-spawn?))
     ;; SNOWY GONDOLA SKIP
     ;; snow-start area
     (set-vector-meters! (-> verts 0) 1036.8 226.59 -3513.9)
     (set-vector-meters! (-> verts 1) 955.19 226.59 -3513.9)
     (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-3" #t)
-
     (set-vector-meters! (-> verts 0) 1064.2 226.59 -3479.2)
     (set-vector-meters! (-> verts 1) 1013.2 226.59 -3542.9)
     (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-4" #t)
-
     (set-vector-meters! (-> verts 0) 957.89 226.59 -3510.1)
     (set-vector-meters! (-> verts 1) 1039.5 226.59 -3510.1)
     (blocking-plane-cond verts (meters 60.0) "snowy-blocking-plane-5" #t)
-
     ;; bunny lurker ambush room patches
     (set-vector-meters! (-> verts 0) 1009.1 220.8 -3409.8)
     (set-vector-meters! (-> verts 1) 968.72 220.8 -3415.3)
     (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-6" #t)
-
     (set-vector-meters! (-> verts 0) 1012.6 223.27 -3384.7)
     (set-vector-meters! (-> verts 1) 991.12 223.27 -3381.9)
     (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-7" #t)
-
     (set-vector-meters! (-> verts 0) 1026.3 223.27 -3364.7)
     (set-vector-meters! (-> verts 1) 991.12 223.27 -3381.9)
     (blocking-plane-cond verts (meters 40.0) "snowy-blocking-plane-8" #t)
-
     (set-vector-meters! (-> verts 0) 1009.1 243.34 -3375.6)
     (set-vector-meters! (-> verts 1) 998.31 243.34 -3412.4)
     (blocking-plane-cond verts (meters 15.0) "snowy-blocking-plane-9" #t)
-
     ;; other patches cuz bin is nuts
     (set-vector-meters! (-> verts 0) 1092.1 137.18 -3183.5)
     (set-vector-meters! (-> verts 1) 1033.0 137.18 -3424.4)
     (blocking-plane-cond verts (meters 245.0) "snowy-blocking-plane-11" #t)
-
     (set-vector-meters! (-> verts 0) 986.72 253.26 -3336.9)
     (set-vector-meters! (-> verts 1) 1054.9 253.26 -3336.4)
     (blocking-plane-cond verts (meters 125.0) "snowy-blocking-plane-12" #t)
-    
     (set-vector-meters! (-> verts 0) 986.72 253.26 -3336.9)
     (set-vector-meters! (-> verts 1) 946.37 253.26 -3406.7)
     (blocking-plane-cond verts (meters 125.0) "snowy-blocking-plane-13" #t)
-
     (set-vector-meters! (-> verts 0) 946.37 253.26 -3406.7)
     (set-vector-meters! (-> verts 1) 970.45 253.26 -3449.3)
     (blocking-plane-cond verts (meters 125.0) "snowy-blocking-plane-14" #t)
-
     (set-vector-meters! (-> verts 0) 970.45 202.81 -3449.3)
     (set-vector-meters! (-> verts 1) 1168.8 202.81 -3384.9)
     (blocking-plane-cond verts (meters 175.0) "snowy-blocking-plane-15" #t)
-
     (set-vector-meters! (-> verts 0) 944.77 244.42 -3330.6)
     (set-vector-meters! (-> verts 1) 911.2 244.42 -3431.2)
     (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-16" #t)
-
     (set-vector-meters! (-> verts 0) 911.2 244.42 -3431.2)
     (set-vector-meters! (-> verts 1) 902.11 244.42 -3428.8)
     (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-17" #t)
-    
     (set-vector-meters! (-> verts 0) 902.11 244.42 -3428.8)
     (set-vector-meters! (-> verts 1) 918.39 244.42 -3385.5)
     (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-18" #t)
-
     (set-vector-meters! (-> verts 0) 918.39 247.82 -3385.5)
     (set-vector-meters! (-> verts 1) 930.17 247.82 -3330.6)
     (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-19" #t)
-
     (set-vector-meters! (-> verts 0) 930.17 247.82 -3330.6)
     (set-vector-meters! (-> verts 1) 944.77 247.82 -3330.6)
     (blocking-plane-cond verts (meters 100.0) "snowy-blocking-plane-20" #t)
-
     (set-vector-meters! (-> verts 0) 1033.9 193.29 -3338.3)
     (set-vector-meters! (-> verts 1) 1061.6 193.29 -3317.6)
     (blocking-plane-cond verts (meters 185.0) "snowy-blocking-plane-21" #t)
-
     ;; SNOWY BACKWARDS AMBUSH
     ;; spawn if we havent gotten cell
     (let ((should-spawn? (not (task-complete? *game-info* (game-task snow-bunnies)))))
       (set-vector-meters! (-> verts 0) 930.84 220.55 -3369.7)
       (set-vector-meters! (-> verts 1) 943.45 220.55 -3333.5)
-      (blocking-plane-cond verts (meters 25.0) "snowy-blocking-plane-10" should-spawn?)
-      )
-
+      (blocking-plane-cond verts (meters 25.0) "snowy-blocking-plane-10" should-spawn?))
     ;; SNOWY YELLOW SWITCH ENTRANCE
     ;; spawn if we havent gotten cell
     (let ((should-spawn? (not (task-complete? *game-info* (game-task snow-eggtop)))))
       (set-vector-meters! (-> verts 0) 727.75 214.31 -3364.2)
       (set-vector-meters! (-> verts 1) 758.27 214.31 -3360.1)
-      (blocking-plane-cond verts (meters 82.0) "snowy-blocking-plane-24" should-spawn?)
-      )
+      (blocking-plane-cond verts (meters 82.0) "snowy-blocking-plane-24" should-spawn?))
     ;; SNOWY YELLOW SWITCH EXIT
     (set-vector-meters! (-> verts 0) 763.15 231.71 -3422.4)
     (set-vector-meters! (-> verts 1) 737.74 231.71 -3439.8)
     (blocking-plane-cond verts (meters 21.7) "snowy-blocking-plane-25" #t)
-
     (set-vector-meters! (-> verts 0) 742.51 231.71 -3441.6)
     (set-vector-meters! (-> verts 1) 718.96 231.71 -3421.8)
     (blocking-plane-cond verts (meters 21.7) "snowy-blocking-plane-26" #t)
-
     ;; CITADEL HOPS
     ;; spawn if we havent gotten end of LT cell
     (let ((should-spawn? (not (task-complete? *game-info* (game-task lavatube-end)))))
       (set-vector-meters! (-> verts 0) 2680.6 -95.52 -4508.7)
       (set-vector-meters! (-> verts 1) 2888.0 -95.52 -4508.7)
-      (blocking-plane-cond verts (meters 155.0) "citadel-blocking-plane-0" should-spawn?)
-      )
-    
-    )
-
-  (none)
-  )
+      (blocking-plane-cond verts (meters 155.0) "citadel-blocking-plane-0" should-spawn?)))
+  (none))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Begin function defintions.
@@ -635,182 +492,110 @@ an orb |#
     ;; force play hints on
     (set! (-> *setting-control* default play-hints) #t)
     ;; don't allow cutscene skips
-    (set! (-> *pc-settings* skip-movies?) #f)
-    )
-
+    (set! (-> *pc-settings* skip-movies?) #f))
   ;; PATCHED - no boosteds
   (set! (-> *edge-surface* fric) 1530000.0)
-
   ;; PATCHED - prevent nuka/zombie glitch
   (when (<= (-> *target* fact health) 0.0)
-    (target-attack-up *target* 'attack 'instant-death)
-    )
-
+    (target-attack-up *target* 'attack 'instant-death))
   ;; PATCHED - wet feet
   (when (not (handle->process (-> *target* water volume)))
-    (set! (-> *target* water height) 0.0)
-    )
-
+    (set! (-> *target* water height) 0.0))
   ;; PATCHED - lava walk
-  (when (and *target* (not (logtest? (-> *target* state-flags) (state-flags dying)))
-             (nonzero? (-> *target* water volume)))
+  (when (and *target* (not (logtest? (-> *target* state-flags) (state-flags dying))) (nonzero? (-> *target* water volume)))
     (let ((wv (handle->process (-> *target* water volume))))
       (when (name= (-> wv name) "ogre-lava-1")
-        (logclear! (-> *target* state-flags) (state-flags being-attacked))
-        )
-      )
-    )
-
+        (logclear! (-> *target* state-flags) (state-flags being-attacked)))))
   ;; PATCHED - if klaww alive, make sure player doesn't get MP checkpoints behind klaww
   (when (and (or (string= (-> *game-info* current-continue name) "ogre-race")
-                 (string= (-> *game-info* current-continue name) "ogre-end")
-                 )
+                 (string= (-> *game-info* current-continue name) "ogre-end"))
              (klaww-alive?))
-    (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-start"))
-    )
-
+    (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "ogre-start")))
   ;; PATCHED - remove yellow eco near spider tunnel if no yellow switch cell
-  (when (and (not (task-complete? *game-info* (game-task snow-eggtop)))
-             (in-bubble-m? 1257.65 -20.13 -2869.26 50.0)
-             )
-    (send-event *target* 'reset-pickup 'eco)
-    )
-    
+  (when (and (not (task-complete? *game-info* (game-task snow-eggtop))) (in-bubble-m? 1257.65 -20.13 -2869.26 50.0))
+    (send-event *target* 'reset-pickup 'eco))
   ;; PATCHED - prevent any variation of citadel skip (require all 3 blue/red/yellow sage cells)
   (when (and (name= (-> *game-info* current-continue name) "citadel-elevator")
              (not (and (task-complete? *game-info* (game-task citadel-sage-blue))
                        (task-complete? *game-info* (game-task citadel-sage-red))
-                       (task-complete? *game-info* (game-task citadel-sage-yellow))
-                       )
-                 )
-             )
-    (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "citadel-start"))
-    )
-
+                       (task-complete? *game-info* (game-task citadel-sage-yellow)))))
+    (set! (-> *game-info* current-continue) (get-continue-by-name *game-info* "citadel-start")))
   ;; PATCHED - spawn some invisible planes
   (spawn-patched-blocking-planes)
-  
-  (if *show-input-display* 
-    (input-display-on)
-    (input-display-off)
-    )
-
-  (none)
-  )
+  (if *show-input-display* (input-display-on) (input-display-off))
+  (none))
 
 (defun runs-on-orb-pickup ((parent process-tree))
   (let* ((from-cache? (and parent (type-type? (-> parent type) orb-cache-top))))
     ;; Code here runs on ANY orb pickup
-
-
     (when from-cache?
       ;; Code here runs only if the orb was from an orb cache
-
       )
-
     (when (not from-cache?)
       ;; Code here runs only if the orb was NOT from an orb cache
-
-      )
-    )
-  (none)
-  )
+      ))
+  (none))
 
 (defun runs-on-fly-pickup ()
   ;; Code here runs on any scout fly pickup
-
-  (none)
-  )
+  (none))
 
 (defun runs-on-cell-pickup ((cell-event symbol))
   (case cell-event
-    (('pickup)      
-      ;; Code here runs as soon as you pickup a powercell
-
-      )
-    (('cutscene-end)      
-      ;; Code here runs at the end of any powercell cutscene
-
-      )
-    )
-
-  (none)
-  )
+    (('pickup)
+     ;; Code here runs as soon as you pickup a powercell
+     )
+    (('cutscene-end)
+     ;; Code here runs at the end of any powercell cutscene
+     ))
+  (none))
 
 (defun runs-on-eco-pickup ((eco-type pickup-type) (parent process-tree))
   (let* ((from-vent? (and parent (type-type? (-> parent type) vent))))
     ;; Code here runs as soon as you pickup ANY eco
-
     (case eco-type
-      (((pickup-type eco-yellow))      
-        ;; Code here runs as soon as you pickup yellow eco
-
-        )
-      (((pickup-type eco-red))      
-        ;; Code here runs as soon as you pickup red eco
-
-        )
-      (((pickup-type eco-blue))      
-        ;; Code here runs as soon as you pickup blue eco
-
-        )
-      (((pickup-type eco-pill))      
-        ;; Code here runs as soon as you pickup small green eco
-
-        )
-      (((pickup-type eco-green))      
-        ;; Code here runs as soon as you pickup big green eco 
-
-        )
-      )
-    
+      (((pickup-type eco-yellow))
+       ;; Code here runs as soon as you pickup yellow eco
+       )
+      (((pickup-type eco-red))
+       ;; Code here runs as soon as you pickup red eco
+       )
+      (((pickup-type eco-blue))
+       ;; Code here runs as soon as you pickup blue eco
+       )
+      (((pickup-type eco-pill))
+       ;; Code here runs as soon as you pickup small green eco
+       )
+      (((pickup-type eco-green))
+       ;; Code here runs as soon as you pickup big green eco 
+       ))
     (when from-vent?
       ;; Code here runs only if the eco was picked up from a vent
-
-      )
-    )
-
-  (none)
-  )
+      ))
+  (none))
 
 (defun runs-on-jak-spawn ()
   ;; Code here runs every time jak spawns (loading a file new game or death)
-
   ;;uncomment this to use custom music for custom levels - the function is in mod-common-functions.gc
   ;;(process-spawn-function process music-manager-proc)
-  (none)
-  )
+  (none))
 
 (defun runs-on-jak-death ((death-event symbol))
   (case death-event
     (('dying)
-      ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
-      
-      (if *show-input-display* 
-        (input-display-on)
-        (input-display-off)
-        )
-
-      ;; ensure orb-placer is spawned/killed as requested, debug menu is updated
-      (when *debug-segment*
-        (orb-placer-maintenance)
-        )
-
-      (none)
-      )
+     ;; Code here runs immediately every time jak dies, before any death animation or death cutscene
+     (if *show-input-display* (input-display-on) (input-display-off))
+     ;; ensure orb-placer is spawned/killed as requested, debug menu is updated
+     (when *debug-segment*
+       (orb-placer-maintenance))
+     (none))
     (('blackout)
-      ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns
+     ;; Code here runs after jak dies (and any death cutscene finishes), during the blackout before he spawns
+     ))
+  (none))
 
-      )
-    )
-  
-  (none)
-  )
+;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; deprecated function defintions.
+;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
-    ;; deprecated function defintions.
-    ;;;;;;;;;;;;;;;;;;;;;;;;;;
-
-    #| these are no longer recommended/supported however we include them anyways to not break anyones mods.
-    |#
+#| these are no longer recommended/supported however we include them anyways to not break anyones mods. |#
