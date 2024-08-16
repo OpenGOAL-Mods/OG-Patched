@@ -27,7 +27,7 @@ an orb
     (else
      ;; plane is not spawned, if it should be -> spawn
      (when should-spawn?
-       (blocking-plane-spawn-simple verts height name)))))
+       (blocking-plane-b-spawn-simple verts height name)))))
 
 (defun klaww-alive? ()
   (let ((klaww (entity-by-name "ogreboss-1")))
