@@ -1,5 +1,7 @@
 # Jak & Daxter: The Precursor Legacy v1.1
 
+https://all-things-andy-gavin.github.io
+
 #### build `b8e61e8` patchnotes
 - global patches
   - fixed idle animation cancellation/level deload bug when holding button/paused
